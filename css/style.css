@@ -1,0 +1,162 @@
+header {
+	background: #fff;
+}
+
+.container {
+	max-width: 1170px;
+	margin: 0 auto;
+}
+
+/*头部子元素居中*/
+header .header-flex {
+	display: flex;
+	display: -webkit-flex; 	/*webkit内核的浏览器必须加上-webkit-*/
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	align-items: center;
+	-webkit-align-items: center;
+}
+
+/*头部logo*/
+header .header-brand {
+	position: relative;
+	padding: 20px 15px;
+	width: 100%;
+}
+header .header-brand a {
+	color: #111;
+}
+
+header .menu-toggle {
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	cursor: pointer;
+	top: 25%;
+	right: 15px;
+	display: none;
+}
+
+header .menu-toggle:hover span{ /*划过父元素，子元素变色*/
+	background-color: #33B7FF;
+}
+
+.menu-toggle span {
+	background-color: #000;
+	display: block;
+	width: 20px;
+	height: 2px;
+	position: absolute;
+	top: 19px;
+	right: 6px;
+	border-radius: 100px;
+	transition: transform 0.5s;
+}
+
+.menu-toggle span:first-child {
+	-webkit-transform: translateY(-6px);
+	transform: translateY(-6px);
+}
+
+.menu-toggle.x span:first-child {
+	transform: rotate(-45deg);
+}
+
+.menu-toggle.x span{
+	transform: rotate(45deg);
+}
+
+/*头部主要部分*/
+header .header-main {
+	display: flex;
+	display: -webkit-flex;
+}
+
+/*菜单栏*/
+.header-menu ul {
+	white-space: nowrap;
+}
+
+.header-menu ul li {
+	display: inline-block;
+}
+
+.header-menu ul li a {
+	color: #000;
+	padding: 0px 20px;
+}
+
+.header-menu ul li a:hover {
+	color: #33B7FF;
+}
+
+.header-menu ul li.active a {
+	color: #33B7FF;
+}
+/*搜索框*/
+.header-main .header-search {
+	padding: 0px 0px 0px 20px;
+	align-self: center;
+	display: flex;
+}
+
+.header-search input {
+	border: 1px solid #ccc;
+	background-color: #fff;
+	height: 30px;
+	padding: 1px 10px;
+}
+
+.header-search .search-btn {
+	width: 40px;
+	height: 34px;
+	border: 1px solid transparent;
+	color: #fff;
+	background: #33b7ff; 
+	cursor: pointer;  
+	text-align: center;
+	line-height: 34px;
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+}
+
+@media (max-width: 767px) {
+    header .menu-toggle {
+		display: block;
+	}
+	header .header-main {
+		display: none;
+		width: 100%;
+		background-color: #111;
+		
+	}
+	.header-main .header-search {
+		padding: 20px 0px 20px 20px;
+	}
+	.header-menu ul {
+		border-top: 1px solid;
+		padding-left: 0px;
+		margin: 0px;
+	}
+	.header-menu ul li {
+		display: block;
+		padding: 20px 0px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	}
+	.header-menu ul li.active a {
+		color: #fff;
+	}
+	.header-menu ul li a {
+		/*transition: all .5s ease-in-out;*/
+		color: #fff;
+	}
+	.header-menu ul li:hover {
+		color: #fff;
+		background-color: #FA6161;
+		transition: all 0.5s ease-in-out;
+	}
+	header .header-flex {
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+}

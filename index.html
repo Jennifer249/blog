@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>blog首页</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div class="page">
+		<header id="header">
+			<div class="container header-flex">
+				<div class="header-brand">
+					<h1>
+						<a href="#">陈卓林&nbsp;|&nbsp;技术博客</a>
+					</h1>	
+					<div class="menu-toggle">
+						<span></span>
+						<span></span>
+					</div>				
+				</div>
+				<div class="header-main">
+					<div class="header-menu">
+						<ul>
+							<li class="active"><a href="#">首页</a></li>
+							<li><a href="#">归档</a></li>
+						</ul>
+					</div>
+					<form class="header-search">
+						<input type="text" placeholder="查找文章">
+						<button class="search-btn"><span class="iconfont icon-search">&#xe63c;</span></button>
+					</form>
+				</div>
+			</div>
+		</header>
+		<main class="content">
+			<div class="container">
+				<div class="content-left"></div>
+				<aside class="content-right" value="Search"></aside>
+			</div>
+		</main>
+		<footer></footer>
+	</div>
+
+<script src="js/menu.js"></script>
+<script>
+	const menu = new Menu("#header");
+</script>
+</body>
+</html>
