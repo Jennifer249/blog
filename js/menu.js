@@ -1,5 +1,8 @@
 var otherJS = 'js/jquery.min.js';//引入jquery.js
 document.write('<scr' + 'ipt type="text/javascript" src="'+ otherJS +'"></scr' + 'ipt>');
+
+var scrollWidth = getScrollbarWidth();
+
 class Menu {
 	constructor(id) {
 		this.box = document.querySelector(id); //class:header-main
@@ -9,24 +12,25 @@ class Menu {
 
 	init() {
 		this.menuToggle.addEventListener("click", (e) => {
+			let clic = e.target;
 			$(".header-main").slideToggle(300); //实现上滑、下滑特效
-			if(this.menuToggle.classList.contains("x")) {
-				this.menuToggle.classList.remove("x");
+			if(clic.classList.contains("x")) {
+				clic.classList.remove("x");
 			}
 			else {
-				this.menuToggle.classList.add("x");
+				clic.classList.add("x");
 			}
 		});
 
 		window.addEventListener('resize', function() {
 			var offsetWid = document.documentElement.clientWidth;
-			var mt = document.getElementsByClassName("menu-toggle");
-			var hm = document.getElementsByClassName("header-main");
 
 			// 减去右侧滚动条的宽度
-			if(offsetWid > (767 - getScrollbarWidth())) { 
-				mt[0].classList.remove("x");
-				hm[0].style.display = "";
+			if(offsetWid > (767 - scrollWidth)) { 
+				var mt = document.querySelector(".menu-toggle");
+				var hm = document.querySelector(".header-main");
+				mt.classList.remove("x");
+				hm.style.display = "";
 			}
 		})
 	}

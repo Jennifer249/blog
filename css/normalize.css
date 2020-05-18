@@ -23,6 +23,13 @@ section {
   padding: 0px;
 }
 
+fieldset {
+  min-width: 0;
+  padding: 0 !important;
+  margin: 0;
+  border: 0;
+}
+
 /**
  * Remove the margin in all browsers.
  */
@@ -44,10 +51,7 @@ main {
  * `article` contexts in Chrome, Firefox, and Safari.
  */
 
-h1 {
-  margin: 0;
-}
-h2 {
+h1,h2,h3 {
   margin: 0;
 }
 
@@ -230,10 +234,6 @@ button:-moz-focusring,
 /**
  * Correct the padding in Firefox.
  */
-
-fieldset {
-  padding: 0.35em 0.75em 0.625em;
-}
 
 /**
  * 1. Correct the text wrapping in Edge and IE.

@@ -24,6 +24,7 @@ p {
 
 section {
   border-radius: 4px;
+  box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
 }
 
 .clearfix:after {
@@ -69,6 +70,20 @@ section a:hover{
   color: #757575;
 }
 
+button {
+  transition: all 0.5s;
+  background: #33b7ff; 
+}
+
+button:hover {
+  background-color: #fe6619;
+}
+
+.d-flex {
+  display: flex;
+  display: -webkit-flex; /*webkit内核的浏览器必须加上-webkit-*/
+}
+
 @font-face {font-family: "iconfont";
   src: url('./font/iconfont.eot?t=1589359495934'); /* IE9 */
   src: url('./font/iconfont.eot?t=1589359495934#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -85,3 +100,4 @@ section a:hover{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
