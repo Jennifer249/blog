@@ -66,10 +66,6 @@ footer p {
     font-size: 14px;
 }
 
-section a:hover{
-  color: #757575;
-}
-
 button {
   transition: all 0.5s;
   background: #33b7ff; 
@@ -82,6 +78,10 @@ button:hover {
 .d-flex {
   display: flex;
   display: -webkit-flex; /*webkit内核的浏览器必须加上-webkit-*/
+}
+
+a:hover {
+  color: #757575;
 }
 
 @font-face {font-family: "iconfont";
@@ -101,3 +101,137 @@ button:hover {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/*
+ * 头部header
+ */
+
+header {
+    background: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 15px;
+}
+
+/*头部flex布局*/
+header .header-inner {
+    display: flex;
+    display: -webkit-flex;  /*webkit内核的浏览器必须加上-webkit-*/
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    align-items: center;
+    -webkit-align-items: center;
+    padding: 20px 15px;
+    position: relative;
+}
+
+/*头部左侧*/
+header .header-brand {
+    position: relative;
+    padding: 20px 0px;
+    width: 100%;
+}
+/*logo*/
+header .header-brand a {
+    color: #111;
+}
+/*菜单栏折叠*/
+header .menu-toggle {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    cursor: pointer;
+    top: 25%;
+    right: 15px;
+    display: none;
+}
+
+header .menu-toggle:hover span {    /*划过父元素，子元素变色*/
+    background-color: #33B7FF;
+}
+
+.menu-toggle span {
+    background-color: #000;
+    display: block;
+    width: 20px;
+    height: 2px;
+    position: absolute;
+    top: 19px;
+    right: 6px;
+    border-radius: 100px;
+    transition: transform 0.5s;
+}
+
+.menu-toggle span:first-child {
+    -webkit-transform: translateY(-6px);
+    transform: translateY(-6px);
+}
+
+.menu-toggle.x span:first-child {
+    transform: rotate(-45deg);
+}
+
+.menu-toggle.x span{
+    transform: rotate(45deg);
+}
+
+/*头部右侧*/
+header .header-main {
+    display: flex;
+    display: -webkit-flex;
+}
+
+/*菜单栏*/
+.header-main ul {
+    margin: 16px 0;
+    white-space: nowrap;
+}
+
+.header-main ul li {
+    display: inline-block;
+}
+
+.header-main ul li a {
+    padding: 45px 20px;
+}
+
+.header-main ul li.active a {
+    color: #33B7FF;
+}
+/*搜索框*/
+.header-main .header-search {
+    padding: 0px 0px 0px 20px;
+    align-self: center;
+    display: flex;
+}
+
+.header-search input {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    height: 34px;
+    padding: 1px 10px;
+}
+
+.header-search .search-btn {
+    width: 40px;
+    height: 34px;
+    border: 1px solid transparent;
+    color: #fff;
+    background: #33b7ff; 
+    cursor: pointer;  
+    text-align: center;
+    line-height: 34px;
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+/*
+ * 内容部分main
+ */
+main {
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}  

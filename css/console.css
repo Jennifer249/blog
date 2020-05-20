@@ -1,0 +1,84 @@
+/*内容左边*/
+header {
+	width: expression(document.body.clientWidth <= 1200? 1200px: auto);min-width:1200px;
+}
+main .container {
+	width: 1200px;
+	max-width: none;
+	display: -webkit-box;
+    -webkit-box-orient: horizontal;
+}
+main aside.left-box {
+	width: 180px;
+	background: #fff;
+	border-right: 4px solid #edeff2;
+}
+
+aside.left-box ul li {
+	border-bottom: 1px solid #edeff2;
+	padding: 16px;
+	font-size: 14px;
+	line-height: 14px; 
+}
+
+aside.left-box ul li.active {
+	border-left: 2px solid #1296db;
+}
+
+.icon {
+	vertical-align:middle;
+}
+
+aside.left-box ul li a {
+	vertical-align:middle;
+}
+
+/*内容右边*/
+main div.view-box {
+	background: #fff;
+	-webkit-box-flex: 1;
+}
+
+main .view {
+	padding: 20px;
+}
+
+main .view h3:before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	background-color: #ff6547;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 6px;
+}
+.statistics .read-count {
+	margin-top: 20px;
+	justify-content: space-between;
+    -webkit-justify-content: space-between;
+    text-align: center;
+}
+
+.statistics .item {
+	background-color: #f2f5f7;
+	display: inline-block;
+	width: 32%;
+}
+
+.item p.num {
+	font-size: 20px;
+	color: #111;
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+
+.item p.title {
+	font-size: 14px;
+	color: #999;
+}
+
+.statistics .read-chart {
+
+}
+
+
