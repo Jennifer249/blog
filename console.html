@@ -31,7 +31,7 @@
 			</div>
 		</header>
 		<main>
-			<div class="container">
+			<div class="container d-flex">
 				<aside class="left-box">
 					<ul>
 						<li>
@@ -58,9 +58,8 @@
 				</aside>
 				<div class="view-box">
 					<!-- <div class="write-message view"></div> -->
-					<div class="statistics view">
-						<div>
-							<h3>数据</h3>
+					<div class="statistics view" style="display: none;">
+						<h3>数据</h3>
 							<div class="read-count d-flex">
 								<div class="item">
 									<p class="num">35</p>
@@ -75,14 +74,194 @@
 									<p class="title">评论数</p>
 								</div>
 							</div>
-							<div class="read-chart"></div>
+							<div class="data-chart">
+								<ul>
+									<li class="active">访问量</li>
+									<li>评论数</li>
+								</ul>
+								<div id="mychart" style="width: 600px;height:400px;"></div>
+							</div>
+					</div>
+					<div class="article-manage view" style="display: none;">
+						<div class="choose-line">
+							<ul>
+								<li class="active">全部(2)</li>
+								<li>公开(1)</li>
+								<li>草稿箱(1)</li>
+							</ul>
+						</div>
+						<div class="article-search-box">
+							<span>筛选: </span>
+							<div class="select-btn">
+								<button class="dropdown-btn">
+									年
+									<span class="caret"></span>
+								</button>
+								<ul style="display: none;">
+									<li>2020</li>
+									<li>2019</li>
+									<li>2018</li>
+								</ul>
+							</div>
+							<div class="select-btn">
+								<button class="dropdown-btn">
+									月
+									<span class="caret"></span>
+								</button>
+								<ul style="display: none;">
+									<li>2020</li>
+									<li>2019</li>
+									<li>2018</li>
+								</ul>
+							</div>
+							<div class="select-btn">
+								<button class="dropdown-btn">
+									分类
+									<span class="caret"></span>
+								</button>
+								<ul style="display: none;">
+									<li>2020</li>
+									<li>2019</li>
+									<li>2018</li>
+								</ul>
+							</div>
+							<input type="text" name="" id="" placeholder="输入关键字搜索">
+							<button class="search-btn">搜索</button>
+						</div>
+						<div class="article-search-result">
+							<ul>
+								<li>
+									<span class="state-tip">草稿</span>
+									<a href="">最简单的svg图标使用方式</a>
+									<div class="item-info d-flex">
+										<div class="item-info-left">
+											<span>2020年05月19日 17:50:38</span>
+										</div>
+										<div class="item-info-right">
+											<a>查看</a>
+											<span>删除</span>
+										</div>
+									</div>
+								</li>
+								<li>
+									<span class="state-tip" style="display: none">草稿</span>
+									<a href="">最简单的svg图标使用方式</a>
+									<div class="item-info d-flex">
+										<div class="item-info-left">
+											<span>2020年05月19日 17:50:38</span>
+										</div>
+										<div class="item-info-right">
+											<a>查看</a>
+											<span>删除</span>
+										</div>
+									</div>
+								</li>
+								<li>
+									<span class="state-tip" style="display: none">草稿</span>
+									<a href="">最简单的svg图标使用方式</a>
+									<div class="item-info d-flex">
+										<div class="item-info-left">
+											<span>2020年05月19日 17:50:38</span>
+										</div>
+										<div class="item-info-right">
+											<a>查看</a>
+											<span>删除</span>
+										</div>
+									</div>
+								</li>
+								<li>
+									<span class="state-tip" style="display: none">草稿</span>
+									<a href="">最简单的svg图标使用方式</a>
+									<div class="item-info d-flex">
+										<div class="item-info-left">
+											<span>2020年05月19日 17:50:38 | 阅读量(35) | 评论数(2)</span>
+										</div>
+										<div class="item-info-right">
+											<a>查看</a>
+											<span>删除</span>
+										</div>
+									</div>
+								</li>
+							</ul>
 						</div>
 					</div>
-					<!-- <div class="article-message view"></div>
-					<div class="comment-message view"></div> -->
+					<div class="comment-manage view" style="display: none;">
+						<div class="choose-line">
+							<ul>
+								<li class="active">收到的评论</li>
+								<li>我回复的评论</li>
+							</ul>
+						</div>
+						<ul class="comment-list">
+							<li>
+								<div class="tips">
+									><span class="visitor-name">四平</span>
+									<span class="comment-time">2020.5.20</span>
+									<span>评论了文章:</span>
+									<span class="comment-article"><a href="">Qt中tr()的作用</a></span>
+									<span class="comment-delete">删除</span>
+									<span class="comment-reply">回复</span>
+								</div>
+								<blockquote>eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀</blockquote>
+							</li>
+							<li>
+								<div class="tips">
+									<span class="visitor-name">四平</span>
+									<span class="comment-time">2020.5.20</span>
+									<span>评论了文章:</span>
+									<span class="comment-article"><a href="">Qt中tr()的作用</a></span>
+									<span class="comment-delete">删除</span>
+									<span class="comment-reply">回复</span>
+								</div>
+								<blockquote>eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀</blockquote>
+							</li>
+							<li>
+								<div class="tips">
+									<span class="visitor-name">四平</span>
+									<span class="comment-time">2020.5.20</span>
+									<span>评论了文章:</span>
+									<span class="comment-article"><a href="">Qt中tr()的作用</a></span>
+									<span class="comment-delete">删除</span>
+									<span class="comment-reply">回复</span>
+								</div>
+								<blockquote>eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀eply]llsplsp[/reply]加了之后我的窗口打不开了是怎么回事呀</blockquote>
+							</li>
+						</ul>
+					</div>
+					<div class=""></div>
 				</div>
 			</div>
 		</main>
 	</div>
+
+	<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('mychart'));
+ 
+        // 指定图表的配置项和数据
+        var option = {
+        	color: ["#1296db"],
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["2020-5.13","2020-5.14","2020-5.15","2020-5.16","2020-5.17","2020-5.18","2020-5.19"],
+                boundaryGap: false
+            },
+            yAxis: {
+                type: "value"
+            },
+            series: [{
+                type: 'line',
+                smooth: true,
+                data: [5, 20, 36, 10, 10, 20, 35],
+                // areaStyle: {}
+            }]
+        };
+ 
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 </body>
 </html>

@@ -1,12 +1,10 @@
-/*鍐呭宸﹁竟*/
+/*内容左边*/
 header {
 	width: expression(document.body.clientWidth <= 1200? 1200px: auto);min-width:1200px;
 }
 main .container {
 	width: 1200px;
 	max-width: none;
-	display: -webkit-box;
-    -webkit-box-orient: horizontal;
 }
 main aside.left-box {
 	width: 180px;
@@ -33,10 +31,10 @@ aside.left-box ul li a {
 	vertical-align:middle;
 }
 
-/*鍐呭鍙宠竟*/
+/*内容右边*/
 main div.view-box {
 	background: #fff;
-	-webkit-box-flex: 1;
+	width: 100%;
 }
 
 main .view {
@@ -52,11 +50,14 @@ main .view h3:before {
 	vertical-align: middle;
 	margin-right: 6px;
 }
+
+/*统计界面*/
 .statistics .read-count {
-	margin-top: 20px;
+	padding: 30px 0;
 	justify-content: space-between;
     -webkit-justify-content: space-between;
     text-align: center;
+    border-bottom: 1px solid #e9e9e9;
 }
 
 .statistics .item {
@@ -77,8 +78,186 @@ main .view h3:before {
 	color: #999;
 }
 
-.statistics .read-chart {
-
+.data-chart {
+	width: 600px;
+	margin: 0 auto;
 }
 
+.data-chart ul {
+	margin: 30px 0 -10px 30px;
+}
 
+.data-chart ul li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.data-chart ul li.active {
+	border-bottom: 2px solid #1296db;
+}
+
+/*文章管理界面*/
+.choose-line ul {
+	border-bottom: 1px solid #ddd;
+}
+
+.choose-line ul li {
+	font-size: 14px;
+	color: #999;
+	display: inline-block;
+	margin-right: 20px;
+	font-family: 'Microsoft YaHei','SF Pro Display',Roboto,Noto,Arial,'PingFang SC',sans-serif；
+}
+
+.choose-line ul li:hover{
+	color: #1296db;
+	cursor: pointer;
+}
+
+.choose-line ul li.active {
+	color: #111;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #1296db;
+}
+
+/*文章筛选*/
+.article-manage .article-search-box {
+	padding: 20px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.article-search-box .select-btn, input, button:last-child{
+	display: inline-block;
+	margin-left: 10px;
+}
+
+.select-btn .dropdown-btn {
+	background-color: #fff;
+	border: 1px solid #999;
+	padding: 6px 12px;
+	border-radius: 4px;
+	width: 80px;
+}
+
+ .dropdown-btn .caret {
+ 	display: inline-block;
+ 	width: 0;
+ 	height: 0;
+ 	vertical-align: middle;
+ 	border-top: 4px dashed;
+ 	border-right: 4px solid transparent;
+ 	border-left: 4px solid transparent;
+ }
+
+.article-search-box .select-btn:hover ul {
+	display: block !important;
+}
+
+.article-search-box .select-btn ul, input, button {
+ 	background-color: #fff;
+ 	border-radius: 4px;
+ 	border: 1px solid #999;
+ 	padding: 6px;
+}
+
+ .select-btn ul {
+ 	position: absolute;
+ 	width: 80px;
+ 	text-align: center;
+ }
+.select-btn ul li {
+	padding: 6px 0;
+}
+
+ .select-btn ul li:hover {
+ 	background-color: #f5f5f5;
+ }
+
+ .article-search-box input {
+ 	font-size: 14px;
+ }
+
+ .article-search-box .search-btn {
+ 	background: #33b7ff;
+ 	color: #fff;
+ 	padding: 6px 12px;
+ }
+
+.article-search-box .search-btn:hover {
+  background-color: #fe6619;
+}
+
+/*文章列表*/
+.article-search-result ul li {
+	padding: 15px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.article-search-result ul li > a {
+	color: #4d4d4d;
+	font-size: 18px;
+}
+
+.article-search-result span.state-tip {
+	border: 1px solid #ddd;
+	font-size: 12px;
+	padding: 5px;
+	color: #999;
+}
+
+.article-search-result .item-info {
+    margin-top: 14px;
+	font-size: 12px;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+	color: #999;
+}
+
+.item-info .item-info-right {
+	margin-right: 10px;
+}
+
+.item-info-right a, .item-info-right span {
+	color: #1296db;
+	padding: 0 10px;
+	cursor: pointer;
+}
+
+.item-info-right a {
+	border-right: 1px solid #ddd;
+}
+
+/*评论管理*/
+.comment-manage ul.comment-list {
+	font-size: 14px;
+	color: #999;
+}
+ul.comment-list li {
+	padding-top: 20px;
+	border-bottom: 1px solid #ddd;
+}
+
+ul.comment-list li .tips span {
+	padding: 5px;
+}
+
+ul.comment-list li .tips .visitor-name {
+	color: #4f4f4f;
+}
+
+ul.comment-list li .tips .comment-article a {
+	color: #1296db;
+}
+
+ul.comment-list li .tips .comment-reply, .comment-delete {
+	color: #1296db;
+	float: right;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+ul.comment-list li blockquote {
+	color: #4f4f4f;
+	line-height: 1.6;
+	background-color: #f5f5f5;
+}
