@@ -68,7 +68,10 @@ footer p {
 
 button {
   transition: all 0.5s;
-  background: #33b7ff; 
+  background-color: #33b7ff; 
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 6px;
 }
 
 button:hover {
@@ -235,3 +238,37 @@ main {
     padding-top: 30px;
     padding-bottom: 30px;
 }  
+
+/*复选框样式*/
+input[type="checkbox"] + label::before {  /*+相邻元素*/
+    content: '\a0';
+    display: inline-block;
+    vertical-align: .1em;
+    width: .8em;
+    height: .8em;
+    margin-right: .2em;
+    border-radius: .2em;
+    background: #fff;
+    text-indent: .15em;
+    line-height: .65; 
+    border: 1px solid #ddd;
+}
+
+input[type="checkbox"]:checked + label::before {
+    content: '\2713';
+}
+
+input[type="checkbox"] {
+     position: absolute;
+     clip: rect(0, 0, 0, 0);  /*全部裁剪*/
+}
+
+input[type="checkbox"]:focus + label::before {  /*聚焦的样式*/
+     box-shadow: 0 0 .1em .1em #58a; 
+}
+
+input[type="checkbox"]:disabled + label::before { /*全部裁剪的样式*/
+    background: gray;
+    box-shadow: none;
+    color: #555; 
+}

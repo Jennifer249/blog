@@ -1,4 +1,4 @@
-/*�������*/
+
 header {
 	width: expression(document.body.clientWidth <= 1200? 1200px: auto);min-width:1200px;
 }
@@ -31,7 +31,7 @@ aside.left-box ul li a {
 	vertical-align:middle;
 }
 
-/*�����ұ�*/
+/*ÄÚÈÝÓÒ±ß*/
 main div.view-box {
 	background: #fff;
 	width: 100%;
@@ -51,7 +51,7 @@ main .view h3:before {
 	margin-right: 6px;
 }
 
-/*ͳ�ƽ���*/
+/*Í³¼Æ½çÃæ*/
 .statistics .read-count {
 	padding: 30px 0;
 	justify-content: space-between;
@@ -96,7 +96,7 @@ main .view h3:before {
 	border-bottom: 2px solid #1296db;
 }
 
-/*���¹�������*/
+/*ÎÄÕÂ¹ÜÀí½çÃæ*/
 .choose-line ul {
 	border-bottom: 1px solid #ddd;
 }
@@ -106,7 +106,7 @@ main .view h3:before {
 	color: #999;
 	display: inline-block;
 	margin-right: 20px;
-	font-family: 'Microsoft YaHei','SF Pro Display',Roboto,Noto,Arial,'PingFang SC',sans-serif��
+	font-family: 'Microsoft YaHei','SF Pro Display',Roboto,Noto,Arial,'PingFang SC',sans-serif£»
 }
 
 .choose-line ul li:hover{
@@ -120,7 +120,7 @@ main .view h3:before {
 	border-bottom: 2px solid #1296db;
 }
 
-/*����ɸѡ*/
+/*ÎÄÕÂÉ¸Ñ¡*/
 .article-manage .article-search-box {
 	padding: 20px 0;
 	border-bottom: 1px solid #ddd;
@@ -153,10 +153,10 @@ main .view h3:before {
 	display: block !important;
 }
 
-.article-search-box .select-btn ul, input, button {
+.article-search-box .select-btn > button, > ul, > input {
  	background-color: #fff;
  	border-radius: 4px;
- 	border: 1px solid #999;
+ 	border: 1px solid transparent;
  	padding: 6px;
 }
 
@@ -187,7 +187,7 @@ main .view h3:before {
   background-color: #fe6619;
 }
 
-/*�����б�*/
+/*ÎÄÕÂÁÐ±í*/
 .article-search-result ul li {
 	padding: 15px 0;
 	border-bottom: 1px solid #ddd;
@@ -227,7 +227,7 @@ main .view h3:before {
 	border-right: 1px solid #ddd;
 }
 
-/*���۹���*/
+/*ÆÀÂÛ¹ÜÀí*/
 .comment-manage ul.comment-list {
 	font-size: 14px;
 	color: #999;
@@ -261,3 +261,97 @@ ul.comment-list li blockquote {
 	line-height: 1.6;
 	background-color: #f5f5f5;
 }
+
+
+/*·ÖÀà¹ÜÀí*/
+.categories-title h3 {
+	display: inline-block;
+}
+
+.categories-title > input {
+	border-bottom-right-radius: 0px; 
+	border-top-right-radius: 0px; 
+	border: 1px solid #ccc;
+	height: 30px;
+	padding: 0 10px;
+	float: right;
+}
+
+.categories-title > button {
+	float: right;
+	width: 40px;
+    height: 30px;
+	border-bottom-left-radius: 0px;
+	border-top-left-radius: 0px; 
+	background: #33B7FF;
+	font-size: 12px;
+	color: #fff;
+	border: 1px solid transparent;
+    cursor: pointer;  
+    text-align: center;
+}
+
+/*±í¸ñÑùÊ½*/
+table {
+  width: 100%;
+  border-collapse: collapse; /*±í¸ñ±ß¿òºÏ²¢*/
+}
+
+table tr th, td {
+  padding: 20px;
+  line-height: 1.6;
+  border-bottom: 1px solid #ddd;
+}
+
+table tr th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+table tr:first-child th {
+  border-top: 0;
+}
+
+table tr td:not(:first-child), th:not(:first-child) {
+	text-align: center;
+}
+
+.categories-manage table tr td span a {
+	font-size: 12px;
+	color: #1296db;
+	padding: 8px;
+}
+
+table tr td span:not(:first-child) {
+	border-left: 1px solid #ddd;
+}
+
+
+/*·ÖÀà¹ÜÀí×ÓÀàµÄÎÄÕÂ¹ÜÀí*/
+.sub-categories h3 {
+	display: inline-block;
+}
+
+.sub-categories span {
+	font-size: 14px;
+	color: #999;
+	font-weight: bold;
+}
+
+.sub-categories .sub-line {
+	padding: 20px 10px;
+}
+.sub-line select {
+	padding: 5px;
+}
+
+.sub-line button {
+	color: #fff;
+}
+
+.sub-categories ul li {
+	padding: 10px;
+	border-top: 1px dotted #ddd;
+}
+
+
