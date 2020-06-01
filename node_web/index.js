@@ -30,12 +30,63 @@ http.createServer((req, res) => {
 
 }).listen(8888);
 
+//取得后缀对应的响应头部的文件类型
 getExt = (extName) => {
 	let data = fs.readFileSync("./ext.json");
 	let ext = JSON.parse(data.toString()); //转换为js对象
 	return ext[extName];
 }
 
+//post请求处理
+function postMethod(req, res) {
+	console.log('\n[POST请求]');
+	let pathName = req.url;
+	console.log("post请求的接口:");
+	console.log(pathName);
+
+	//数据接收中
+	req.on('data', function(chunk) {
+		tempResult += chunk;
+	});
+
+	//数据接收完成
+	req.on('end', function() {
+		//将post的请求体解析为查询字符串的值键对集合，最后转换为JSON字符串
+		var result = JSON.stringify(qs.parse(tempResult));
+		console.log("result数据:");
+		console.log(result);
+
+		if (pathName == '/login') {
+			console.log("\n[/login]");
+			result = JSON.parse(result); //转换为Javascript对象
+
+			let selectSql = "SELECT * FROM user_info where user_name = " + result.username + " and " + result.userpassword;
+			connection.query(selectSql, function(err, data) {
+				if (err) {
+					console.log(err);
+				}
+				else if (data == undefined || data.length == 0) {
+					res.write(JSON.stringify({
+						code: 0,
+						message: "登陆失败，用户名或密码错误！"
+					}));
+					res.end();
+				}
+				else {  //登陆成功
+					res.write(JSON.stringify({
+						code: '1',
+						message: "登陆成功！",
+						data: {
+							id:''
+						}
+					}))
+				}
+			})
+		}
+	})
+}
+
+//get请求处理
 function getMethod(req, res) {
 	console.log('\n[GET请求]');
 	let pathName = url.parse(req.url).pathname; //转换为url对象
@@ -71,46 +122,5 @@ function getMethod(req, res) {
 		// 设置请求头
 		res.writeHead(200, {"Content-Type": ext + "; charset=utf-8"});
 		res.end(data);//返回请求文件
-	})
-}
-
-function postMethod(req, res) {
-	console.log('\n[POST请求]');
-	let pathName = req.url;
-	console.log("post请求的接口:");
-	console.log(pathName);
-
-	//数据接收中
-	req.on('data', function(chunk) {
-		tempResult += chunk;
-	});
-
-	//数据接收完成
-	req.on('end', function() {
-		//将post的请求体解析为查询字符串的值键对集合，最后转换为JSON字符串
-		var result = JSON.stringify(qs.parse(tempResult));
-		console.log("result数据:");
-		console.log(result);
-
-		if (pathName == '/login') {
-			console.log("\n[/login]");
-			result = JSON.parse(result); //转换为Javascript对象
-
-			let selectSql = "SELECT * FROM user_info where user_name = " + result.username + " and " + result.userpassword;
-			connection.query(selectSql, function(err, data) {
-				if (err) {
-					console.log(err);
-				}
-				else if (data == undefined || data.length == 0) {
-					res.end("用户名或密码错误！");
-					return;
-				}
-				else {  //登陆成功
-					res.write(JSON.stringify({
-						code: ''
-					}))
-				}
-			})
-		}
 	})
 }
