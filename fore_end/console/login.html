@@ -65,36 +65,28 @@
 		        } 
 		        else {
 		        	$.ajax({
-		        		url: "http://localhost::8888/login",
+		        		url: "http://localhost:8888/login",
 		        		type: "post",
 		        		dataType: "json",
 		        		data: {
 		        			username: userName,
 		        			userpassword: userPassword
 		        		},
-		        		success: function() {
-
+		        		success: function(res) {
+		        			if (res.code == 1) {
+		        				window.location.href = './statistics.html';
+		        			}
+		        			alert("success");
+		        			alert(res.message);
 		        		},
-		        		error: function() {
-
+		        		error: function(err) {
+		        			alert("err");
+		        			// alert(err.responseText);
 		        		}
 		        	})
 				}
 			})
 		})
-		getCookie(1);
-		function getCookie(cname)
-		{
-			var name = cname + "=";
-			var ca = document.cookie.split(';');
-			alert(ca);
-			for(var i=0; i<ca.length; i++) 
-			{
-				var c = ca[i].trim();
-				if (c.indexOf(name)==0) return c.substring(name.length,c.length);
-			}
-			return "";
-		}
 	</script>
 </body>
 </html>
