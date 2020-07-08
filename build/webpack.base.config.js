@@ -48,10 +48,6 @@ module.exports = {
       include: [resolve('client')]
     },
     {
-      test: /\.jsx$/,
-      loader: 'babel-loader'
-    },
-    {
         test: /\.svg$/,
         loader: 'svg-sprite-loader',
         include: [resolve('client/icons')],
@@ -62,7 +58,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.css', 'jsx'],
+    extensions: ['.js', '.vue', '.json', '.css'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('client')

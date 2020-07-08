@@ -76,7 +76,6 @@ router.beforeEach((to, from, next) => {
     }
 
     //根据路由是否有token和权限,决定跳转的界面
-    console.log(to.path);
     if (store.state.token && to.name === "login") {
     	next({name: 'back_home'});
     } else if (!store.state.token && to.meta.requireAuth) {

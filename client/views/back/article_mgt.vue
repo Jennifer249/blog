@@ -150,7 +150,6 @@
 					if (!res.state) {
 						this.loadOK = true;
 					} else {
-						console.log(res.data)
 						this.categories = res.data.categories;
 						let categoriesList = [];
 						categoriesList[0] = "不限";
@@ -211,7 +210,6 @@
 			},
 			//文章状态改变
 			chgState(id, oldState) {
-				console.log(oldState);
 				let newState = 0;
 				if (oldState === 1) {
 					newState = 2;

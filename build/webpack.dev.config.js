@@ -32,7 +32,7 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',  //输出路径名,相对于output.path
       template: path.join(__dirname,'../client/index.html'),  //本地模板地址
-      // favicon: path.join(__dirname,'../client/assets/images/favicon.png'),
+      favicon: 'client/assets/images/favicon.png',
       inject: true  //向template或者templateContent中注入所有静态资源，不同的配置值注入的位置不经相同。
     }),
     // new CopyWebpackPlugin([

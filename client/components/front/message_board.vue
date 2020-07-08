@@ -113,7 +113,6 @@
 				this.FormatCommentList = [];
 				getCommentList({params: {id, order: 'ASC'}}).then(res => {
 					if (res.state === 2) {
-						console.log(res.data.commentList);
 						this.commentList = res.data.commentList;
 						//将服务器返回的评论列表转换为需要的格式
 						this.commentList.forEach((item, index, array) => {
@@ -128,7 +127,6 @@
 							}
 						});
 						this.FormatCommentList.reverse();
-						console.log(this.FormatCommentList);
 					}
 				})
 			},

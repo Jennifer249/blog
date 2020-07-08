@@ -16,7 +16,6 @@ axios.interceptors.request.use(
 		if(res.url.match(/\/api\/admin/)) {
 			res.headers.authorization = 'Bearer '+ window.localStorage.token;
 		}
-		console.log(res);
 		return res;
 	},
 	err => {

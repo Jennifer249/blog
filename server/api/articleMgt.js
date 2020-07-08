@@ -24,9 +24,7 @@ router.get('/api/admin/article_mgt/stat_article', (req, res, next) => {
 
 //获取最久的年份
 router.get('/api/admin/article_mgt/oldest_year', (req, res, next) => {
-	console.log("hhhhhhhhhhhhhhhhhhhhhh");
 	db.query(sqlMap.article.getOldestYear, [], function(err, rows) {
-		console.log(rows);
 		if (rows === undefined) { 
 			res.json({
 				state: 0,

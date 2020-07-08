@@ -47,8 +47,8 @@
 		position: fixed;
 	}
 	.info {
-		text-align: center;
-		padding: 30px;
+		/*text-align: center;*/
+		padding: 30px 50px;
 	}
 	.footer-btn {
 		float: right;

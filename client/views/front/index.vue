@@ -174,12 +174,14 @@
 	        width: 100%;
 	    }
 	}
+
 	footer {
-	  padding: 3px;
-	  background-color: #fff;
+	  	padding: 3px;
+	  	background-color: #fff;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
 	}
-
-
 	footer p {
 	    text-align: center;
 	    font-size: 14px;

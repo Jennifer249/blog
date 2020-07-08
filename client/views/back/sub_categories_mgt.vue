@@ -57,7 +57,6 @@
 				if(this.$route.params.title !== undefined) {
 					window.sessionStorage.currTitle = this.$route.params.title;
 				}
-				console.log(window.sessionStorage.currTitle)
 				return this.$route.params.title || window.sessionStorage.currTitle;
 			}
 		},

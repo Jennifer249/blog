@@ -10,8 +10,6 @@ let pool = mysql.createPool({
 })
 
 function query(sql, values, callback) {
-	console.log(sql);
-	console.log(values);
 	pool.getConnection((err, connection) => {
 		if(err) throw err;
 		connection.query(sql, values, (err, results, fields) => {
