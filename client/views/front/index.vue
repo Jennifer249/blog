@@ -16,7 +16,7 @@
 					<section class="widget" v-for="witem in widgetItems">
 						<h2 class="widget-title">{{ witem.name }}</h2>
 						<ul>
-							<li v-for="(ditem, index) in witem.data"><router-link :to="{name: witem.route, params: {id: ditem.id, title: ditem.title}}">{{ditem.title}}</router-link></li>
+							<li v-for="(ditem, index) in witem.data"><router-link :to="{name: witem.route, params: {id: ditem.id, title: ditem.title}}">{{ ditem.title }}</router-link></li>
 						</ul>
 					</section>
 				</aside>
@@ -30,9 +30,9 @@
 
 <script>
 	import FrontHead from '@/components/front/front_head';
-	import {getPageArticle, requestCategories} from '@/api/api';
+	import { getPageArticle, getCategories } from '@/api/api';
 	export default {
-		components: {FrontHead},
+		components: { FrontHead },
 		data() {
 			return {
 				widgetItems: [
@@ -43,9 +43,10 @@
 		},
 		mounted() {
 			this.getArticleListM();
-			this.getCategories();
+			this.getCategoriesM();
 		},
 		methods: {
+			//获取文章列表
 			getArticleListM() {
 				let params = {
 					currPage: 1,
@@ -53,7 +54,7 @@
 					field: 'article_id, article_title'
 				};
 				getPageArticle({"params": params}).then(res => {
-					if(res.state) {
+					if(res.state === 2) {
 						let tmp = [];
 						let obj = {};
 						let list = res.data.articleList;
@@ -67,9 +68,10 @@
 					}	
 				})
 			},
-			getCategories() {
-				requestCategories().then(res => {
-					if(res.state) {
+			//获取目录列表
+			getCategoriesM() {
+				getCategories().then(res => {
+					if (res.state) {
 						let tmp = [];
 						let obj = {};
 						let list = res.data.categories;

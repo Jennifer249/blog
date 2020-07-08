@@ -14,11 +14,11 @@
 			<chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
 		</div>
 	</div>
-	<div style="margin: 10px;"v-else>{{ tipMsg }}</div>
+	<div class="loadClass" v-else>{{ tipMsg }}</div>
 </template>
 
 <script>
-	import {requestDataCount, requestChartVisits, requestChartComments} from '@/api/api';
+	import { getDataCount, getChartVisits, getChartComments } from '@/api/api';
 	export default {
 		data () {
 			return {
@@ -60,7 +60,7 @@
 		    	},
 			}
 		},
-		created() {
+		mounted() {
 			//初始化数据,获取统计数据和图表数据
 			this.getDataCount();
 			this.getChartVisi();
@@ -69,7 +69,7 @@
 			//切换图表显示,访问量/评论数
 			handleShowChartData(index) {
 				this.isTrue = index;
-				if(this.isTrue) {
+				if (this.isTrue) {
 					this.getChartComm();
 				} else {
 					this.getChartVisi();
@@ -80,7 +80,8 @@
 				let formatDate = [];
 				let formatValue = [];
 				let len = dataType.length;
-				for(var i=0, j=len-1; i<len; i++, j--) {
+
+				for (var i = 0, j = len - 1; i < len; i++, j--) {
 					formatDate[j] = new Date(dataType[i][atrDate]).toLocaleDateString().replace(/\//g, '-');
 					formatValue[j]= dataType[i][atrCount];
 				}
@@ -89,14 +90,14 @@
 			},
 			//获取统计数据
 			getDataCount() {
-				requestDataCount().then((res) => {
-					if(!res.state) {
+				getDataCount().then((res) => {
+					if (!res.state) {
 						this.loadOK = false;
 						this.tipMsg = res.message;
 					} else {
 						let s = this.stat;
 						let num = 0;
-						for(let item in res.data.stat[0]) {
+						for (let item in res.data.stat[0]) {
 							s[num].sum = res.data.stat[0][item];
 							num++;
 						};
@@ -106,24 +107,22 @@
 			},
 			//获取图表的访问量
 			getChartVisi() {
-				requestChartVisits().then((res) => {
-					if(!res.state) {
+				getChartVisits().then((res) => {
+					if (!res.state) {
 						this.loadOK = false;
 						this.tipMsg = res.message;
 					} else {
-						window.localStorage.chartVisits = res.data.chartVisits;
 						this.formatChartData(res.data.chartVisits, "visits_date", "visits_day_count");
 					}
 				}); 
 			},
 			//获取图表的评论数
 			getChartComm() {
-				requestChartComments().then((res) => {
-					if(!res.state) {
+				getChartComments().then((res) => {
+					if (!res.state) {
 						this.loadOK = false;
 						this.tipMsg = res.message;
 					} else {
-						window.localStorage.chartComments = res.data.chartComments;
 						this.formatChartData(res.data.chartComments, "comments_date", "comments_day_count");
 					}
 				}); 

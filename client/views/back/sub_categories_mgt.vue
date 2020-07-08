@@ -10,14 +10,14 @@
 			</select>
 			<select v-model="selectedCategories" v-if="isShowed">
 				<option value="0">-选择分类-</option>
-				<option v-for="item in categoriesList" :value="item.categories_id">{{item.categories_name}}</option>
+				<option v-for="item in categoriesList" :value="item.categories_id">{{ item.categories_name }}</option>
 			</select>
 			<button @click="exec">执行</button>
 		</div>
 		<ul v-if="articleList.length">
 			<li v-for="(item, index) in articleList">
 				<input type="checkbox" :id="'awesome' + index" v-model="checkedArticle" :value="item.article_id"/>
-				<label :for="'awesome' + index">{{item.article_title}}</label>
+				<label :for="'awesome' + index">{{ item.article_title }}</label>
 			</li>
 			<li>
 				<input type="checkbox" :id="'awesome' + articleList.length" @click="handleCheckAll" v-model="checkedAll"/>
@@ -28,8 +28,9 @@
 	</div>
 </template>
 <script>
-	import {getSubCategories, moveArticles, delArticles} from '@/api/api';
+	import { getSubCategories, moveArticles, delArticles } from '@/api/api';
 	export default {
+		inject: ['reload'],
 		data() {
 			return {
 				articleList: [],
@@ -43,34 +44,38 @@
 		},
 		computed: {
 			categoriesList() {
-				return JSON.parse(window.localStorage.categories);
+				return JSON.parse(window.sessionStorage.categories);
 			},
 			id() {
-				if(window.localStorage.currId === "undefined") {
-					window.localStorage.currId = parseInt(this.$route.params.id);
+				//刷新时,路径的参数失效.提前保存起来备用
+				if(this.$route.params.title !== undefined) {
+					window.sessionStorage.currId = parseInt(this.$route.params.id);
 				}
-				return parseInt(this.$route.params.id) || window.localStorage.currId;
+				return parseInt(this.$route.params.id) || window.sessionStorage.currId;
 			},
 			title() {
-				if(window.localStorage.currTitle === "undefined") {
-					window.localStorage.currTitle = this.$route.params.title;
+				if(this.$route.params.title !== undefined) {
+					window.sessionStorage.currTitle = this.$route.params.title;
 				}
-				return this.$route.params.title || window.localStorage.currTitle;
+				console.log(window.sessionStorage.currTitle)
+				return this.$route.params.title || window.sessionStorage.currTitle;
 			}
 		},
 		mounted() {
 			this.getSubCategoriesInfo();
 		},
 		watch: {
+			//全选控制
 			checkedArticle() {
-				if(this.checkedArticle.length === this.articleList.length) {
+				if (this.checkedArticle.length === this.articleList.length) {
 					this.checkedAll = true;
 				} else {
 					this.checkedAll = false;
 				}
 			},
+			//根据第一个下拉框选择的操作,判断第二个下拉框是否需出现
 			selectedOption() {
-				if(parseInt(this.selectedOption) === 0 || parseInt(this.selectedOption) === 2) {
+				if (parseInt(this.selectedOption) === 0 || parseInt(this.selectedOption) === 2) {
 					this.isShowed = false;
 				} else {
 					this.isShowed = true;
@@ -78,18 +83,20 @@
 			}
 		},
 		methods: {
+			//获得子栏目的文章
 			getSubCategoriesInfo() {
 				let value = { id: this.id};
 				getSubCategories({params: value}).then(res => {
-					if(res.state === 0 || res.state === 1) {
+					if (res.state === 0 || res.state === 1) {
 						this.tipMsg = res.message;
 					} else {
 						this.articleList = res.data.subCategoriesList;
 					}
 				})
 			},
+			//点击全选
 			handleCheckAll() {
-				if(this.checkedAll) {
+				if (this.checkedAll) {
 					this.checkedArticle = [];
 				} else {
 					this.articleList.forEach((item) => {
@@ -97,13 +104,14 @@
 					})
 				}
 			},
+			//执行操作
 			exec() {
+				//移动操作
 				if (parseInt(this.selectedOption) === 1 && parseInt(this.selectedCategories)) {
 					let value = {
 						articleList: this.checkedArticle,
 						categoriesId: this.selectedCategories
 					};
-					console.log(this.checkedArticle);
 					moveArticles(value).then(res => {
 						alert(res.message);
 						if(res.state) {
@@ -111,14 +119,15 @@
 						}
 					})
 				}
-				if(parseInt(this.selectedOption) === 2 && this.checkedArticle.length) {
+				//删除操作
+				if (parseInt(this.selectedOption) === 2 && this.checkedArticle.length) {
 					let params = {
 						articleList: this.checkedArticle
 					};
 					delArticles({"params": params}).then(res => {
 						alert(res.message);
-						if(res.state) {
-							window.location.reload();
+						if (res.state) {
+							this.reload();
 						}
 					})
 				}

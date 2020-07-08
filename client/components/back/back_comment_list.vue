@@ -34,7 +34,7 @@
 		},
 		methods: {
 			handleReply() {
-				if(this.message === '') {
+				if (this.message === '') {
 					alert("回复不得为空!");
 					return;
 				}

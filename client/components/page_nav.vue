@@ -24,24 +24,27 @@
 				return arr;
 			},
 			len() {
+				if (!this.info.articleSum) {
+					return 1;
+				}
 				return Math.ceil(this.info.articleSum / this.info.pageArticle);
 			}
 		},
 		methods: {
 			handlePage(index) {
 				let tmp = this.currPage;
-				if(index === 0) {
-					if(this.currPage === 1) {
+				if (index === 0) {
+					if (this.currPage === 1) {
 						index = 1;
 					} else {
 						this.currPage--;
 					}
-				} else if(index === (this.len + 1)) {
+				} else if (index === (this.len + 1)) {
 					this.currPage = this.len;
 				} else {
 					this.currPage = index;
 				}
-				if(tmp !== this.currPage) {
+				if (tmp !== this.currPage) {
 					this.$emit("page", this.currPage);
 				}
 			}

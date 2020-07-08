@@ -7,7 +7,7 @@ let base = 'http://127.0.0.1:3000';
 // //请求超时
 axios.default.timeout = 20000;
 //请求路径
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://localhost:3000';
 
 //请求拦截
 axios.interceptors.request.use(
@@ -33,7 +33,6 @@ axios.interceptors.response.use(
 	err => {
 		if (err.response.status === 401) {
 			store.commit("saveToken", "");
-    		window.localStorage.removeItem('user');
     		return router.push({name: 'login'});
 
 	    } else {
@@ -44,36 +43,31 @@ axios.interceptors.response.use(
 	}
 );
 
-//获取登陆token
+//登陆验证和获取token
 export const requestLogin = params => {
-	return axios.post(`${base}/api/login/`, params).then(res => res.data);
-}
-
-//获取用户信息
-export const requestUserInfo = () => {
-	return axios.get(`${base}/api/admin/userInfo`).then(res => res.data);
+	return axios.post(`${base}/api/login`, params).then(res => res.data);
 }
 
 //图表模块。获取统计数据和图表数据
-export const requestDataCount = () => {
+export const getDataCount = () => {
 	return axios.get(`${base}/api/admin/back_home/data_count`).then(res => res.data);
 }
-export const requestChartVisits = () => {
+export const getChartVisits = () => {
 	return axios.get(`${base}/api/admin/back_home/chart_visits`).then(res => res.data);
 }
-export const requestChartComments = () => {
+export const getChartComments = () => {
 	return axios.get(`${base}/api/admin/back_home/chart_comments`).then(res => res.data);
 }
 
 //文章管理模块
-export const requestStatArticle = () => {
+export const getStatArticle = () => {
 	return axios.get(`${base}/api/admin/article_mgt/stat_article`).then(res => res.data);
 }
-export const requestOldestYear = () => {
+export const getOldestYear = () => {
 	return axios.get(`${base}/api/admin/article_mgt/oldest_year`).then(res => res.data);
 }
 export const changeArticeState = params => {
-	return axios.post(`${base}/api/admin/article_mgt/update_article_state`, params).then(res => res.data);
+	return axios.patch(`${base}/api/admin/article_mgt/update_article_state`, params).then(res => res.data);
 }
 export const delArticle = params => {
 	return axios.delete(`${base}/api/admin/article_mgt/del`, params).then(res => res.data);
@@ -92,7 +86,7 @@ export const delComment = params => {
 
 //专栏管理模块
 export const updateCategories = params => {
-	return axios.post(`${base}/api/admin/categories/update`, params).then(res => res.data);
+	return axios.patch(`${base}/api/admin/categories/update`, params).then(res => res.data);
 }
 export const delCategories = params => {
 	return axios.delete(`${base}/api/admin/categories/del`, params).then(res => res.data);
@@ -142,8 +136,8 @@ export const sendEmail = (params) => {
 }
 
 //前后台系统,都会用到
-export const requestCategories = () => {
-	return axios.get(`${base}/api/share/categoreis`).then(res => res.data);
+export const getCategories = () => {
+	return axios.get(`${base}/api/share/categories`).then(res => res.data);
 }
 export const getPageArticle = params => {
 	return axios.get(`${base}/api/share/page_aritcle`, params).then(res => res.data);

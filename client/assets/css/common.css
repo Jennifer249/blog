@@ -50,3 +50,7 @@ a:hover {
 .img-wrapper span {
   display: block;
 }
+
+.loadClass {
+  margin: 10px;
+}

@@ -3,7 +3,7 @@
 		<section class="article-list" v-if="showSearch">
 			搜索结果如下，<a class="opt back" @click="back">返回</a>
 		</section>
-		<section class="article-list" v-if="loading">{{tipMsg}}</section>
+		<section class="article-list" v-if="loading">{{ tipMsg }}</section>
 		<div v-else>
 			<section class="article-list" v-for="(item, index) in articleList" :key="item.article_id">
 				<h2><router-link :to="{name: 'article_detail', params: {id: item.article_id, title:item.article_title}}">{{ item.article_title }}</router-link></h2>
@@ -25,9 +25,10 @@
 	var converter = new showdown.Converter();
 	converter.setOption('tables', true);
 	converter.setOption('simpleLineBreaks', true);
+
 	export default {
 		props: ["id", "title"],
-		components: {PageNav},
+		components: { PageNav },
 		data() {
 			return {
 				pageInfo: {
@@ -64,6 +65,7 @@
 			}
 		},
 		mounted() {
+			//避免在目录列表和文章列表切换时,丢失网页title
 			if(this.title && this.$route.path !== '/home') {
 				window.sessionStorage.title = this.title + "-陈卓林的博客";
 			}
@@ -89,6 +91,7 @@
 			})
 		},
 		methods: {
+			//改变分页
 			handleChangePage(index) {
 				this.currPage = index;
 				this.getArticleListM();
@@ -100,12 +103,13 @@
 					key: this.search
 				}
 				getArticleSum({params: value}).then(res => {
-					if(res.state) {
+					if (res.state) {
 						this.pageInfo.articleSum = res.data.articleSum[0].article_sum;
 						this.getArticleListM();
 					}
 				});
 			},
+			//获取当前分页下的所有文章列表,或者获取指定目录的所有文章列表
 			getArticleListM() {
 				let params = {
 					currPage: this.currPage,
@@ -114,10 +118,10 @@
 					key: this.search
 				}
 				getPageArticle({params: params}).then(res => {
-					if(!res.state) {
+					if (!res.state) {
 						this.loading = true;
 						this.tipMsg = res.message;
-					} else if(res.state === 1) {
+					} else if (res.state === 1) {
 						this.loading = true;
 						this.tipMsg = "没有文章";
 						this.pageInfo.articleSum = 1;
@@ -125,7 +129,6 @@
 					else {
 
 						this.loading = false;
-						let _this = this;
 						let list = res.data.articleList;
 						let tmp = document.querySelector('.tmp');
 						res.data.articleList.forEach((item, index, array) => {
@@ -138,12 +141,14 @@
 					}	
 				})
 			},
+			//重置分页
 			resetPage() {
 				this.currPage = 1;
-				if(this.$refs.page) {
+				if (this.$refs.page) {
 					this.$refs.page.currPage = 1;
 				}
 			},
+			//查询页面返回
 			back() {
 				this.showSearch = false;
 				this.search = '';

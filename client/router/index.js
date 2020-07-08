@@ -66,7 +66,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if(to.meta.title) {
+	if (to.meta.title) {
 		window.document.title = to.meta.title;
 	}
 	
@@ -77,7 +77,7 @@ router.beforeEach((to, from, next) => {
 
     //根据路由是否有token和权限,决定跳转的界面
     console.log(to.path);
-    if(store.state.token && to.name === "login") {
+    if (store.state.token && to.name === "login") {
     	next({name: 'back_home'});
     } else if (!store.state.token && to.meta.requireAuth) {
     	if(to.name === "login") {

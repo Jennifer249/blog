@@ -18,11 +18,11 @@
 			<PageNav :info="pageInfo" @page="handleChangePage" ref="rpage"></PageNav>
 		</div>
 	</div>
-	<div style="margin: 10px;"v-else>{{ tipMsg }}</div>
+	<div class="loadClass" v-else>{{ tipMsg }}</div>
 </template>
 
 <script>
-	import { requestStatArticle, requestOldestYear, requestCategories, changeArticeState, delArticle, getPageArticle, requestSearchResult } from '@/api/api';
+	import { getStatArticle, getOldestYear, getCategories, changeArticeState, delArticle, getPageArticle, requestSearchResult } from '@/api/api';
 	import Droplist from '@/components/back/droplist';
 	import SearchBox from '@/components/search_box';
 	import BackArticleList from '@/components/back/back_article_list'
@@ -31,6 +31,7 @@
 
 	export default {
 		components:{ Tag, Droplist, SearchBox, BackArticleList, PageNav },
+		inject: ['reload'],
 		data() {
 			return {
 				tags: [],
@@ -76,19 +77,18 @@
 			}
 		},
 		mounted() {
-			this.getStatAndArticle();
-			this.setYearData();
-			this.setCategories();
+			this.getTag();
+			this.getYearData();
+			this.getCategoriesList();
 		},
 		methods: {
 			//获取标题数据
-			getStatAndArticle() {
-				requestStatArticle().then(res => {
-					if(!res.state) {
+			getTag() {
+				getStatArticle().then(res => {
+					if (!res.state) {
 						this.loadOK = false;
 						this.tipMsg = res.message;
 					} else {
-						window.localStorage.statArticle = res.data.statArticle;
 						this.statArticle = res.data.statArticle;
 						let tmp = [];
 						tmp[0] = `全部(${this.statArticle[0]["article_sum"]})`;
@@ -100,14 +100,14 @@
 					}
 				})
 			},
-			//改变标题事件
+			//获取该标题文章
 			getTagArticle() {
 				let params = {
 					index: this.currTag,
 					currPage: this.currPage,
 					perPageArticle: this.pageInfo.pageArticle
 				};
-				this.pageInfo.articleSum = this.tags[this.currTag].match(/\d+/)[0];
+				this.pageInfo.articleSum = this.tags[this.currTag].match(/\d+/)[0] - 0;
 				getPageArticle({"params": params}).then(res => {
 					if(res.state === 0 || res.state === 1) {
 						this.loadOK = false;
@@ -117,6 +117,7 @@
 					}	
 				})
 			},
+			//点击改变标题
 			handleChangeTag(index) {
 				this.currTag = index;
 				this.currPage = 1;
@@ -124,9 +125,9 @@
 				this.getTagArticle();
 			},
 			//设置年份
-			setYearData() {
-				requestOldestYear().then(res => {
-					if(res.state === 0 || res.state === 1) {
+			getYearData() {
+				getOldestYear().then(res => {
+					if (res.state === 0 || res.state === 1) {
 						this.loadOK = false;
 						this.tipMsg = res.message;
 					} else {
@@ -140,16 +141,16 @@
 						}
 						this.dropItems[0].data = yearList;
 						this.dropItems[0].width = 80;
-						window.localStorage.oldestYear = oldestYear;
 					}
 				});
 			},
 			//设置专栏
-			setCategories() {
-				requestCategories().then(res => {
-					if(!res.state) {
+			getCategoriesList() {
+				getCategories().then(res => {
+					if (!res.state) {
 						this.loadOK = true;
 					} else {
+						console.log(res.data)
 						this.categories = res.data.categories;
 						let categoriesList = [];
 						categoriesList[0] = "不限";
@@ -158,33 +159,33 @@
 						}
 						this.dropItems[2].data = categoriesList;
 						this.dropItems[2].width = 200;
-						window.localStorage.categories = this.categories;
 					}
 				})
 			},
 			//设置月份
 			getSelectData(name, value) {
-				if(name === "年") {
-					if(value === "不限") {
+				if (name === "年") {
+					if (value === "不限") {
 						this.dropItems[1].data = ["不限"];
 						this.$refs.month[0].setIsTrue(0);
 						this.searchConditions.year = "";
 						this.searchConditions.month = "";
 					} else {
+						//当年的下拉菜单选项为某一年时，月份的下拉菜单显示所有月份
 						let monthList = ["不限", "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
 						this.dropItems[1].data = monthList;
 						this.searchConditions.year = value;
 					}
 				}
-				else if(name === "月") {
-					if(value === "不限") {
+				else if (name === "月") {
+					if (value === "不限") {
 						this.searchConditions.month = "";
 						return;
 					}
 					this.searchConditions.month = value.match(/\d+/)[0];
 				}
 				else {
-					if(value === "不限") {
+					if (value === "不限") {
 						this.searchConditions.categories = "";
 						return;
 					}
@@ -198,49 +199,50 @@
 			//获取搜索框数据以及向服务器请求查询结果
 			getSearchData(value) {
 				this.searchConditions.key = value;
-				console.log(this.searchConditions);
 				//向服务器请求结果
 				requestSearchResult({"params": this.searchConditions}).then(res => {
-					if(!res.state) {
+					if (!res.state) {
 						alert(res.message);
 					} else {
 						this.articleList = res.data.articleList;
-						this.pageInfo.articleSum = 1;
+						this.pageInfo.articleSum = 0;
 					}
 				}) 
 			},
 			//文章状态改变
 			chgState(id, oldState) {
+				console.log(oldState);
 				let newState = 0;
-				if(oldState === 1) {
+				if (oldState === 1) {
 					newState = 2;
 				} else {
 					newState = 1;
 				}
 				changeArticeState({id, "state": newState}).then( res => {
-					if(!res.state) {
+					if (!res.state) {
 						alert(res.message);
 					} else {
-						window.location.reload();
+						this.reload();
 					}
 
 				})
 			},
 			//删除文章
-			removeArticle(id, state) {
-				let params = {id, state};
-				delArticle({"params": params}).then(res => {
-					if(!res.state) {
+			removeArticle(id) {
+				delArticle({params: {id}}).then(res => {
+					if (!res.state) {
 						alert(res.message);
 					} else {
-						window.location.reload();
+						this.reload();
 					}
 				})
 			},
+			//改变分页数
 			handleChangePage(index) {
 				this.currPage = index;
 					this.getTagArticle();
 			},
+			//更换标题时，重置分页为1
 			resetPage() {
 				this.$refs.rpage.currPage = 1;
 			}

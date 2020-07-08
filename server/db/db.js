@@ -10,22 +10,16 @@ let pool = mysql.createPool({
 })
 
 function query(sql, values, callback) {
-	console.log("[db pool]");
+	console.log(sql);
+	console.log(values);
 	pool.getConnection((err, connection) => {
 		if(err) throw err;
-		console.log("get pool connection");
-
 		connection.query(sql, values, (err, results, fields) => {
 			if(err) throw err;
-			callback(err, JSON.parse(JSON.stringify(results))); //会自动抛出错误
+			callback(err, JSON.parse(JSON.stringify(results))); 
 			connection.release();
 		})
 	})
-}
-
-function init () {
-	
-	// query()
 }
 
 exports.query = query;

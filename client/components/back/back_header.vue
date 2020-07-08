@@ -9,7 +9,7 @@
 				<div>
 					<div class="user-pic"></div>
 					<ul class="dropdown">
-						<li>设置</li>
+						<!-- <li>设置</li> -->
 						<li @click="goGithub">github</li>
 						<li @click="logout">退出登陆</li>
 					</ul>
@@ -33,8 +33,7 @@
 			},
 			logout() {
 				var r = confirm("确认退出吗?");
-				if(r) {
-					window.localStorage.user = '';
+				if (r) {
 					window.localStorage.token = '';
 					this.$router.go({name: 'login'});
 				}

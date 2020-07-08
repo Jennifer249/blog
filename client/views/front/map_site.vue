@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import {getPageArticle} from '@/api/api';
+	import { getPageArticle } from '@/api/api';
 export default {
 	data() {
 		return {
@@ -29,16 +29,17 @@ export default {
 		this.getArticleAll();
 	},
 	methods: {
+		//获取所有文章
 		getArticleAll() {
 			let params = {
 				state: 1,
 				field: 'article_id, article_title, article_time'
 			};
 			getPageArticle({params: params}).then(res => {
-				if(!res.state) {
+				if (!res.state) {
 						this.loading = true;
 						this.tipMsg = res.message;
-					} else if(res.state === 1) {
+					} else if (res.state === 1) {
 						this.tipMsg = "作者很懒，还没写文章";
 					} else {
 					this.articleList = res.data.articleList;
@@ -46,12 +47,14 @@ export default {
 				}
 			});
 		},
+		//转换数据格式
 		format() {
 			let i = 0;
 			let list = [];
 			list.push({year: '', index: -1});
 			list[i].year = new Date(this.articleList[0].article_time).getFullYear();
 
+			//转换时间的数据格式,并获取所有年份
 			this.articleList.forEach((item, index, array) => {
 				let d = new Date(item.article_time);
 				let year = d.getFullYear();
@@ -59,7 +62,7 @@ export default {
 				let day = d.getDate();
 				month = month < 10 ? '0' + month : month;
 				day = day < 10 ? '0' + day : day;
-				if(list[i].year !== year) {
+				if (list[i].year !== year) {
 					list[i].index = index;
 					i++;
 					list.push({year: '', index: -1});

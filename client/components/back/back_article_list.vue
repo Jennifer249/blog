@@ -9,16 +9,24 @@
 			<div class="item-info-right">
 				<router-link :to="{name: 'edit_article', query: {id: info.article_id}}">编辑</router-link>
 				<span ref="priSpan" @click="handleChangeState">私密</span>
-				<span @click="handleDel">删除</span>
+				<span @click="handleShowDialog">删除</span>
 			</div>
-		</div>
+		</div>		
+		<Dialog :msg="dialogMsg" @dialogResult="handleDel" ref="dialog"></Dialog>
 	</div>
 </template>
 
 <script>
+	import Dialog from '@/components/back/dialog';
 	export default {
+		components: { Dialog },
 		props: { 
 			info: Object,
+		},
+		data() {
+			return {
+				dialogMsg: '确认删除?'
+			}
 		},
 		computed: {
 			//文章信息条
@@ -28,7 +36,7 @@
 			},
 			//文章状态
 			state() {
-				if(this.info.article_state === 2) {
+				if (this.info.article_state === 2) {
 					return "私密";
 				}
 				else if (this.info.article_state === 3) {
@@ -39,7 +47,7 @@
 		},
 		mounted() {
 			//文章状态显示
-			if(this.info.article_state === 1) {
+			if (this.info.article_state === 1) {
 				this.$refs.priSpan.innerText = "私密"
 				this.$refs.tip.style.display = "none";
 			}
@@ -56,11 +64,11 @@
 				this.$emit("chgState", this.info.article_id, this.info.article_state);
 			},
 			//删除文章
+			handleShowDialog() {
+				this.$refs.dialog.isShowed = true;
+			},
 			handleDel() {
-				let r = confirm("确认删除吗?");
-				if(r) {
-					this.$emit("del", this.info.article_id, this.info.article_state);
-				}
+				this.$emit("del", this.info.article_id, this.info.article_state);
 			}
 		}
 	}

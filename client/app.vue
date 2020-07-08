@@ -4,7 +4,7 @@
 	</div>
 </template>
 
-<style lang="css">
+<style>
 	@import './assets/css/reset.css';
 	@import './assets/css/common.css';
 </style>

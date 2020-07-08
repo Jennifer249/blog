@@ -28,14 +28,14 @@
 		},
 		watch: {
 			tagHidden() {
-				if(this.tagHidden) {
+				if (this.tagHidden) {
 					this.newTag = '';
 				}
 			}
 		},
 		methods: {
 			handleAddTag() {
-				if(this.tags.length === this.info.limit) {
+				if (this.tags.length === this.info.limit) {
 					alert(`最多不超过${this.info.limit}个`);
 					return;
 				}
@@ -43,7 +43,7 @@
 				this.$nextTick(()=>{   
 			       this.$refs.inputs.focus();
 			    })
-				if(this.newTag.trim() === '') {
+				if (this.newTag.trim() === '') {
 					return;
 				}
 				this.$emit("addTag", this.info.name, this.newTag.trim());

@@ -14,7 +14,7 @@
 </template>
 <script>
     import axios from 'axios';
-    import {requestLogin, requestUserInfo} from '@/api/api';
+    import {requestLogin} from '@/api/api';
 
 	export default {
 		data() {
@@ -43,8 +43,8 @@
                 } else if (this.password == '') {
                     this.loginMsg = "密码不得为空";
                 } else {
-                    let loginParams = {username: this.username, password: this.password};
-                    requestLogin(loginParams).then(res => {
+                    let params = {username: this.username, password: this.password};
+                    requestLogin(params).then(res => {
                         if(!res.state) {
                             this.loginMsg = res.message;
                         } else {
@@ -54,17 +54,7 @@
                             
                             this.loginMsg = "获取token成功，等待服务器初始化系统";
 
-                            // // 获取用户信息
-                            requestUserInfo().then(res => {
-                                console.log(res);
-                                if(!res.state) {
-                                    this.loginMsg = '获取用户信息失败';
-                                } else {
-                                    this.loginMsg = "登录成功";
-                                    window.localStorage.user = JSON.stringify(res.data);
-                                    this.$router.push({name: 'back_home'});
-                                }
-                            })
+                            this.$router.push({name: 'back_home'});
                         }
                     })
                 }

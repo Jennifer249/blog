@@ -7,6 +7,7 @@ import 'echarts/lib/chart/line';
 import hljs from 'highlight.js' ;
 import 'highlight.js/styles/default.css' ;
 import './icons';
+import 'default-passive-events'
 
 Vue.directive('highlight',function (el) {
   let highlight = el.querySelectorAll('pre code');

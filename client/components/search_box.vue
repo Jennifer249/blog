@@ -31,7 +31,7 @@
 		methods: {
 			search() {
 				this.$emit("searchData", this.value.trim());
-				this.value = ''
+				this.value = '';
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 var sqlMap = {
 	user: {
-		check: 'SELECT * FROM user_info WHERE user_name = ? && user_password = ?',
-		getUserName: 'SELECT user_name FROM user_info WHERE user_id = ?'
+		check: 'SELECT * FROM user_info WHERE user_name = ? && user_password = ?'
 	},
 	stat: {
 		getStatBackHome: "SELECT a.*, b.*, c.* FROM (SELECT COUNT(*) AS article_sum FROM article) a LEFT JOIN (SELECT COUNT(*) AS comment_sum FROM comment) b ON 1 =1 LEFT JOIN (SELECT stat_value AS visit_sum FROM stat_data WHERE stat_name = 'visit_sum') c ON 1=1",

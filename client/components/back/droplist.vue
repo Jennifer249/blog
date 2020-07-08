@@ -30,7 +30,7 @@
 		},
 		computed: {
 			selectItem() {
-				if(this.isTrue === -1) {
+				if (this.isTrue === -1) {
 					return this.info.name;
 				} else {
 					return this.info.data[this.isTrue];

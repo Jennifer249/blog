@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import {submitMessageBoard, getCommentList} from '@/api/api';
+	import { submitMessageBoard, getCommentList } from '@/api/api';
 	import CommentList from '@/components/front/comment_list';
 	import Bus from '@/assets/js/bus.js';
 	export default {
@@ -66,7 +66,7 @@
 			//设置该评论所在的url
 			this.respondForm.url = window.origin + this.$route.fullPath +'/#anchor';
 			Bus.$on('reply', item => {
-				if(item.visitor_id === 1) {
+				if (item.visitor_id === 1) {
 					this.replyName = '';
 				} else {
 					this.replyName = '@' + item.visitor_name;
@@ -112,12 +112,12 @@
 			getComments(id) {
 				this.FormatCommentList = [];
 				getCommentList({params: {id, order: 'ASC'}}).then(res => {
-					if(res.state === 2) {
+					if (res.state === 2) {
 						console.log(res.data.commentList);
 						this.commentList = res.data.commentList;
 						//将服务器返回的评论列表转换为需要的格式
 						this.commentList.forEach((item, index, array) => {
-							if(!item.reply_comment_id) {
+							if (!item.reply_comment_id) {
 								this.FormatCommentList.push({comment: item});
 							} else {
 								let fc = {
@@ -134,8 +134,8 @@
 			},
 			//深度优先遍历，将新的评论增加到找到（回复）的评论后面
 			preOrder(fc, item, f) {
-				if(fc) {
-					if(fc.hasOwnProperty("comment") && fc.comment.comment_id === item.reply_comment_id) {
+				if (fc) {
+					if (fc.hasOwnProperty("comment") && fc.comment.comment_id === item.reply_comment_id) {
 
 						if(!fc.children) {
 							Object.assign(fc, {children: []});
@@ -144,11 +144,13 @@
 						f.state = true;
 						return;
 					}
-					if(fc.children) {
+					if (fc.children) {
 						this.preOrder(fc.children, item, f);
 					} else {
-						for(let i = 0; i < fc.length; i++) {
-							if(f.state) return;
+						for (let i = 0; i < fc.length; i++) {
+							if (f.state) {
+								return;
+							}
 							this.preOrder(fc[i], item, f);
 						}
 					}

@@ -23,18 +23,19 @@
 </template>
 
 <script>
-	import {getArticle, getPreId, getNextId} from '@/api/api';
+	import { getArticle, getPreId, getNextId } from '@/api/api';
 	import MessageBoard from '@/components/front/message_board';
+
 	var showdown = require('showdown');
 	var converter = new showdown.Converter();
 	converter.setOption('tables', true);
 	converter.setOption('simpleLineBreaks', true);
+
 	export default {
-		components: {MessageBoard},
+		components: { MessageBoard },
 		props: ["id", "title"],
 		data() {
 			return {
-				converter: Object,
 				article: {},
 				url: '',
 				mdHtml: ''
@@ -55,15 +56,17 @@
 			next();
 		},
 		methods: {
+			//获取该文章
 			getArticleM(id) {
 				getArticle({"params": {id}}).then(res => {
-					if(!res.state) {
+					if (!res.state) {
 						alert(res.message);
 					} else {
 						this.article = res.data.article[0];
 						document.title = this.article.article_title + "-陈卓林的博客";
 						this.$refs.board.respondForm.articleTitle = this.article.article_title;
 
+						//空div,用于临时转换
 						let tmp = document.querySelector('.tmp');
 						tmp.innerHTML = this.article.article_content;
 						this.mdHtml = converter.makeHtml(tmp.innerText);
@@ -71,22 +74,24 @@
 					}
 				})
 			},
+			//上一篇
 			getPre() {
 				getPreId({params: {id: this.id}}).then(res => {
-					if(!res.state) {
+					if (!res.state) {
 						alert(res.message);
-					} else if(res.state === 1) {
+					} else if (res.state === 1) {
 						alert("没有文章了");
 					} else {
 						this.$router.push({name:'article_detail', params: {id: res.data.id[0].article_id, title: res.data.id[0].article_title}});
 					}
 				})
 			},
+			//下一篇
 			getNext() {
 				getNextId({params: {id: this.id}}).then(res => {
-					if(!res.state) {
+					if (!res.state) {
 						alert(res.message);
-					} else if(res.state === 1) {
+					} else if (res.state === 1) {
 						alert("没有文章了");
 					} else {
 						this.$router.push({name: 'article_detail', params: {id: res.data.id[0].article_id, title: res.data.id[0].article_title}});

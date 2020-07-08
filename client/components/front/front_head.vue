@@ -56,7 +56,7 @@
 		},
 		methods: {
 			getSearchData(value) {
-				if(!value) {
+				if (!value) {
 					return;
 				}
 				Bus.$emit('searchResult', value);
@@ -64,7 +64,7 @@
 			toggle() {
 				var offsetWid = document.documentElement.clientWidth;
 				// 减去右侧滚动条的宽度
-				if(offsetWid > (767 - this.scrollWidth)) { 
+				if (offsetWid > (767 - this.scrollWidth)) { 
 					this.isActive = true;
 				} else {
 					this.isActive = false;
