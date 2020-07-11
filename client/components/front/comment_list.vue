@@ -26,7 +26,7 @@
 </template>
 
 <script>
-	import Bus from '@/assets/js/bus.js';
+	import Bus from '@/assets/js/bus';
 	export default {
 		name: "CommentList",
 		props: {
@@ -73,7 +73,7 @@
 	    height: 24px;
 	    border-radius: 50%;
 	    margin: 0 8px 0 0;
-    	background: url(../../assets/images/visitor.jpg);
+    	background: url(~@/assets/images/visitor.jpg);
     	background-size: 24px 24px;
 	}
 
@@ -136,7 +136,7 @@
 	    height: 24px;
 	    border-radius: 50%;
 	    margin: 0 8px 0 0;
-    	background: url(../../assets/images/user.jpg);
+    	background: url(~@/assets/images/user.jpg);
     	background-size: 24px 24px;
 	}
 </style>

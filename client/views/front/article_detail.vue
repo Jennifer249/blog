@@ -1,24 +1,27 @@
 <template>
 	<div>
-		<article>
-			<h2><router-link :to="{name: 'article_detail', params: {id}}">{{ article.article_title }}</router-link></h2>
-			<p class="article-info">作者：陈卓林 日期：{{ date }}</p>
-			<div class="markdown-body" v-html="mdHtml" v-highlight ></div>
-			<div class="article-copyright">
-				<ul>
-					<li>转载请注明出处</li>
-					<li>本文链接: <router-link :to="{name: 'article_detail', params: {id}}">{{ url }}</router-link></li>
-				</ul>
-			</div>
-			<nav>
-				<ul class="d-flex">
-					<li><a @click="getPre">上一篇</a></li>
-					<li><a @click="getNext">下一篇</a></li>
-				</ul>
-			</nav>
-		</article>
+		<article class="panel" v-if="loading">{{ tipMsg }}</article>
+		<div v-else>
+			<article>
+				<h1 class="article-title"><router-link :to="{name: 'article_detail', params: {id}}">{{ article.article_title }}</router-link></h1>
+				<p class="article-info">{{ info }}</p>
+				<div class="markdown-body" v-html="mdHtml" v-highlight ></div>
+				<div class="article-copyright">
+					<ul>
+						<li>转载请注明出处</li>
+						<li>本文链接: <router-link :to="{name: 'article_detail', params: {id}}">{{ url }}</router-link></li>
+					</ul>
+				</div>
+				<nav>
+					<ul class="d-flex">
+						<li><a @click="getPre">上一篇</a></li>
+						<li><a @click="getNext">下一篇</a></li>
+					</ul>
+				</nav>
+			</article>
+			<MessageBoard :id="parseInt(id)"></MessageBoard>
+		</div>
 		<div class="tmp"></div>
-		<MessageBoard :id="parseInt(id)" ref="board"></MessageBoard>
 	</div>
 </template>
 
@@ -38,13 +41,27 @@
 			return {
 				article: {},
 				url: '',
-				mdHtml: ''
+				mdHtml: '',
+				loading: true,
+				tipMsg: '加载中...'
 			}
 		},
 		computed: {
 			date() {
 				return new Date(this.article.article_time).toLocaleDateString().replace(/\//g, '.');
 			},
+			info() {
+				let msg = `作者：陈卓林\xa0\xa0日期：${this.date}`;
+				let catName = this.article.categories_name;
+				let tags = this.article.tags;
+				if (catName) {
+					msg += `\xa0\xa0专栏：${catName}`;
+				}
+				if(tags) {
+					msg += `\xa0\xa0标签：${tags}`;
+				}
+				return msg
+			}
 		},
 		mounted() {
 			this.getArticleM(this.id);
@@ -62,14 +79,14 @@
 					if (!res.state) {
 						alert(res.message);
 					} else {
+						this.loading = false;
 						this.article = res.data.article[0];
-						document.title = this.article.article_title + "-陈卓林的博客";
-						this.$refs.board.respondForm.articleTitle = this.article.article_title;
+						document.title = `${this.article.article_title}-陈卓林的博客`;
 
 						//空div,用于临时转换
 						let tmp = document.querySelector('.tmp');
 						tmp.innerHTML = this.article.article_content;
-						this.mdHtml = converter.makeHtml(tmp.innerText);
+						this.mdHtml = converter.makeHtml(tmp.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
 						tmp.innerHTML = '';
 					}
 				})
@@ -105,10 +122,13 @@
 <style>
 	@import '../../assets/css/markdown.css';
 	/*文章内容*/
+	.article-title {
+		font-size: 28px;
+	}
+
 	.article-info {
 	    font-size: 14px;
 	    color: #6f6f82;
-	    margin-bottom: -3px;
 	    line-height: 1.8em;
 	}
 

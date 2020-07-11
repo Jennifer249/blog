@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-// const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack');
 
@@ -9,27 +9,37 @@ function resolve (dir) {
 }
 
 module.exports = {
+  context: path.resolve(__dirname, '../'),
   entry: {
-    app: "./client/main.js"
+    app: "./client/main.js",
+    vendor: [
+      'axios',
+      'vue',
+      'vue-router',
+      'vuex'
+      ] // 打包第三方库放在vendor.js中
   },
   output: {
     filename: '[name].js',
-    chunkFilename: '[chunkhash].js',
-    path: path.join(__dirname, "../dist/"),
-    publicPath: "/"   //如果是build得到的，需要设置成./
+    path: path.join(__dirname, "../dist/"), //绝对路径
+    publicPath: '/' 
+  },
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+      '@': resolve('client')
+
+    }
   },
   module: {
     rules: [
-    {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader']
-    },
     {
         test: /\.(png|svg|jpg|gif|svg)$/,
         loader: "url-loader",
         exclude: [resolve('client/icons')],
         options: {
-          name: "images/[name]-[hash:6].[ext]",
+          name: "static/images/[name]-[hash:6].[ext]",
           limit: 10000
         }
     },
@@ -37,7 +47,7 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         loader: "url-loader",
         options: {
-          name: "images/[name]-[hash:6].[ext]",
+          name: "static/images/[name]-[hash:6].[ext]",
           limit: 10000
         }
     },
@@ -45,7 +55,7 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
-      include: [resolve('client')]
+      include: [resolve('client'), resolve('node_modules/webpack-dev-server/client')]
     },
     {
         test: /\.svg$/,
@@ -57,16 +67,25 @@ module.exports = {
     }
     ]
   },
-  resolve: {
-    extensions: ['.js', '.vue', '.json', '.css'],
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('client')
-
+  performance: {
+    hints:'warning',
+    //入口起点的最大体积
+    maxEntrypointSize: 50000000,
+    //生成文件的最大体积
+    maxAssetSize: 30000000,
+    //只给出 js 文件的性能提示
+    assetFilter: function(assetFilename) {
+      return assetFilename.endsWith('.js');
     }
   },
+  stats: { //object
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false
+  },
   plugins: [
-    new VueLoaderPlugin()
-    // new CleanWebpackPlugin()
+    new VueLoaderPlugin(),
+    new CleanWebpackPlugin()
   ]
 };

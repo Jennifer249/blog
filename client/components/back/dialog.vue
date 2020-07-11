@@ -33,22 +33,21 @@
 <style scoped>
 	.dialog {
 		width: 500px;
-		padding: 20px;
+		padding: 10px;
 		position: fixed;
 	    margin: auto;
-	    top: 20%;
+	    top: 10%;
 		left:0;
 		right:0;
 		border-radius: 4px;
 		background-color: #fff;
 		border: 1px solid #ddd;
 		z-index: 20px;
-		box-shadow: 1px 1px #A0A0A0;
+		box-shadow: 2px 2px 4px 0 rgba(0,0,0,.33);
 		position: fixed;
 	}
 	.info {
-		/*text-align: center;*/
-		padding: 30px 50px;
+		padding: 10px 20px;
 	}
 	.footer-btn {
 		float: right;

@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<section class="article-list" v-if="showSearch">
+		<section class="panel" v-if="showSearch">
 			搜索结果如下，<a class="opt back" @click="back">返回</a>
 		</section>
-		<section class="article-list" v-if="loading">{{ tipMsg }}</section>
+		<section class="panel" v-if="loading">{{ tipMsg }}</section>
 		<div v-else>
-			<section class="article-list" v-for="(item, index) in articleList" :key="item.article_id">
+			<section class="panel article-list" v-for="(item, index) in articleList" :key="item.article_id">
 				<h2><router-link :to="{name: 'article_detail', params: {id: item.article_id, title:item.article_title}}">{{ item.article_title }}</router-link></h2>
-				<div class="article-content markdown-body" v-highlight v-html="item.article_content" ></div>
+				<p class="article-content markdown-body" v-highlight v-html="item.article_content" ></p>
 				<div class="article-footer">{{`${new Date(item.article_time).toLocaleDateString().replace(/\//g, '-')}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${item.article_visits})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${item.article_comments})`}}</div>
 			</section>
 			<PageNav :info="pageInfo" @page="handleChangePage" ref="page"></PageNav>
@@ -19,7 +19,7 @@
 <script>
 	import PageNav from '@/components/page_nav';
 	import {getArticleSum, getPageArticle} from '@/api/api';
-	import Bus from '@/assets/js/bus.js';
+	import Bus from '@/assets/js/bus';
 
 	var showdown = require('showdown');
 	var converter = new showdown.Converter();
@@ -32,7 +32,7 @@
 		data() {
 			return {
 				pageInfo: {
-					articleSum: 1,
+					articleSum: 0,
 					//一页的文章数
 					pageArticle: 4
 				},
@@ -96,7 +96,7 @@
 				this.currPage = index;
 				this.getArticleListM();
 			},
-			//获取当前的文章总数和分页的文章列表
+			//获取当前公开的文章总数和分页的文章列表
 			getArticleSumM() {
 				let value = {
 					id: this.categoriesId,
@@ -115,7 +115,11 @@
 					currPage: this.currPage,
 					perPageArticle: this.pageInfo.pageArticle,
 					categoriesId: this.categoriesId,
-					key: this.search
+					key: this.search,
+					state: 1,
+					//限定返回的文章内容字数
+					reduce: 300,
+					field: 'article_id, article_title, article_time, article_visits, article_comments'
 				}
 				getPageArticle({params: params}).then(res => {
 					if (!res.state) {
@@ -124,7 +128,7 @@
 					} else if (res.state === 1) {
 						this.loading = true;
 						this.tipMsg = "没有文章";
-						this.pageInfo.articleSum = 1;
+						this.pageInfo.articleSum = 0;
 					}
 					else {
 
@@ -132,8 +136,8 @@
 						let list = res.data.articleList;
 						let tmp = document.querySelector('.tmp');
 						res.data.articleList.forEach((item, index, array) => {
-							tmp.innerHTML = item.article_content;
-							list[index].article_content = converter.makeHtml(tmp.innerText);
+							tmp.innerHTML = item.article_content.replace(/<div>#+/g, '<div>');
+							list[index].article_content = converter.makeHtml(tmp.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
 						})
 						tmp.innerHTML = '';
 						this.articleList = list;
@@ -163,16 +167,8 @@
 
 <style scoped>
 	@import '../../assets/css/markdown.css';
-	 .article-list {
-	    padding: 16px 20px 12px 20px;
-	    background-color: #fff;
-	    box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
-	    margin-bottom: 30px; 
-	    transition: all 0.1s ease-in-out;
-	}
-
-	.article-list:hover {
-	    box-shadow: 1px 1px 10px #5f5f5f;
+	.article-list {
+	   padding: 30px 20px 12px 20px;
 	}
 
 	.article-title {
@@ -180,9 +176,17 @@
 	}
 
 	.article-content {
-		overflow: hidden;
+		font-size: 14px;
 	    height: 150px;
+	    overflow: hidden;
+        text-overflow: ellipsis;
 	}
+	.article-content p {
+		overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+	}
+
 	.article-footer {
 	    font-size: 14px;
 	    margin-top: 12px;

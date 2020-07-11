@@ -5,7 +5,7 @@
 			<div class="container clearfix">
 				<div class="content-left">
 					<transition name="fade" mode="out-in">
-						<router-view></router-view>
+						<router-view :key="$route.path + $route.query.t"></router-view>
 					</transition>
 				</div>
 				<aside class="content-right">
@@ -16,7 +16,9 @@
 					<section class="widget" v-for="witem in widgetItems">
 						<h2 class="widget-title">{{ witem.name }}</h2>
 						<ul>
-							<li v-for="(ditem, index) in witem.data"><router-link :to="{name: witem.route, params: {id: ditem.id, title: ditem.title}}">{{ ditem.title }}</router-link></li>
+							<li v-for="(ditem, index) in witem.data">
+								<router-link :to="{name: witem.route, params: {id: ditem.id, title: ditem.title}, query: {t: Date.now()}}">{{ ditem.title }}</router-link>
+							</li>
 						</ul>
 					</section>
 				</aside>
@@ -51,6 +53,7 @@
 				let params = {
 					currPage: 1,
 					perPageArticle: 6,
+					state: 1,
 					field: 'article_id, article_title'
 				};
 				getPageArticle({"params": params}).then(res => {
@@ -91,6 +94,11 @@
 
 <style>
 	@import '../../assets/css/front.css';
+	.wrapper {
+		min-height: 100%;
+		padding-bottom: 50px;  
+		position: relative;
+	}
 	/*内容的左边*/
 	main .content-left {
 	    float: left;
@@ -144,6 +152,13 @@
 	    padding-top: 0px;
 	}
 
+	.content-right section ul li {
+		overflow: hidden;
+		word-break: keep-all;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
 	.content-right section ul li:last-child {
 	    padding-bottom: 0px;
 	    border-bottom: 0px;
@@ -181,6 +196,7 @@
 		position: absolute;
 		bottom: 0;
 		width: 100%;
+		height: 50px;
 	}
 	footer p {
 	    text-align: center;

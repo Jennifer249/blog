@@ -1,13 +1,16 @@
 html {
-	line-height: 1.15;
+	line-height: 1.15;   
+  height: 100%;
 }
 
-body {
+body {   
+  height: 100%;
 	padding: 0px;
 	margin: 0px;
 	background: #edeff2;
   color: #111;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased; 
 }
 
 * {
@@ -72,7 +75,7 @@ button {
 }
 
 article {
-    padding: 16px 20px;
+    padding: 30px 20px;
     background-color: #fff;
     margin-bottom: 30px; 
     box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);

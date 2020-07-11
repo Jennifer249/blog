@@ -30,19 +30,23 @@
 				<div class="d-flex">
 					<label>文章类型:</label>
 					<ul>
-						<li v-for="(item, index) in stateItem" @click="tip=''">
+						<li v-for="(item, index) in stateItem">
 							<input type="radio" :id="'state' + index" v-model="article.state" :value="index+1"/>
 							<label :for="'state' + index">{{ item }}</label>
 						</li>
 					</ul>
 				</div>
 			</div>
-			<p class="tip">{{ tip + `&nbsp;` }}</p>
 			<div class="footer-btn">
 				<button @click="handleSaveDraft" v-if="isNoPublished">保存草稿</button>
 				<button @click="handlePublish">发布文章</button>
 			</div>
 		</Modal>	
+		<transition name="slide-fade">
+			<div class='notice-box' v-if="show">
+				<span>{{ tip }}</span>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -108,6 +112,7 @@
 				categories: [],
 				//传给组件的专栏名称
 				currCategoriesName: [],
+				show: false
 			}
 		},
 		watch: {
@@ -121,6 +126,14 @@
 				});
 				if (!r) {
 					this.article.categoriesId = 0;
+				}
+			},
+			show() {
+				if (this.show) {
+					let _this = this;
+					setTimeout(function() {
+						_this.show = false;
+					}, 3000 );
 				}
 			}
 		},
@@ -157,7 +170,7 @@
 						this.article.date = d.toLocaleDateString().replace(/\//g, '-') + " " + d.toTimeString().slice(0,8);
 
 						this.$refs.md.innerHTML = this.article.content;
-						this.conMessage = converter.makeHtml(this.$refs.md.innerText);
+						this.conMessage = converter.makeHtml(this.$refs.md.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
 
 
 						this.isPublished();
@@ -166,15 +179,15 @@
 			},
 			//显示模拟框
 			showPublishModal() {
-				this.tip = '';
 			　　this.$refs.modal.showModal = true;
 				//设置模拟框中的目录下拉框
 				this.setCategories();
 			},
 			//编辑器转换
 			mdConverter(event) {
-				this.article.content = this.$refs.md.innerHTML;
-				this.conMessage = converter.makeHtml(event.target.innerText);
+				//修改空格显示格式，使之正确
+				this.article.content = this.$refs.md.innerHTML.replace(/&nbsp;/, " ");
+				this.conMessage = converter.makeHtml(event.target.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
 			},
 			// 编辑区和预览区,滚动条同时移动
 	        scrollAuto() {
@@ -225,7 +238,15 @@
 						let range = selection.getRangeAt(0);
 						let imgShow = document.createElement("img");
 
-						let imgSrc = "http://127.0.0.1:3000/" + res.data.imgSrc.replace(/\\/g, '/');
+						let imgSrc = '';
+
+						//处理不同环境下的返回图片路径
+						if( process.env.NODE_ENV === 'development') {
+							imgSrc = window.origin + '/server/' + res.data.imgSrc.replace(/\\/g, '/'); 
+						} else {
+							imgSrc = window.origin + '/' + res.data.imgSrc.replace(/\\/g, '/'); 
+						}
+
 						imgShow.setAttribute("src", imgSrc);
 						let imgSpan = document.createElement("span");
 						imgSpan.innerHTML = `![在这里插入图片描述](${imgSrc})`;
@@ -242,6 +263,7 @@
 			async handleSaveDraft() {
 				if (this.article.title === '') {
 					this.tip = "文章标题不能为空!";	
+					this.show = true;
 					return;
 				}
 				let d = new Date();
@@ -278,11 +300,13 @@
 			//发布文章
 			async handlePublish() {
 				if (this.article.state === 3) {
-					this.tip = "文章类型不能为空!";	
+					this.tip = "文章类型不能为空!";
+					this.show = true;	
 					return;
 				}
 				if (this.article.title === '') {
-					this.tip = "文章标题不能为空!";	
+					this.tip = "文章标题不能为空!";
+					this.show = true;	
 					return;
 				}
 
@@ -400,17 +424,23 @@
 	}
 	#editor-area {
 	    height: 800px;
-	    width: 99%;
+	    width: 99%; text-indent: 4;
 	}
 	#md {
+		color: rgba(0, 0, 0, .8);
 	    width: 100%;
 	    height: 100%;
+	    line-height: 1.625;
 	    outline: none;
 	    background: #f5f5f5;
 	    font-size: 16px;
 	    padding: 10px 16px 176px;
 	    overflow: auto;
 	    font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+	}
+	article {
+		margin: 0;
+		box-shadow: none;
 	}
 	#view-area {
 	    width: 100%;
@@ -439,10 +469,6 @@
 		display: inline-block;
 		margin-right: 20px;
 	}
-	.tip {
-		font-size: 13px;
-		color: red;
-	}
 	.footer-btn {
 		float: right;
 	}
@@ -454,4 +480,25 @@
 	.footer-btn button:hover {
 		background-color: rgba(33,183,255);
 	}	
+	.notice-box {
+		z-index: 40;
+		padding: 16px 24px;
+		text-align: center;
+	    margin: auto;
+		left:0;
+		right:0;
+		width: 200px;
+		border-radius: 4px;
+		box-shadow: 2px 2px 4px 0 rgba(0,0,0,.33);
+		position: fixed;
+		background-color: rgba(63, 63, 63, .9);
+		bottom: 55px;
+		color: #fff;
+	}
+	.slide-fade-enter-active {
+		transition: all .5s ease-in-out;
+	}
+	.slide-fade-enter {
+		bottom: -55px;
+	}
 </style>

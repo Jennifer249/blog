@@ -47,10 +47,10 @@
 </script>
 <style scoped>
 	.modal{
-		z-index: 998;
+		z-index: 20;
 	}
 	.modal-dialog {
-		z-index: 999;
+		z-index: 30;
 		max-width: 600px;
 		width: 600px;
 		background: #fff;

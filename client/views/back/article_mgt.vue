@@ -15,7 +15,7 @@
 		</div>
 		<BackArticleList v-for="item in articleList" :info="item" :key="item.article_id" @chgState="chgState" @del="removeArticle"></BackArticleList>
 		<div class="page" >
-			<PageNav :info="pageInfo" @page="handleChangePage" ref="rpage"></PageNav>
+			<PageNav :info="pageInfo" @page="handleChangePage" ref="page"></PageNav>
 		</div>
 	</div>
 	<div class="loadClass" v-else>{{ tipMsg }}</div>
@@ -69,7 +69,7 @@
 				},
 				articleList: [],
 				pageInfo: {
-					articleSum: 1,
+					articleSum: 0,
 					//一页的文章数
 					pageArticle: 3
 				},
@@ -102,8 +102,13 @@
 			},
 			//获取该标题文章
 			getTagArticle() {
+				let state = this.currTag + 1;
+				//全部时，传给服务器的state为0
+				if(!this.currTag) {
+					state = this.currTag;
+				}
 				let params = {
-					index: this.currTag,
+					state: state,
 					currPage: this.currPage,
 					perPageArticle: this.pageInfo.pageArticle
 				};
@@ -238,11 +243,11 @@
 			//改变分页数
 			handleChangePage(index) {
 				this.currPage = index;
-					this.getTagArticle();
+				this.getTagArticle();
 			},
 			//更换标题时，重置分页为1
 			resetPage() {
-				this.$refs.rpage.currPage = 1;
+				this.$refs.page.currPage = 1;
 			}
 		}
 	}

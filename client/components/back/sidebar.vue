@@ -3,7 +3,7 @@
 		<ul>
 			<li v-for="(item, index) in routeInfo" :class="{active: isActive(item.name)}">
 				<SvgIcon :icon-class="item.icon"></SvgIcon>
-				<router-link :to="{name: item.name}">{{item.meta.title}}</router-link>
+				<router-link :to="{name: item.name, query: {t: Date.now()}}">{{item.meta.title}}</router-link>
 			</li>
 		</ul>
 	</aside>

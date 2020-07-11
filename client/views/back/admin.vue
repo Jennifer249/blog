@@ -7,7 +7,7 @@
 					<Sidebar></Sidebar>
 					<transition name="fade" mode="out-in">
 						<div class="view-box">
-							<router-view v-if="isRouterAlive"></router-view>
+							<router-view v-if="isRouterAlive" :key="$route.path + $route.query.t"></router-view>
 						</div>
 					</transition>	
 				</div>

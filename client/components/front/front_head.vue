@@ -3,7 +3,7 @@
 		<div class="container header-inner">
 			<div class="header-brand">
 				<h1>
-					<router-link :to="{name: 'front_home'}">陈卓林&nbsp;|&nbsp;技术博客</router-link>
+					<router-link :to="{name: 'front_home', query: {t: Date.now()}}">陈卓林&nbsp;|&nbsp;技术博客</router-link>
 				</h1>	
 				<div :class="['menu-toggle', {x: isActive}]" @click="isActive=!isActive" ref="menu">
 					<span></span>
@@ -12,7 +12,7 @@
 			</div>
 			<div class="header-main" v-if="isActive">
 				<ul>
-					<li :class="{active:activeClass(item.name)}" v-for="(item, index) in tag"><router-link :to="{name: item.name}">{{ item.title }}</router-link></li>
+					<li :class="{active:activeClass(item.name)}" v-for="(item, index) in tag"><router-link :to="{name: item.name, query: {t: Date.now()}}">{{ item.title }}</router-link></li>
 				</ul>
 				<div class="header-search">
 					<SearchBox @searchData="getSearchData" :styleObj="styleObj"></SearchBox>
@@ -55,12 +55,14 @@
 			window.removeEventListener('resize', this.toggle);
 		},
 		methods: {
+			//返回查询结果
 			getSearchData(value) {
 				if (!value) {
 					return;
 				}
 				Bus.$emit('searchResult', value);
 			},
+			//调整页面大小变化时，下拉列表的显示
 			toggle() {
 				var offsetWid = document.documentElement.clientWidth;
 				// 减去右侧滚动条的宽度

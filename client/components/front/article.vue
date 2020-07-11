@@ -15,7 +15,6 @@
 		},
 		computed: {
 			footerInfo() {
-				//return `2020-5-16&nbsp;&nbsp;|&nbsp;&nbsp;浏览(4,234)&nbsp;&nbsp;|&nbsp;&nbsp;留言(4)`;
 				return `${this.info.time}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${this.info.views})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${this.info.comments})`;
 			}
 		}

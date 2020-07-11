@@ -9,6 +9,7 @@ import 'highlight.js/styles/default.css' ;
 import './icons';
 import 'default-passive-events'
 
+//md编辑器代码高亮
 Vue.directive('highlight',function (el) {
   let highlight = el.querySelectorAll('pre code');
   highlight.forEach((block)=>{

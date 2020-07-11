@@ -23,7 +23,9 @@
 				arr = ["上一页", ...arr, "下一页"];
 				return arr;
 			},
+			//分页数，当为1时，隐藏
 			len() {
+				//articleSum等于0的情况。没有文章时或显示全部文章时，都应设为0，用于隐藏分页
 				if (!this.info.articleSum) {
 					return 1;
 				}
@@ -32,19 +34,22 @@
 		},
 		methods: {
 			handlePage(index) {
-				let tmp = this.currPage;
+				let old = this.currPage;
+				//点击上一页
 				if (index === 0) {
-					if (this.currPage === 1) {
-						index = 1;
-					} else {
+					if (this.currPage !== 1) {
 						this.currPage--;
 					}
+				//点击下一页
 				} else if (index === (this.len + 1)) {
-					this.currPage = this.len;
+					if (this.currPage !== this.len) {
+						this.currPage++;
+					}
 				} else {
 					this.currPage = index;
 				}
-				if (tmp !== this.currPage) {
+				//当页数有变化时，触发
+				if (old !== this.currPage) {
 					this.$emit("page", this.currPage);
 				}
 			}

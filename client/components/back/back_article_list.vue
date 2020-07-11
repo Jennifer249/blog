@@ -1,7 +1,7 @@
 <template>
 	<div class="article-item">
 		<span class="state-tip" ref="tip">{{ state }}</span>
-		<a href="">{{ info.article_title }}</a>
+		<router-link :to="{name:'article_detail', params: {id: info.article_id}}" target="_blank">{{ info.article_title }}</router-link>
 		<div class="item-info">
 			<div class="item-info-left">
 				<span>{{ articleInfo }}</span>
