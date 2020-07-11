@@ -28,18 +28,20 @@ router.get('/api/share/categories', (req, res, next) => {
 //获取总的文章数或当前页的文章数
 router.get('/api/share/page_aritcle', (req, res) => {
 	let params = req.query;
-	let index = parseInt(params.index);
 	let currPage = params.currPage ? parseInt(params.currPage) : 1;
 	//查询的字段
 	let field = params.field ? params.field : '';
 	//关键字查询
 	let key = params.key ? params.key : '';
 	let perPageArticle = parseInt(params.perPageArticle);
-	let state = index ? index + 1 : '(.*)';
+	let state = parseInt(params.state) ? params.state : '(.*)';
 	let categoriesId = params.categoriesId ? parseInt(params.categoriesId) : 0;
-	let sql = sqlMap.article.getStateArticle;
+	//返回的内容字数
+	let reduce = params.reduce ? params.reduce : 0;
+	let sql = sqlMap.article.getArticleList;
 	
 	let value = [];
+	//分别按目录、关键字搜索
 	if (categoriesId) {
 		let index = sql.indexOf('WHERE') + 6;
 		sql = sql.slice(0, index) + ' categories_Id = ? AND ' + sql.slice(index);
@@ -50,17 +52,24 @@ router.get('/api/share/page_aritcle', (req, res) => {
 		value.push(key);
 	}
 
+	//获取全部state类型的文章
 	if (!perPageArticle) {
 		sql = sql.slice(0, sql.indexOf('LIMIT'));
 		value.push(state);
 	} else {
+		//获取对应分页的文章
 		let limitRange = [ (currPage-1) * perPageArticle, perPageArticle ];
 		value.push(state, ...limitRange);
 	}
-
+	// 返回特定字段
 	if (field) {
-		sql = 'select ' + params.field + sql.slice(8);
-	}	
+		sql = 'SELECT ' + params.field + sql.slice(8);
+	}
+
+	//缩减内容
+	if (reduce) {
+		sql = 'SELECT LEFT(article_content, ' + reduce + ') AS article_content,' + sql.slice(6);
+	} 
 
 	db.query(sql, value, function(err, rows) {
 		if (rows === undefined) {

@@ -6,16 +6,19 @@ const mail = require('./email');
 
 //前台：获取文章总数
 router.get('/api/front/get_article_sum', (req, res, next) => {
+	//目录id
 	let id = parseInt(req.query.id);
 	let key = req.query.key ? req.query.key : '';
 	let value = [];
     let sql = sqlMap.stat.getArticleSum;
 
 	if(id) {
-    	sql = sql + " WHERE categories_id = ?";
+		//目录搜索
+    	sql = sql + " AND categories_id = ?";
     	value = [id];
     } else if(key) {
-		sql = sql + " WHERE article_title regexp ? "
+    	//首页搜索
+		sql = sql + " AND article_title regexp ? "
 		value = [key];
 	}
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db/db');
 const sqlMap = require('../db/sql_map');
+const fs = require('fs');
 
 //获取文章总数、私密文章数、草稿数
 router.get('/api/admin/article_mgt/stat_article', (req, res, next) => {
@@ -90,6 +91,7 @@ router.patch('/api/admin/article_mgt/update_article_state', (req, res) => {
 	})
 });
 
+//删除文章
 router.delete('/api/admin/article_mgt/del', (req, res) => {
 	let id = req.query.id - 0;
 	db.query(sqlMap.article.deleteArticle, [id], function(err, rows) {
@@ -99,18 +101,32 @@ router.delete('/api/admin/article_mgt/del', (req, res) => {
 				message: "操作失败"
 			});
 		} else {
-			//删除文章的图片
-			db.query(sqlMap.blogImages.del, [id],  function(err, rows) {
-				if (rows === undefined) {
+			//删除文章的图片,包括本地和数据库的
+			db.query(sqlMap.blogImages.getImages, [id], (err, rows2) => {
+				if (rows2 === undefined) {
 					res.json({
 						state: 0,
 						message: "操作失败"
 					});
+				} else if (rows2.length) {
+					rows2.forEach((item, index, array) => {
+						fs.unlinkSync(item.image_path);
+					})
+					
+					db.query(sqlMap.blogImages.del, [id],  function(err, rows3) {
+						if (rows3 === undefined) {
+							res.json({
+								state: 0,
+								message: "操作失败"
+							});
+						}
+					});
 				}
-			});
+			})
+			
 			//删除文章的评论
-			db.query(sqlMap.comment.delByArticleId, [id], function(err, rows) {
-				if (rows === undefined) {
+			db.query(sqlMap.comment.delByArticleId, [id], function(err, rows4) {
+				if (rows4 === undefined) {
 					res.json({
 						state: 0,
 						message: "操作失败"
@@ -124,6 +140,5 @@ router.delete('/api/admin/article_mgt/del', (req, res) => {
 		}
 	})
 });
-
 
 module.exports = router;
