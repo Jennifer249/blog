@@ -12,6 +12,7 @@
 	import { getCommentList, sendReply, delComment } from '@/api/api';
 	import Tag from '@/components/back/tag';
 	import BackCommentList from '@/components/back/back_comment_list';
+	import { mapState, mapMutations } from 'vuex';
 
 	export default {
 		inject: ['reload'],
@@ -19,16 +20,20 @@
 		data() {
 			return {
 				tags: ["收到的评论","我回复的评论"],
-				loadOK: true,
 				tipMsg: '',
 				rawcommentList: [],
 				commentList: []
 			}
 		},
 		mounted() {
+			this.initLoadOK();
 			this.getComments();
 		},
+		computed: {
+			...mapState(['loadOK'])
+		},
 		methods: {
+			...mapMutations(['chgLoadOK', 'initLoadOK']),
 			handleChangeTag(index) {
 				if (index) {
 					this.commentList = this.commentList.filter(item => item.visitor_id === 1);
@@ -38,14 +43,17 @@
 			},
 			getComments() {
 				getCommentList().then(res => {
-					if (res.state === 0 || res.state === 1) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
+					console.log(res)
+					if (res.state && res.data.length) {
+						this.rawcommentList = res.data;
+						this.commentList = res.data;
 					} else {
-						this.rawcommentList = res.data.commentList;
-						this.commentList = res.data.commentList;
+						this.chgLoadOK();
+						this.tipMsg = '还没有评论';
 					}
-				})
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			handleSendReply(msg, info) {
 				let d = new Date();
@@ -64,20 +72,16 @@
 					url: window.origin + `/article_detail/${info.article_id}#anchor`
 				}
 				sendReply(value).then(res => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
-					}
 					this.reload();
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			handleDel(id, info) {
 				delComment({"params": {id, aid: info.article_id}}).then(res => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
-					}
 					this.reload();
+				}).catch(err => {
+					console.log(err);
 				})
 			}
 		}

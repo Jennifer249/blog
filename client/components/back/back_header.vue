@@ -1,42 +1,50 @@
 <template>
-	<header class='clearfix'>
-		<div class="container">
-			<div class="logo">{{ sysName }}</div>
-			<div class="user">
-				<span>
-					Hi~
-				</span>
-				<div>
-					<div class="user-pic"></div>
-					<ul class="dropdown">
-						<!-- <li>设置</li> -->
-						<li @click="goGithub">github</li>
-						<li @click="logout">退出登陆</li>
-					</ul>
+	<div>
+		<header class='clearfix'>
+			<div class="container">
+				<div class="logo">{{ sysName }}</div>
+				<div class="user">
+					<span>
+						Hi~
+					</span>
+					<div>
+						<div class="user-pic"></div>
+						<ul class="dropdown">
+							<!-- <li>设置</li> -->
+							<li @click="goGithub">github</li>
+							<li @click="handleShowDialog">退出登陆</li>
+						</ul>
+					</div>
+					
 				</div>
-				
 			</div>
-		</div>
 		</header>
+		<Dialog :info="dialogInfo" @dialogResult="logout" ref="dialog"></Dialog>
+	</div>
 </template>
 
 <script>	
 	export default {
 		data() {
 			return {
-				sysName: '博客后台系统'
+				sysName: '博客后台系统',
+				dialogInfo: {
+					tip: '确认退出吗?',
+					//类型为提示框
+					flag: 1
+				},
 			}
 		},
 		methods: {
 			goGithub() {
 				window.open("https://github.com/Jennifer249/blog");
 			},
+			handleShowDialog() {
+				this.$refs.dialog.show = true;
+			},
 			logout() {
-				var r = confirm("确认退出吗?");
-				if (r) {
-					window.localStorage.token = '';
-					this.$router.go({name: 'login'});
-				}
+				this.$store.commit("removeToken");
+				this.$router.go({name: 'login'});
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<article class="panel" v-if="loading">{{ tipMsg }}</article>
-		<div v-else>
+		<div  v-else>
 			<article>
 				<h1 class="article-title"><router-link :to="{name: 'article_detail', params: {id}}">{{ article.article_title }}</router-link></h1>
 				<p class="article-info">{{ info }}</p>
@@ -42,8 +42,8 @@
 				article: {},
 				url: '',
 				mdHtml: '',
-				loading: true,
-				tipMsg: '加载中...'
+				tipMsg: '加载中...',
+				loading: true
 			}
 		},
 		computed: {
@@ -76,11 +76,9 @@
 			//获取该文章
 			getArticleM(id) {
 				getArticle({"params": {id}}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else {
+					if (res.state && res.data.length) {
 						this.loading = false;
-						this.article = res.data.article[0];
+						this.article = res.data[0];
 						document.title = `${this.article.article_title}-陈卓林的博客`;
 
 						//空div,用于临时转换
@@ -88,32 +86,37 @@
 						tmp.innerHTML = this.article.article_content;
 						this.mdHtml = converter.makeHtml(tmp.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
 						tmp.innerHTML = '';
+					} else {
+						this.loading = true;
+						this.tipMsg = '获取文章数据失败';
 					}
-				})
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//上一篇
 			getPre() {
 				getPreId({params: {id: this.id}}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else if (res.state === 1) {
-						alert("没有文章了");
+					if (res.state && res.data.length) {
+						this.$router.push({name:'article_detail', params: {id: res.data[0].article_id, title: res.data[0].article_title}});
 					} else {
-						this.$router.push({name:'article_detail', params: {id: res.data.id[0].article_id, title: res.data.id[0].article_title}});
+						this.$myMessage('没有文章了');
 					}
-				})
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//下一篇
 			getNext() {
 				getNextId({params: {id: this.id}}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else if (res.state === 1) {
-						alert("没有文章了");
+					if (res.state && res.data.length) {
+						this.$router.push({name: 'article_detail', params: {id: res.data[0].article_id, title: res.data[0].article_title}});
 					} else {
-						this.$router.push({name: 'article_detail', params: {id: res.data.id[0].article_id, title: res.data.id[0].article_title}});
+						this.$myMessage('没有文章了');
 					}
-				})
+				}).catch(err => {
+					console.log(err);
+				});
 			}
 		}
 	}	

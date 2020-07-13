@@ -2,12 +2,11 @@ import Vue from 'vue';
 import router from './router';
 import App from './app.vue';
 import store from './store';
-import ECharts from 'vue-echarts';
-import 'echarts/lib/chart/line';
 import hljs from 'highlight.js' ;
+import globalComponents from '@/components/global';
 import 'highlight.js/styles/default.css' ;
 import './icons';
-import 'default-passive-events'
+import 'default-passive-events';
 
 //md编辑器代码高亮
 Vue.directive('highlight',function (el) {
@@ -16,13 +15,21 @@ Vue.directive('highlight',function (el) {
       hljs.highlightBlock(block)
   })
 });
-
 Vue.use(hljs);
-Vue.component('chart', ECharts);
 
-router.afterEach((to, from, next) => {
-	window.scrollTo(0, 0);
-});
+//自定义全局组件
+Vue.use(globalComponents);
+
+//系统错误捕获
+const errorHandler = (error, vm)=>{
+  console.error('抛出全局异常');
+  console.error(vm);
+  console.error(error);
+   
+}
+ 
+Vue.config.errorHandler = errorHandler;
+Vue.prototype.$throw = (error)=> errorHandler(error,this);
 
 new Vue({
 	el: '#app',

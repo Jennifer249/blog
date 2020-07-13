@@ -17,77 +17,45 @@ router.get('/api/front/get_article_sum', (req, res, next) => {
     	sql = sql + " AND categories_id = ?";
     	value = [id];
     } else if(key) {
-    	//首页搜索
+    	//首页关键字搜索
 		sql = sql + " AND article_title regexp ? "
 		value = [key];
 	}
 
-	db.query(sql, value, (err, rows) => {
-		if(rows === undefined) {
-			res.json({
-				state: 0,
-				message: '操作失败！'
-			})
-		} else {
-			res.json({
-				state: 1,
-				data: {
-					articleSum: rows
-				}
-			})
-		}
-	})
+	db.query(sql, value).then(rows => {
+		res.json({
+			state: 1,
+			data: rows
+		})
+	}).catch(err => {
+		console.log(err);
+	});
 })
 
 //前台：获取上一篇
 router.get('/api/front/get_pre_id', (req, res, next) => {
 	let id = req.query.id - 0;
-	db.query(sqlMap.article.getPreId, [id], (err, rows) => {
-		if(rows == undefined) {
-			res.json({
-				state: 0,
-				message: '操作失败！'
-			})
-		} else if(rows.length === 0) {
-			res.json({
-				state: 1,
-				message: '文章到头了'
-			})
-		} else {
-			res.json({
-				state: 2,
-				data: {
-					id: rows
-				}
-			})
-		}
-	})
+	db.query(sqlMap.article.getPreId, [id]).then(rows => {
+		res.json({
+			state: 1,
+			data: rows
+		})
+	}).catch(err => {
+		console.log(err);
+	});
 })
 
 //前台：获取下一篇
 router.get('/api/front/get_next_id', (req, res, next) => {
 	let id = req.query.id - 0;
-	db.query(sqlMap.article.getNextId, [id], (err, rows) => {
-		if(rows == undefined) {
-			res.json({
-				state: 0,
-				message: '操作失败！'
-			})
-		} else if(rows.length === 0) {
-			res.json({
-				state: 1,
-				message: '文章到头了'
-			})
-		} else {
-			res.json({
-				state: 2,
-				message: '操作成功！',
-				data: {
-					id: rows
-				}
-			})
-		}
-	})
+	db.query(sqlMap.article.getNextId, [id]).then(rows => {
+		res.json({
+			state: 1,
+			data: rows
+		})
+	}).catch(err => {
+		console.log(err);
+	});
 })
 
 //前台:提交留言板，这一块包括发送邮箱
@@ -112,40 +80,31 @@ router.post('/api/front/submit_message_board', (req, res, next) => {
 	<div><a href="${params.url}">查看和回复，点这里</a></div>
 	</div>
 	`;
-
 	//存储新的游客和留言
-	db.query(sqlMap.visitor.add, [params.name, params.emailFrom], (err, rows) => {
-		if(rows === undefined) {
-			res.json({
-				state: 0,
-				message: '操作失败！'
-			})
-		} else {
+	db.query(sqlMap.visitor.add, [params.name, params.emailFrom]).then(rows => {
 			//更新对应文章的评论数
-			db.query(sqlMap.article.updateArticleComments, [1, params.aid], (err, rows1) => {
-				if(rows1 == undefined) {
+		db.query(sqlMap.article.updateArticleComments, [1, params.aid]).then(rows1 => {
+			db.query(sqlMap.comment.add, [params.aid, rows.insertId, params.comment, params.date, params.replyId, params.replyCommentId]).then(rows2 => {
+				//发送邮箱
+				mail.send(params.emailTo, subject, sendHtml).then(() => {
 					res.json({
-						state: 0,
-						message: '操作失败！'
-					})
-				} else {
-					db.query(sqlMap.comment.add, [params.aid, rows.insertId, params.comment, params.date, params.replyId, params.replyCommentId], (err, rows2) => {
-						if(rows === undefined) {
-							res.json({
-								state: 0,
-								message: '操作失败！'
-							})
-						} else {
-							//发送邮箱
-							mail.send(params.emailTo, subject, sendHtml, res);
-							res.json({
-								state: 1
-							});
-						}
-					})
-				}
+						state: 1
+					});
+				}).catch(err => {
+					console.log(err);
+			        res.status(504).json({
+			        	state: 0,
+			        	message: "邮件发送失败"
+			        });
+				});
+			}).catch(err => {
+				console.log(err);
 			});
-		}
+		}).catch(err => {
+			console.log(err);
+		});
+	}).catch(err => {
+		console.log(err);
 	});
 });
 

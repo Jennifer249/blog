@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
 	}
 	
 	//初次登陆，从localStorage重新存储token
-	if (!store.state.token) {
+	if (!store.state.token && window.localStorage.token) {
         store.commit("saveToken", window.localStorage.token);
     }
 
@@ -82,6 +82,7 @@ router.beforeEach((to, from, next) => {
     	if(to.name === "login") {
     		return next();
     	}
+    	console.log("hhhhhhhhhh");
     	next({name: 'login'});
     } else {
     	next();

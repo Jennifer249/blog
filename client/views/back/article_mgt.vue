@@ -1,6 +1,6 @@
 <template>
 	<div class="article-manage view" v-if="loadOK">
-		<Tag :info="tags" @currentTag="handleChangeTag"></Tag>
+		<Tag v-if="tags.length" :info="tags" @currentTag="handleChangeTag"></Tag>
 		<div class="article-search-box" v-if="!currTag">
 			<span>筛选: </span>
 			<Droplist 
@@ -28,6 +28,7 @@
 	import BackArticleList from '@/components/back/back_article_list'
 	import Tag from '@/components/back/tag';
 	import PageNav from '@/components/page_nav';
+	import { mapState, mapMutations } from 'vuex';
 
 	export default {
 		components:{ Tag, Droplist, SearchBox, BackArticleList, PageNav },
@@ -38,24 +39,23 @@
 				currTag: 0,
 				currPage: 1,
 				statArticle: [],
-				loadOK: true,
 				tipMsg: '',
 				dropItems:[
 					{
 						name: '年',
-						width: '',
+						width: '80',
 						ref: 'year',
-						data: []
+						data: ['不限']
 					},
 					{
 						name: '月',
-						width: '',
+						width: '80',
 						ref: 'month',
 						data: ['不限']
 					},
 					{	
 						name: '专栏',
-						width: '',
+						width: '80',
 						ref: 'categories',
 						data: ['不限']
 					}
@@ -71,25 +71,27 @@
 				pageInfo: {
 					articleSum: 0,
 					//一页的文章数
-					pageArticle: 3
+					pageArticle: 6
 				},
 				categories: []
 			}
 		},
+		computed: {
+			...mapState(['loadOK'])
+		},
 		mounted() {
+			this.initLoadOK();
 			this.getTag();
 			this.getYearData();
 			this.getCategoriesList();
 		},
 		methods: {
+			...mapMutations(['chgLoadOK', 'initLoadOK']),
 			//获取标题数据
 			getTag() {
 				getStatArticle().then(res => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
-					} else {
-						this.statArticle = res.data.statArticle;
+					if (res.state && res.data.length) {
+						this.statArticle = res.data;
 						let tmp = [];
 						tmp[0] = `全部(${this.statArticle[0]["article_sum"]})`;
 						tmp[1]  = `私密(${this.statArticle[0]["private_article_sum"]})`;
@@ -97,7 +99,12 @@
 						this.tags = tmp;
 						//获取当前标签下的文章
 						this.getTagArticle();
+					} else {
+						this.chgLoadOK();
+						this.tipMsg = '初始化数据失败';
 					}
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			//获取该标题文章
@@ -114,13 +121,15 @@
 				};
 				this.pageInfo.articleSum = this.tags[this.currTag].match(/\d+/)[0] - 0;
 				getPageArticle({"params": params}).then(res => {
-					if(res.state === 0 || res.state === 1) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
+					if (res.state && res.data.length) {
+						this.articleList = res.data;
 					} else {
-						this.articleList = res.data.articleList;
+						this.chgLoadOK();
+						this.tipMsg = '还没有写文章';
 					}	
-				})
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//点击改变标题
 			handleChangeTag(index) {
@@ -132,39 +141,44 @@
 			//设置年份
 			getYearData() {
 				getOldestYear().then(res => {
-					if (res.state === 0 || res.state === 1) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
-					} else {
-						let oldestYear = parseInt(res.data.oldestYear[0]["article_time"].slice(0, 4));
+					if (res.state && res.data.length) {
+						let oldestYear = parseInt(res.data[0]["article_time"].slice(0, 4));
 						
 						let yearList = [];
 						yearList[0] = "不限";
 						let nowYear = parseInt(new Date().getFullYear()); 
-						for(let i=0, j=(nowYear-oldestYear)+1; i<=(nowYear-oldestYear); i++, j--) {
+						for(let i = 0, j = (nowYear - oldestYear) + 1; i <= (nowYear - oldestYear); i++, j--) {
 							yearList[j] = oldestYear + i;
 						}
 						this.dropItems[0].data = yearList;
 						this.dropItems[0].width = 80;
+					} else {
+						this.chgLoadOK();
+						this.tipMsg = '还没有写文章';
 					}
+				}).catch(err => {
+					console.log(err);
 				});
 			},
 			//设置专栏
 			getCategoriesList() {
 				getCategories().then(res => {
-					if (!res.state) {
-						this.loadOK = true;
-					} else {
-						this.categories = res.data.categories;
-						let categoriesList = [];
-						categoriesList[0] = "不限";
-						for(let i=0; i<this.categories.length; i++) {
-							categoriesList[i+1] = this.categories[i]["categories_name"];
-						}
-						this.dropItems[2].data = categoriesList;
-						this.dropItems[2].width = 200;
+					this.categories = res.data;
+					let categoriesList = [];
+					categoriesList[0] = "不限";
+					for (let i = 0; i < this.categories.length; i++) {
+						categoriesList[i+1] = this.categories[i]["categories_name"];
 					}
-				})
+					this.dropItems[2].data = categoriesList;
+
+					if (res.data.length) {
+						this.dropItems[2].width = 200;
+					} else {
+						this.dropItems[2].width = 80;
+					}
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//设置月份
 			getSelectData(name, value) {
@@ -205,13 +219,11 @@
 				this.searchConditions.key = value;
 				//向服务器请求结果
 				requestSearchResult({"params": this.searchConditions}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else {
-						this.articleList = res.data.articleList;
-						this.pageInfo.articleSum = 0;
-					}
-				}) 
+					this.articleList = res.data;
+					this.pageInfo.articleSum = 0;
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//文章状态改变
 			chgState(id, oldState) {
@@ -222,23 +234,18 @@
 					newState = 1;
 				}
 				changeArticeState({id, "state": newState}).then( res => {
-					if (!res.state) {
-						alert(res.message);
-					} else {
-						this.reload();
-					}
-
-				})
+					this.reload();
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//删除文章
 			removeArticle(id) {
 				delArticle({params: {id}}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else {
-						this.reload();
-					}
-				})
+					this.reload();
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//改变分页数
 			handleChangePage(index) {

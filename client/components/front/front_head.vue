@@ -1,6 +1,6 @@
 <template>
 	<header id="site-header">
-		<div class="container header-inner">
+		<div class="container header-inner" @mouseleave="handleMouseLeave">
 			<div class="header-brand">
 				<h1>
 					<router-link :to="{name: 'front_home', query: {t: Date.now()}}">陈卓林&nbsp;|&nbsp;技术博客</router-link>
@@ -10,24 +10,25 @@
 					<span></span>
 				</div>				
 			</div>
-			<div class="header-main" v-if="isActive">
-				<ul>
-					<li :class="{active:activeClass(item.name)}" v-for="(item, index) in tag"><router-link :to="{name: item.name, query: {t: Date.now()}}">{{ item.title }}</router-link></li>
-				</ul>
-				<div class="header-search">
-					<SearchBox @searchData="getSearchData" :styleObj="styleObj"></SearchBox>
+			<transition name="fade">	
+				<div class="header-main" v-show="isActive">
+					<ul>
+						<li :class="{active:activeClass(item.name)}" v-for="(item, index) in tag"><router-link :to="{name: item.name, query: {t: Date.now()}}">{{ item.title }}</router-link></li>
+					</ul>
+					<div class="header-search">
+						<SearchBox @searchData="getSearchData" :styleObj="styleObj"></SearchBox>
+					</div>
 				</div>
-			</div>
+			</transition>
 		</div>
 	</header>
 </template>
 
 <script>
-
 	import SearchBox from '@/components/search_box';
 	import Bus from '@/assets/js/bus';
 	export default {
-		components: {SearchBox},
+		components: { SearchBox },
 		data() {
 			return {
 				styleObj: {
@@ -43,6 +44,11 @@
 					name: 'map_site', title: '归档'
 				}],
 				isTrue: 0
+			}
+		},
+		watch: {
+			$route() {
+				this.isActive = false;
 			}
 		},
 		mounted() {
@@ -91,6 +97,10 @@
 			},
 			activeClass(pathName) {
 				return pathName === this.$route.name;
+			},
+			//鼠标按键释放
+			handleMouseLeave() {
+				this.isActive = false;
 			}
 		}
 	}
@@ -187,6 +197,12 @@
 	    padding: 0px 0px 0px 20px;
 	    align-self: center;
 	    display: flex;
+	}
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .34s ease-out;
+	}
+	.fade-enter, .fade-leave-to {
+		opacity: 0;
 	}
 	/*响应式*/
 	@media (max-width: 767px) {

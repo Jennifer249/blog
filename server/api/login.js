@@ -19,8 +19,8 @@ router.post('/api/login', (req, res, next) => {
 	let username = req.body.username;
 	let password = sha1(req.body.password + 'czl_blog');
 
-	db.query(sqlMap.user.check, [username, password], function(err, rows) {
-		if (!rows) {
+	db.query(sqlMap.user.check, [username, password]).then(rows => {
+		if (!rows.length) {
 			res.json({
 				state: 0,
 				message: "登陆失败，用户名或密码错误！"
@@ -30,11 +30,11 @@ router.post('/api/login', (req, res, next) => {
 			const token = createToken(rows[0].user_id);
 			res.json({
 		        state: 1,
-				data: {
-					token
-				}
+				data: token
 			});
 		}
+	}).catch(err => {
+		console.log(err);
 	})
 });
 

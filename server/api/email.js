@@ -12,21 +12,23 @@ let transporter = nodemailer.createTransport({
 	}
 });
 
-exports.send = (to, subject, html, res) => {
+exports.send = (to, subject, html) => {
 	let mailOptions = {
 		from: '249542247@qq.com',
 		to: to,
 		subject: subject,
 		html: html
 	};
-
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-	        console.log(error)
-	        res.status(504).end("通知邮件发送失败")
-	    } else {
-	        console.log("Message sent: " + info.response)
-	    }
-	});
+	return new Promise((resolve, reject) => {
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				reject(error);
+		    } else {
+		        console.log("Message sent: " + info.response);
+		        resolve();
+		    }
+		});	
+	})
+	
 }
 

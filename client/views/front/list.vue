@@ -36,9 +36,9 @@
 					//一页的文章数
 					pageArticle: 4
 				},
+				loading: true,
 				currPage: 1,
 				articleList: [],
-				loading: true,
 				tipMsg: '加载中...',
 				categoriesId: 0,
 				search: '',
@@ -61,7 +61,6 @@
 				}
 				this.resetPage();
 				this.getArticleSumM();
-				this.getArticleListM();
 			}
 		},
 		mounted() {
@@ -74,7 +73,6 @@
 			}
 			this.categoriesId = this.id; 
 			this.getArticleSumM();
-			this.getArticleListM();
 
 			//监听查询事件
 			Bus.$on('searchResult', item => {
@@ -87,8 +85,7 @@
 				this.categoriesId = 0;
 
 				this.getArticleSumM();
-				this.getArticleListM();
-			})
+			});
 		},
 		methods: {
 			//改变分页
@@ -96,17 +93,24 @@
 				this.currPage = index;
 				this.getArticleListM();
 			},
-			//获取当前公开的文章总数和分页的文章列表
+			//获取当前公开的文章总数和指定目录的文章列表
 			getArticleSumM() {
 				let value = {
 					id: this.categoriesId,
 					key: this.search
 				}
 				getArticleSum({params: value}).then(res => {
-					if (res.state) {
-						this.pageInfo.articleSum = res.data.articleSum[0].article_sum;
+					if(res.state && res.data[0].article_sum) {
+						this.loading = false;
+						this.pageInfo.articleSum = res.data[0].article_sum;
 						this.getArticleListM();
+					} else {
+						this.tipMsg = "没有文章";
+						this.pageInfo.articleSum = 0;
+						this.loading = true;
 					}
+				}).catch(err => {
+					console.log(err);
 				});
 			},
 			//获取当前分页下的所有文章列表,或者获取指定目录的所有文章列表
@@ -122,28 +126,17 @@
 					field: 'article_id, article_title, article_time, article_visits, article_comments'
 				}
 				getPageArticle({params: params}).then(res => {
-					if (!res.state) {
-						this.loading = true;
-						this.tipMsg = res.message;
-					} else if (res.state === 1) {
-						this.loading = true;
-						this.tipMsg = "没有文章";
-						this.pageInfo.articleSum = 0;
-					}
-					else {
-
-						this.loading = false;
-						let list = res.data.articleList;
-						let tmp = document.querySelector('.tmp');
-						res.data.articleList.forEach((item, index, array) => {
-							tmp.innerHTML = item.article_content.replace(/<div>#+/g, '<div>');
-							list[index].article_content = converter.makeHtml(tmp.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
-						})
-						tmp.innerHTML = '';
-						this.articleList = list;
-
-					}	
-				})
+					let list = res.data;
+					let tmp = document.querySelector('.tmp');
+					list.forEach((item, index, array) => {
+						tmp.innerHTML = item.article_content.replace(/<div>#+/g, '<div>');
+						list[index].article_content = converter.makeHtml(tmp.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
+					})
+					tmp.innerHTML = '';
+					this.articleList = list;
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//重置分页
 			resetPage() {

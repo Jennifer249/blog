@@ -55,7 +55,11 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
-      include: [resolve('client'), resolve('node_modules/webpack-dev-server/client')]
+      include: [
+        resolve('client'), 
+        resolve('node_modules/webpack-dev-server/src'), 
+        resolve('node_modules/vue-echarts/src')
+      ]
     },
     {
         test: /\.svg$/,

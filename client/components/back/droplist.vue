@@ -96,6 +96,7 @@
 		display: block !important;
 	}
 	.drop-list {
+		border: 1px solid #e4e7ed;
         background-color: #fff;
 	 	width: 80px;
         height: 100%;

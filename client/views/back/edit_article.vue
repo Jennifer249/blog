@@ -25,7 +25,7 @@
 					<MarkSelection :tags="currCategoriesName" :info="markItem[1]" @addTag="handleAddTag" @delTag="handleDeleteTag" ref="categories"></MarkSelection>
 					<Droplist 
 					:init-info="dropItem" 
-					@selectData="getSelectData"></Droplist>
+					@selectData="getSelectData" v-if="categories.length"></Droplist>
 				</div>
 				<div class="d-flex">
 					<label>文章类型:</label>
@@ -41,12 +41,7 @@
 				<button @click="handleSaveDraft" v-if="isNoPublished">保存草稿</button>
 				<button @click="handlePublish">发布文章</button>
 			</div>
-		</Modal>	
-		<transition name="slide-fade">
-			<div class='notice-box' v-if="show">
-				<span>{{ tip }}</span>
-			</div>
-		</transition>
+		</Modal>
 	</div>
 </template>
 
@@ -68,7 +63,6 @@
 		data() {
 			return {
 				conMessage: '',
-				tip: '',
 				//传给服务器的数据
 				article: {
 					id: parseInt(this.$route.query.id),
@@ -156,10 +150,8 @@
 			//获得已编辑的文章
 			getEditArticle() {
 				getArticle({"params": {id: this.article.id}}).then(res => {
-					if (!res.state) {
-						alert(res.message);
-					} else {
-						let articleInfo = res.data.article[0];
+					if (res.state && res.data.length) {
+						let articleInfo = res.data[0];
 						this.article.title = articleInfo["article_title"];
 						this.article.content = articleInfo["article_content"];
 						this.article.categoriesId = articleInfo["categories_id"];
@@ -171,11 +163,14 @@
 
 						this.$refs.md.innerHTML = this.article.content;
 						this.conMessage = converter.makeHtml(this.$refs.md.innerText.replace(/\n\n/g, "\n")).replace(/&nbsp;|&amp;nbsp;/g, " ");
-
-
+						//标识文章状态，是否已发表
 						this.isPublished();
+					} else {
+						this.$myMessage('获取文章数据失败');
 					}
-				})	
+				}).catch(err => {
+					console.log(err);
+				})
 			},
 			//显示模拟框
 			showPublishModal() {
@@ -204,7 +199,7 @@
 		    	let file = null;
 
 		    	if (!items || items.length === 0) {
-		    		alert("当前浏览器不支持本地");
+					this.$myMessage("当前浏览器不支持本地");
 		    		return;
 		    	}
 				// 搜索剪切板items
@@ -230,40 +225,40 @@
 					headers: { "Content-Type": "multipart/form-data"}
 				};
 				uploadFile(params, config).then(res => {
-					if (res.state) {
-						//上传给服务器后，通过获得的路径在浏览器回显。回显html为<span><img></img><span>这里放入固定格式的img，mk编辑器才能解析</span></span>
-						let spanWrap = document.createElement("span");
-						spanWrap.className = "img-wrapper";
-						let selection = window.getSelection();
-						let range = selection.getRangeAt(0);
-						let imgShow = document.createElement("img");
+					//1.上传给服务器后，通过获得的路径在编辑区回显<img src="路径">。
+					//2.生成文本，供md编辑器解析，在显示区显示图片
+					let spanWrap = document.createElement("span");
+					spanWrap.className = "img-wrapper";
+					let selection = window.getSelection();
+					let range = selection.getRangeAt(0);
+					let imgShow = document.createElement("img");
 
-						let imgSrc = '';
+					let imgSrc = '';
 
-						//处理不同环境下的返回图片路径
-						if( process.env.NODE_ENV === 'development') {
-							imgSrc = window.origin + '/server/' + res.data.imgSrc.replace(/\\/g, '/'); 
-						} else {
-							imgSrc = window.origin + '/' + res.data.imgSrc.replace(/\\/g, '/'); 
-						}
-
-						imgShow.setAttribute("src", imgSrc);
-						let imgSpan = document.createElement("span");
-						imgSpan.innerHTML = `![在这里插入图片描述](${imgSrc})`;
-
-						spanWrap.appendChild(imgShow);
-						spanWrap.appendChild(imgSpan);
-						range.insertNode(spanWrap);
-
-						this.imageId.push(res.data.imgId);
+					//处理不同环境下的返回图片路径
+					if( process.env.NODE_ENV === 'development') {
+						imgSrc = window.origin + '/server/' + res.data.imgSrc.replace(/\\/g, '/'); 
+					} else {
+						imgSrc = window.origin + '/' + res.data.imgSrc.replace(/\\/g, '/'); 
 					}
+
+					imgShow.setAttribute("src", imgSrc);
+					let imgSpan = document.createElement("span");
+					imgSpan.innerHTML = `![在这里插入图片描述](${imgSrc})`;
+
+					spanWrap.appendChild(imgShow);
+					spanWrap.appendChild(imgSpan);
+					range.insertNode(spanWrap);
+
+					this.imageId.push(res.data.imgId);
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			//保存草稿
 			async handleSaveDraft() {
 				if (this.article.title === '') {
-					this.tip = "文章标题不能为空!";	
-					this.show = true;
+					this.$myMessage("文章标题不能为空");
 					return;
 				}
 				let d = new Date();
@@ -279,34 +274,30 @@
 				}
 
 				saveArticle(value).then(res => {
-					if(res.state === 1) {
-						this.article.id = res.data.id;
-					}
+					this.article.id = res.data.id;
+					//模拟框数据重置
 					this.$refs.modal.cancelClick();
-					alert("保存成功!");
+					this.$myMessage("保存成功");
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			async addCategoriesM() {
 				//未存在该专栏，则新增专栏
 				if (this.currCategoriesName.length && !this.article.categoriesId) {
-
 					await addCategories({name: this.currCategoriesName[0]}).then(res => {
-						if (res.state) {
-							this.article.categoriesId = res.data.categoriesId;
-						}
+						this.article.categoriesId = res.data;
 					})
 				}
 			},
 			//发布文章
 			async handlePublish() {
 				if (this.article.state === 3) {
-					this.tip = "文章类型不能为空!";
-					this.show = true;	
+					this.$myMessage("文章类型不能为空");
 					return;
 				}
 				if (this.article.title === '') {
-					this.tip = "文章标题不能为空!";
-					this.show = true;	
+					this.$myMessage("文章标题不能为空");
 					return;
 				}
 
@@ -314,8 +305,12 @@
 					let d = new Date();
 					this.article.date = d.toLocaleDateString().replace(/\//g,'-') + " " + d.toTimeString().slice(0,8);
 				}
-
-				await this.addCategoriesM();
+				try {
+					await this.addCategoriesM();
+				} catch(err) {
+					console.log(err);
+					return;
+				}
 
 				let value = {
 					article: this.article,
@@ -323,10 +318,15 @@
 				}
 
 				saveArticle(value).then(res => {
-					alert(res.message);
-					if(res.state) {
+					this.$myMessage({
+						text: "发布成功",
+						duration: 1500
+					});
+					window.setTimeout(() => {
 						this.$router.push({name: 'article_mgt'});
-					}
+					}, 1500);
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			//关闭模拟框
@@ -339,7 +339,7 @@
 				if(name === 'tag'){
 					this.article.tags.push(newItem);
 				} else {
-				this.$set(this.currCategoriesName, 0, newItem);
+					this.$set(this.currCategoriesName, 0, newItem);
 				}
 			},
 			//删除标签
@@ -353,9 +353,9 @@
 			//返回专栏列表
 			setCategories() {
 				getCategories().then(res => {
-					this.categories = res.data.categories;
+					this.categories = res.data;
 					let categoriesList = [];
-					for (let i=0; i<this.categories.length; i++) {
+					for (let i = 0; i < this.categories.length; i++) {
 						categoriesList[i] = this.categories[i]["categories_name"];
 					}
 					this.dropItem.data = categoriesList;
@@ -369,6 +369,8 @@
 							}
 						})
 					}
+				}).catch(err => {
+					console.log(err);
 				})
 			},
 			//获得专栏选项结果
@@ -480,25 +482,4 @@
 	.footer-btn button:hover {
 		background-color: rgba(33,183,255);
 	}	
-	.notice-box {
-		z-index: 40;
-		padding: 16px 24px;
-		text-align: center;
-	    margin: auto;
-		left:0;
-		right:0;
-		width: 200px;
-		border-radius: 4px;
-		box-shadow: 2px 2px 4px 0 rgba(0,0,0,.33);
-		position: fixed;
-		background-color: rgba(63, 63, 63, .9);
-		bottom: 55px;
-		color: #fff;
-	}
-	.slide-fade-enter-active {
-		transition: all .5s ease-in-out;
-	}
-	.slide-fade-enter {
-		bottom: -55px;
-	}
 </style>

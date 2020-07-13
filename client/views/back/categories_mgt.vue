@@ -18,13 +18,14 @@
 					<td>{{ item.categories_name }}</td>
 					<td>
 						<span><router-link :to="{name: 'sub_categories_mgt', params: {id: item.categories_id, title: item.categories_name}}">管理</router-link></span>
-						<span @click="handleRename(item)">重命名</span>
-						<span @click="handleDel(item)">删除</span>
+						<span @click="handleShowDialog(item, 2)">重命名</span>
+						<span @click="handleShowDialog(item, 1)">删除</span>
 					</td>
 					<td>{{ item.categories_article_sum ? item.categories_article_sum : '0' }}</td>
 				</tr>
 			</tbody>
 		</table>
+		<Dialog :info="dialogInfo" @dialogResult="handleProcess" ref="dialog"></Dialog>
 	</div>
 </template>
 
@@ -35,7 +36,14 @@
 		data() {
 			return {
 				categoriesList: [],
-				newCategories: ''
+				newCategories: '',
+				dialogInfo: {
+					tip: '确认删除吗?',
+					//类型为提示框
+					flag: 1,
+					title: '请输入专栏名'
+				},
+				pendingItem: {},
 			}
 		},
 		mounted() {
@@ -45,43 +53,46 @@
 			//获取目录
 			getCategoriesM() {
 				getCategories().then(res => {
-					if (!res.state) {
-						this.loadOK = true;
-					} else {
-						this.categoriesList = res.data.categories;
-						window.sessionStorage.categories = JSON.stringify(res.data.categories);
-					}
-				})
+					this.categoriesList = res.data;
+					window.sessionStorage.categories = JSON.stringify(res.data);
+				}).catch(err => {
+					console.log(err);
+				});
 			},
-			//目录重命名
-			handleRename(item) {
-				let name = prompt("请输入专栏名");
-				if (name === item.categories_name) {
-					alert("专栏名不得相同");
-				} else if (name !== "") {
-					let params = {
-						id: item.categories_id,
-						name
-					}
-					updateCategories(params).then(res => {
-						if (res.state) {
-							this.reload();
-						}
-					})
+			//显示弹框
+			handleShowDialog(item, option) {
+				this.dialogInfo.flag = option;
+				this.$refs.dialog.show = true;
+				this.pendingItem = item;
+			},
+			//处理重命名或删除
+			handleProcess(name) {
+				if (this.dialogInfo.flag === 1) {
+					this.del();
+				} else {
+					this.rename(name);
 				}
+			},
+			//重命名目录
+			rename(name) {
+				let params = {
+					id: this.pendingItem.categories_id,
+					name
+				}
+				updateCategories(params).then(res => {
+					this.reload();
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//删除目录
-			handleDel(item) {
-				let r = confirm("确认删除吗?");
-				if (!r) {
-					return;
-				}
-				let params = {id: item.categories_id};
+			del() {
+				let params = {id: this.pendingItem.categories_id};
 				delCategories({"params": params}).then(res => {
-					if (res.state) {
-						this.reload();
-					}
-				})
+					this.reload();
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//新增目录
 			handleAdd() {
@@ -89,10 +100,10 @@
 					return;
 				}
 				addCategories({name: this.newCategories}).then(res => {
-					if (res.state) {
-						this.reload();
-					}
-				})
+					this.reload();
+				}).catch(err => {
+					console.log(err);
+				});
 				this.newCategories = '';
 			}
 		}

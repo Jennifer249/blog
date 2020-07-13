@@ -57,36 +57,36 @@
 					field: 'article_id, article_title'
 				};
 				getPageArticle({"params": params}).then(res => {
-					if(res.state === 2) {
-						let tmp = [];
-						let obj = {};
-						let list = res.data.articleList;
-						list.forEach((item, index, array) => {
-							obj.id = item.article_id;
-							obj.title = item.article_title;
-							tmp.push(obj);
-							obj = {};
-						});
-						this.$set(this.widgetItems[0], 'data', tmp)
-					}	
-				})
+					let tmp = [];
+					let obj = {};
+					let list = res.data;
+					list.forEach((item, index, array) => {
+						obj.id = item.article_id;
+						obj.title = item.article_title;
+						tmp.push(obj);
+						obj = {};
+					});
+					this.$set(this.widgetItems[0], 'data', tmp);
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//获取目录列表
 			getCategoriesM() {
 				getCategories().then(res => {
-					if (res.state) {
-						let tmp = [];
-						let obj = {};
-						let list = res.data.categories;
-						list.forEach((item, index, array) => {
-							obj.id = item.categories_id;
-							obj.title = item.categories_name;
-							tmp.push(obj);
-							obj = {};
-						});
-						this.$set(this.widgetItems[1], 'data', tmp);
-					}
-				})
+					let tmp = [];
+					let obj = {};
+					let list = res.data;
+					list.forEach((item, index, array) => {
+						obj.id = item.categories_id;
+						obj.title = item.categories_name;
+						tmp.push(obj);
+						obj = {};
+					});
+					this.$set(this.widgetItems[1], 'data', tmp);
+				}).catch(err => {
+					console.log(err);
+				});
 			}
 		}
 	}

@@ -11,21 +11,23 @@
 				<span ref="priSpan" @click="handleChangeState">私密</span>
 				<span @click="handleShowDialog">删除</span>
 			</div>
-		</div>		
-		<Dialog :msg="dialogMsg" @dialogResult="handleDel" ref="dialog"></Dialog>
+		</div>
+		<Dialog :info="dialogInfo" @dialogResult="handleDel" ref="dialog"></Dialog>
 	</div>
 </template>
 
 <script>
-	import Dialog from '@/components/back/dialog';
 	export default {
-		components: { Dialog },
 		props: { 
 			info: Object,
 		},
 		data() {
 			return {
-				dialogMsg: '确认删除?'
+				dialogInfo: {
+					tip: '确认删除吗?',
+					//类型为提示框
+					flag: 1
+				}
 			}
 		},
 		computed: {
@@ -63,9 +65,9 @@
 			handleChangeState() {
 				this.$emit("chgState", this.info.article_id, this.info.article_state);
 			},
-			//删除文章
+			//显示弹框
 			handleShowDialog() {
-				this.$refs.dialog.isShowed = true;
+				this.$refs.dialog.show = true;
 			},
 			handleDel() {
 				this.$emit("del", this.info.article_id, this.info.article_state);

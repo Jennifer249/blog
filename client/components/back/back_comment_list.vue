@@ -4,18 +4,20 @@
 			<span class="visitor-name">{{info.visitor_name}}</span>
 			<span class="comment-time">{{date}}</span>
 			<span>评论了文章:</span>
-			<span class="comment-article"><a href="">{{this.info.article_title}}</a></span>
-			<span class="comment-delete" @click="del">删除</span>
+			<span class="comment-article">
+				<router-link :to="{name:'article_detail', params: {id: info.article_id}}" target="_blank">{{info.article_title}}</router-link></span>
+			<span class="comment-delete" @click="handleShowDialog">删除</span>
 			<span class="comment-reply"  @click="isShow=isShow?false:true">回复</span>
 		</div>
-		<blockquote>{{this.info.comment_content}}</blockquote>
+		<blockquote>{{info.comment_content}}</blockquote>
 		<div class="reply" v-show="isShow">
 			<input v-model="message" type="text" placeholder="发表你的评论">
 			<button @click="handleReply">回复评论</button>
 		</div>
-
+		<Dialog :info="dialogInfo" @dialogResult="handleDel" ref="dialog"></Dialog>
 	</div>
 </template>
+
 <script>
 	export default {
 		props: {
@@ -24,7 +26,13 @@
 		data() {
 			return {
 				isShow: false,
-				message: ''
+				//评论内容
+				message: '',
+				dialogInfo: {
+					tip: '确认删除吗?',
+					//类型为提示框
+					flag: 1
+				}
 			}
 		},
 		computed: {
@@ -35,14 +43,18 @@
 		methods: {
 			handleReply() {
 				if (this.message === '') {
-					alert("回复不得为空!");
+					this.$myMessage("回复不得为空");
 					return;
 				}
 				this.$emit("reply", this.message, this.info);
 			},
-			del() {
+			handleDel() {
 				this.$emit("del", this.info.comment_id, this.info);
-			}
+			},
+			//显示弹框
+			handleShowDialog() {
+				this.$refs.dialog.show = true;
+			},
 		}
 	}
 </script>

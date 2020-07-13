@@ -1,46 +1,79 @@
 import axios from 'axios';
 import store from '../store';
-import router from '@/router'
+import router from '@/router';
+import Vue from 'vue';
+const vm = new Vue();
+let base = process.env.NODE_ENV == 'production' ? 'http://119.45.55.131:3000':'http://127.0.0.1:3000';
 
-let base = 'http://127.0.0.1:3000';
-
-// //请求超时
-axios.default.timeout = 20000;
-//请求路径
-axios.defaults.baseURL = 'http://localhost:3000';
+// 保存重定向结果
+let redirect = '';
+// 超时消息框是否被占用标志
+let flag = false;
+// 设置请求超时时间、请求地址
+axios.defaults.timeout = 20000;
+axios.defaults.baseURL = base;
 
 //请求拦截
-axios.interceptors.request.use(
-	res => {
-
-		if(res.url.match(/\/api\/admin/)) {
-			res.headers.authorization = 'Bearer '+ window.localStorage.token;
+axios.interceptors.request.use (
+	response => {
+		if (response.url.match(/\/api\/admin/)) {
+			response.headers.authorization = 'Bearer '+ window.localStorage.token;
 		}
-		return res;
+		return response;
 	},
-	err => {
-		
-		return Promise.reject(err);
+	error => {
+		return Promise.reject(error);
 	}
 );
 
 //响应拦截
-axios.interceptors.response.use(
-	res => {
-		return res;
-	},
-	err => {
-		if (err.response.status === 401) {
-			store.commit("saveToken", "");
-    		return router.push({name: 'login'});
+axios.interceptors.response.use(undefined, error => {
+	// 超时请求处理
+    var originalRequest = error.config;
+    if(error.code == 'ECONNABORTED' && error.message.indexOf('timeout')!=-1 && !originalRequest._retry){
+		vm.$myMessage({
+			text: '请求超时！',
+			type: 'error'
+		});
+        originalRequest._retry = true
+        return Promise.reject(error);
+    }
 
-	    } else {
-	     	//输出其他错误信息
-	     	console.log(err);
-	    }
-		return Promise.reject(err);
+	if (error.response) {
+		let text = '';
+		//token过期处理
+		if (error.response.status) {
+			switch (error.response.status) {
+				case 401:
+					//防止重复跳转问题
+					if(router.currentRoute.name === 'login' || router.currentRoute.name === redirect) {
+						break;
+					}
+					text = 'token过期';
+					store.commit("removeToken");
+					redirect = router.currentRoute.name;
+					router.replace({
+						name: 'login',
+						query: {redirect: router.currentRoute.name}
+					});
+					break;
+				case 500: 
+					text = '内部服务器错误';
+					break;
+				case 504: 
+					text = '邮箱发送失败';
+					break;
+				default: 
+					text = error.toString();
+			}
+			vm.$myMessage({
+				text,
+				type: 'error'
+			});
+		}
 	}
-);
+	return Promise.reject(error);
+});
 
 //登陆验证和获取token
 export const requestLogin = params => {

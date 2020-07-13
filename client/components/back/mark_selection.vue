@@ -36,7 +36,7 @@
 		methods: {
 			handleAddTag() {
 				if (this.tags.length === this.info.limit) {
-					alert(`最多不超过${this.info.limit}个`);
+					this.$myMessage(`最多不超过${this.info.limit}个`);
 					return;
 				}
 				this.tagHidden = this.tagHidden ? false : true;

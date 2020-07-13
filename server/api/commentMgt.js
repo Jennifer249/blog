@@ -7,26 +7,16 @@ const sqlMap = require('../db/sql_map');
 router.delete('/api/admin/comment_mgt/del', (req, res) => {
     let id = parseInt(req.query.id);
     let aid = parseInt(req.query.aid);
-	db.query(sqlMap.comment.del, [id], function(err, rows) {
-		if (rows === undefined) {
+	db.query(sqlMap.comment.del, [id]).then(rows => {
+		db.query(sqlMap.article.updateArticleComments, [-1, aid]).then(rows => {
 			res.json({
-				state: 0,
-				message: "删除失败！"
+		        state: 1
 			});
-		} else {
-			db.query(sqlMap.article.updateArticleComments, [-1, aid], function(err, rows) {
-				if (rows === undefined) {
-					res.json({
-						state: 0,
-						message: "删除失败！"
-					});
-				} else {
-					res.json({
-				        state: 1
-					});
-				}
-			});
-		}
+		}).catch(err => {
+			console.log(err);
+		})
+	}).catch(err => {
+		console.log(err);
 	})
 });
 

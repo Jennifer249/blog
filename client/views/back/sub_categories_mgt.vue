@@ -17,7 +17,9 @@
 		<ul v-if="articleList.length">
 			<li v-for="(item, index) in articleList">
 				<input type="checkbox" :id="'awesome' + index" v-model="checkedArticle" :value="item.article_id"/>
-				<label :for="'awesome' + index">{{ item.article_title }}</label>
+				<label :for="'awesome' + index">
+					<router-link :to="{name:'article_detail', params: {id: item.article_id}}" target="_blank">{{ item.article_title }}</router-link>
+				</label>
 			</li>
 			<li>
 				<input type="checkbox" :id="'awesome' + articleList.length" @click="handleCheckAll" v-model="checkedAll"/>
@@ -86,12 +88,10 @@
 			getSubCategoriesInfo() {
 				let value = { id: this.id};
 				getSubCategories({params: value}).then(res => {
-					if (res.state === 0 || res.state === 1) {
-						this.tipMsg = res.message;
-					} else {
-						this.articleList = res.data.subCategoriesList;
-					}
-				})
+					this.articleList = res.data;
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//点击全选
 			handleCheckAll() {
@@ -112,10 +112,9 @@
 						categoriesId: this.selectedCategories
 					};
 					moveArticles(value).then(res => {
-						alert(res.message);
-						if(res.state) {
-							this.$router.go(-1);
-						}
+						this.$router.go(-1);
+					}).catch(err => {
+						console.log(err);
 					})
 				}
 				//删除操作
@@ -124,10 +123,9 @@
 						articleList: this.checkedArticle
 					};
 					delArticles({"params": params}).then(res => {
-						alert(res.message);
-						if (res.state) {
-							this.reload();
-						}
+						this.reload();
+					}).catch(err => {
+						console.log(err);
 					})
 				}
 			}

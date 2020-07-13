@@ -19,10 +19,16 @@
 
 <script>
 	import { getDataCount, getChartVisits, getChartComments } from '@/api/api';
+	import ECharts from 'vue-echarts/components/ECharts';
+	import 'echarts/lib/chart/line';
+	import { mapState, mapMutations } from 'vuex';
+	
 	export default {
+		components: {
+			'chart': ECharts
+		},
 		data () {
 			return {
-				loadOK: true,
 				tipMsg: '',
 				stat: [
 					{sum: 0, description: '文章总数'},
@@ -60,12 +66,17 @@
 		    	},
 			}
 		},
+		computed: {
+			...mapState(['loadOK'])
+		},
 		mounted() {
+			this.initLoadOK();
 			//初始化数据,获取统计数据和图表数据
 			this.getDataCount();
 			this.getChartVisi();
 		},
 		methods: {
+			...mapMutations(['chgLoadOK', 'initLoadOK']),
 			//切换图表显示,访问量/评论数
 			handleShowChartData(index) {
 				this.isTrue = index;
@@ -91,41 +102,46 @@
 			//获取统计数据
 			getDataCount() {
 				getDataCount().then((res) => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
-					} else {
+					if (res.state && res.data.length) {
 						let s = this.stat;
 						let num = 0;
-						for (let item in res.data.stat[0]) {
-							s[num].sum = res.data.stat[0][item];
+						for (let item in res.data[0]) {
+							s[num].sum = res.data[0][item];
 							num++;
 						};
-						this.stat = s;
+					} else {
+						this.chgLoadOK();
+						this.tipMsg = '初始化数据失败';
 					}
-				}); 
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//获取图表的访问量
 			getChartVisi() {
 				getChartVisits().then((res) => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
+					if (res.state && res.data.length) {
+						this.formatChartData(res.data, "visits_date", "visits_day_count");
 					} else {
-						this.formatChartData(res.data.chartVisits, "visits_date", "visits_day_count");
+						this.chgLoadOK();
+						this.tipMsg = '初始化数据失败';
 					}
-				}); 
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//获取图表的评论数
 			getChartComm() {
 				getChartComments().then((res) => {
-					if (!res.state) {
-						this.loadOK = false;
-						this.tipMsg = res.message;
+					if (res.state && res.data.length) {
+						this.formatChartData(res.data, "comments_date", "comments_day_count");
 					} else {
-						this.formatChartData(res.data.chartComments, "comments_date", "comments_day_count");
+						this.chgLoadOK();
+						this.tipMsg = '初始化数据失败';
 					}
-				}); 
+				}).catch(err => {
+					console.log(err);
+				});
 			}
 		}
 	}

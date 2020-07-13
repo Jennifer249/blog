@@ -7,13 +7,14 @@
 			<Form @submit.prevent="submit">
 				<fieldset>
 					<input type="text" name="name" class="Form-style" placeholder="Your name..." v-model="respondForm.name" autocomplete="off" required>
-					<input type="text" name="email" class="Form-style" placeholder="Your email (not be published)..." v-model="respondForm.emailFrom" autocomplete="off" required>
+					<input type="text" name="email" class="Form-style" placeholder="Your email (not be published)..." v-model="emailFrom" autocomplete="off" required>
 				</fieldset>
 				<fieldset>
 					<textarea name="message" id="message" rows="6" class="Form-style" placeholder="Your message..." v-model="respondForm.comment" autocomplete="off" required></textarea>
 				</fieldset>
 				<fieldset>
 					<button type="submit">SEND MESSAGE</button>
+					<span class="tip">{{ tip }}</span>
 				</fieldset>
 			</Form>
 		</div>
@@ -27,9 +28,9 @@
 <script>
 	import { submitMessageBoard, getCommentList } from '@/api/api';
 	import CommentList from '@/components/front/comment_list';
-	import Bus from '@/assets/js/bus.js';
+	import Bus from '@/assets/js/bus';
 	export default {
-		components: {CommentList},
+		components: { CommentList },
 		props: {
 			id: Number
 		},
@@ -51,16 +52,21 @@
 				},
 				commentList: [],
 				FormatCommentList: [],
-				replyName: ''
+				replyName: '',
+				tip: '',
+				emailFrom: ''
 			}
 		},
 		watch: {
 			id() {
-				this.respondForm.aid = this.id;				//设置该评论所在的url
+				this.respondForm.aid = this.id;	 
+				//设置该评论所在的url
 				this.respondForm.url = window.origin + this.$route.fullPath +'/#anchor';
 				this.getComments(this.respondForm.aid);
+			},
+			emailFrom() {
+				this.tip = ' ';
 			}
-
 		},
 		mounted() {			
 			//设置该评论所在的url
@@ -88,46 +94,49 @@
 			submit() {
 				//邮箱验证
 				var verify = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-				if(!verify.test(this.respondForm.emailFrom)) {
-					alert("邮箱格式错误");
+				if (!verify.test(this.emailFrom)) {
+					this.tip = "邮箱格式错误";
 					return;
 				}
-　　
+				this.tip = '提交中...';
+				this.respondForm.emailFrom = this.emailFrom;
 				let d = new Date();
 				this.respondForm.date = d.toLocaleDateString().replace(/\//g, '-') + ' ' + d.toTimeString().slice(0, 8);
 				submitMessageBoard(this.respondForm).then(res => {
-					if(res.state) {
-						alert("发表成功!");
-						this.respondForm.name = '';
-						this.respondForm.emailTo = '';		
-						this.respondForm.emailFrom = '';
-						this.respondForm.comment = '';
-						this.respondForm.replyComment = '';
-						this.getComments(this.id);
-						this.closeBtn();
-					}
+					console.log(res)
+					this.tip = '';
+					this.respondForm.name = '';
+					this.respondForm.emailTo = '';		
+					this.respondForm.emailFrom = '';
+					this.respondForm.comment = '';
+					this.respondForm.replyComment = '';
+					this.getComments(this.id);
+					this.closeBtn();
+				}).catch(err => {
+					console.log(err);
 				});
 			},
 			getComments(id) {
 				this.FormatCommentList = [];
 				getCommentList({params: {id, order: 'ASC'}}).then(res => {
-					if (res.state === 2) {
-						this.commentList = res.data.commentList;
+					console.log(res);
+					this.commentList = res.data;
 						//将服务器返回的评论列表转换为需要的格式
-						this.commentList.forEach((item, index, array) => {
-							if (!item.reply_comment_id) {
-								this.FormatCommentList.push({comment: item});
-							} else {
-								let fc = {
-									children:this.FormatCommentList
-								};
-								this.preOrder(fc, item, {state: false});
-								this.FormatCommentList = fc.children;
-							}
-						});
-						this.FormatCommentList.reverse();
-					}
-				})
+					this.commentList.forEach((item, index, array) => {
+						if (!item.reply_comment_id) {
+							this.FormatCommentList.push({comment: item});
+						} else {
+							let fc = {
+								children:this.FormatCommentList
+							};
+							this.preOrder(fc, item, {state: false});
+							this.FormatCommentList = fc.children;
+						}
+					});
+					this.FormatCommentList.reverse();
+				}).catch(err => {
+					console.log(err);
+				});
 			},
 			//深度优先遍历，将新的评论增加到找到（回复）的评论后面
 			preOrder(fc, item, f) {
@@ -250,6 +259,12 @@
 	    margin-bottom: 30px; 
 	    box-shadow: 0 0 2px 0 rgba(58, 58, 58, 0.2);
 	    width: 100%;
+	}
+
+	.tip {
+		color: red;
+		font-size: 14px;
+		padding-left: 10px;
 	}
 
 </style>

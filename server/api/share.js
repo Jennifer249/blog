@@ -7,26 +7,18 @@ const mail = require('./email');
 //获取目录
 router.get('/api/share/categories', (req, res, next) => {
 	
-	db.query(sqlMap.categories.getCategories, [], function(err, rows) {
-		if (rows === undefined) { 
-			res.json({
-				state: 0,
-				message: '初始化数据失败'
-			})
-		} else {
-			res.json({
-				state: 1,
-				message: '返回统计数据',
-				data: {
-					categories: rows
-				}
-			})
-		}
+	db.query(sqlMap.categories.getCategories).then(rows => {
+		res.json({
+			state: 1,
+			data: rows
+		})
+	}).catch(err => {
+		console.log(err);
 	})
 });
 
 //获取总的文章数或当前页的文章数
-router.get('/api/share/page_aritcle', (req, res) => {
+router.get('/api/share/page_aritcle', (req, res, next) => {
 	let params = req.query;
 	let currPage = params.currPage ? parseInt(params.currPage) : 1;
 	//查询的字段
@@ -71,45 +63,25 @@ router.get('/api/share/page_aritcle', (req, res) => {
 		sql = 'SELECT LEFT(article_content, ' + reduce + ') AS article_content,' + sql.slice(6);
 	} 
 
-	db.query(sql, value, function(err, rows) {
-		if (rows === undefined) {
-			res.json({
-				state: 0,
-				message: "操作失败"
-			});
-		} else if (rows.length === 0) {
-			res.json({
-				state: 1,
-				message: '还没有写文章哦'
-			})
-		} else {
-			res.json({
-		        state: 2,
-				data: {
-					articleList: rows
-				}
-			});
-		}
+	db.query(sql, value).then(rows => {
+		res.json({
+	        state: 1,
+			data: rows
+		});
+	}).catch(err => {
+		console.log(err);
 	})
 });
 
 //获取文章
-router.get('/api/share/get_article', (req, res) => {
-	db.query(sqlMap.article.getArticle, [req.query.id], function(err, rows) {
-		if (rows === undefined) {
-			res.json({
-				state: 0,
-				message: "查询失败"
-			});
-		} else {
-			res.json({
-		        state: 1,
-				message: "查询成功！",
-				data: {
-					article: rows
-				}
-			});
-		}
+router.get('/api/share/get_article', (req, res, next) => {
+	db.query(sqlMap.article.getArticle, [req.query.id]).then(rows => {
+		res.json({
+	        state: 1,
+			data: rows
+		});
+	}).catch(err => {
+		console.log(err);
 	})
 });
 
@@ -123,31 +95,19 @@ router.get('/api/share/comment_list', (req, res) => {
 	if (/^desc$|^asc$/i.test(order)) {
 		sql = sql.slice(0, sql.lastIndexOf(' ') + 1) + order;
 	}
-	db.query(sql, [id], function(err, rows) {
-		if (rows === undefined) {
-			res.json({
-				state: 0,
-				message: "操作失败"
-			});
-		} else if (rows.length == 0) {
-			res.json({
-				state: 1,
-				message: '还没有评论'
-			})
-		} else {
-			res.json({
-		        state: 2,
-				message: "返回成功！",
-				data: {
-					commentList: rows
-				}
-			});
-		} 
+	db.query(sql, [id]).then(rows => {
+		console.log(rows);
+		res.json({
+	        state: 1,
+			data: rows
+		});
+	}).catch(err => {
+		console.log(err);
 	})
 });
 
 //保存留言
-router.post('/api/share/save_reply', (req, res) => {
+router.post('/api/share/save_reply', (req, res, next) => {
 	let params = req.body;
 
 	let subject = `新的留言-来自文章:${params.articleTitle}-陈卓林|技术博客`;
@@ -161,21 +121,22 @@ router.post('/api/share/save_reply', (req, res) => {
 	<div><a href="${params.url}">查看和回复，点这里</a></div>
 	</div>
 	`;
-
-
-	db.query(sqlMap.comment.add, [params.articleId, params.visitorId, params.comment, params.date, params.replyId, params.replyCommentId], function(err, rows) {
-		if (rows === undefined) {
-			res.json({
-				state: 0,
-				message: "存储失败！"
-			});
-		} else {
-			//发送邮箱
-			mail.send(params.emailTo, subject, sendHtml, res);
+	console.log(params.visitorId);
+	db.query(sqlMap.comment.add, [params.articleId, params.visitorId, params.comment, params.date, params.replyId, params.replyCommentId]).then(rows => {
+		//发送邮箱
+		mail.send(params.emailTo, subject, sendHtml).then(() => {
 			res.json({
 				state: 1
 			});
-		}
+		}).catch(err => {
+			console.log(err);
+	        res.status(504).json({
+	        	state: 0,
+	        	message: "邮件发送失败"
+	        });
+		});
+	}).catch(err => {
+		console.log(err);
 	})
 });
 
