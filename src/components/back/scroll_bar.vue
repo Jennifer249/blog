@@ -1,11 +1,11 @@
 <template>
-    <div class="scroll-box" ref="box" 
-    @mousewheel.stop.prevent="handleMouseWheel" 
-    @mouseenter="handleMouseEnter" 
+    <div class="scroll-box" ref="box"
+    @mousewheel.stop.prevent="handleMouseWheel"
+    @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave">
         <transition name="fade">
-            <div :class="['scroll-bar', { force: force }]" ref="bar" 
-            v-show="show" :style="{ 'height': barHeight + 'px'}" 
+            <div :class="['scroll-bar', { force: force }]" ref="bar"
+            v-show="show" :style="{ 'height': barHeight + 'px'}"
             @mousedown="handleMouseDown"></div>
         </transition>
         <slot></slot>
@@ -17,36 +17,39 @@
 		name: 'ScrollBar',
 		data() {
 			return {
-				box: undefined, // �Զ������������
-				bar: undefined, // ������
-				barHeight: 100, // �������߶�
-				ratio: 1,       // ������ƫ����
-				force: false,   // �������Ƿ�����갴ס
-				hover: false,   // ������Ƿ���ͣ�ں�����
-				show: false     //�Ƿ���ʾ������ 
+				box: undefined,
+				bar: undefined,
+				barHeight: 100,
+				ratio: 1,
+				force: false,
+				hover: false,
+				show: false
 			};
 		},
 		mounted() {
 			this.box = this.$refs.box;
 			this.bar = this.$refs.bar;
-			//����������������ƶ�������ȫ�ֿ��϶�
-			document.addEventListener('mouseup', this.handleMouseUp);
+            document.addEventListener('mouseup', this.handleMouseUp);
 			document.addEventListener('mousemove', this.handleMouseMove);
+            document.addEventListener(
+              'touchstart',
+              function(event){
+                event.preventDafault();
+              },
+              { passive: false }
+            );
 		},
 		methods: {
-		    //�������¼�
 		    handleMouseWheel(e) {
 		    	this.box.scrollTop -= e.wheelDelta / 4;
 		    	this.bar.style.transform = 'translateY(' + (this.box.scrollTop + this.box.scrollTop / this.ratio) + 'px)';
 		    },
-            //��갴��
             handleMouseDown(e) {
              	if (e.target === this.bar) {
              		this.box.prevY = e.pageY;
              		this.force = true;
              	}
             },
-            //��갴���ͷ�
             handleMouseUp() {
              	this.force = false;
              	this.box.prevY = null;
@@ -54,31 +57,23 @@
              		this.show = false;
              	}
             },
-           //����ƶ�
            handleMouseMove(e) {
            	if (this.force) {
-                // ��ֹĬ��ѡ���¼�(IE����Ч)
-                e.preventDefault();
                 this.box.scrollTop += (e.pageY - this.box.prevY) * this.ratio;
                 this.bar.style.transform = 'translateY(' + (this.box.scrollTop + this.box.scrollTop / this.ratio) + 'px)';
                 this.box.prevY = e.pageY;
               }
             },
-            //����������ӷ�Χ
             handleMouseEnter() {
            	this.hover = true;
            	if (this.box.scrollHeight > this.box.clientHeight) {
-                    // �����������߶Ⱥ�λ��(����ͨ���¼�����)
                     this.barHeight = this.box.clientHeight ** 2 / this.box.scrollHeight;
-                    //-4������ʽtop\bottom�����ĵ���
-                    this.ratio = (this.box.scrollHeight - this.box.clientHeight) / (this.box.clientHeight - this.barHeight - 4);
+                   this.ratio = (this.box.scrollHeight - this.box.clientHeight) / (this.box.clientHeight - this.barHeight - 4);
                     this.bar.style.transform = 'translateY(' + (this.box.scrollTop + this.box.scrollTop / this.ratio) + 'px)';
-                    // ��ʾ������
                     this.$nextTick(() => this.show = true);
                 }
             },
-          	//������뿪���ӷ�Χ
-            handleMouseLeave() {
+          	handleMouseLeave() {
 	           	this.hover = false;
 	           	if (!this.force) {
 	           		this.show = false;
@@ -112,7 +107,6 @@
 	.scroll-bar.force {
 		background-color: rgba(144,147,153,.5);
 	}
-	/*Vue�����뿪����*/
 	.fade-enter-active, .fade-leave-active {
 		transition: opacity .34s ease-out;
 	}

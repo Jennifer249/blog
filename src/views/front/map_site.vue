@@ -80,7 +80,6 @@ export default {
         //返回年份范围内的文章
         filteredArticleList(divide) {
             let list = [...this.articleList];
-            console.log(list);
             list.filter((item, index) => {
                 index > divide;
             });
