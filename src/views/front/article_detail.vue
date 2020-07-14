@@ -51,7 +51,7 @@
 				return new Date(this.article.article_time).toLocaleDateString().replace(/\//g, '.');
 			},
 			info() {
-				let msg = `作者：陈卓林\xa0\xa0日期：${this.date}`;
+				let msg = `作者：xxx\xa0\xa0日期：${this.date}`;
 				let catName = this.article.categories_name;
 				let tags = this.article.tags;
 				if (catName) {
@@ -79,7 +79,7 @@
 					if (res.state && res.data.length) {
 						this.loading = false;
 						this.article = res.data[0];
-						document.title = `${this.article.article_title}-陈卓林的博客`;
+						document.title = `${this.article.article_title}-技术博客`;
 
 						//空div,用于临时转换
 						let tmp = document.querySelector('.tmp');

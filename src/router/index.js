@@ -48,10 +48,10 @@ const router = new VueRouter({
 			redirect: '/home',
 			component: Index,
 			children: [
-				{path: 'home', name: 'front_home', component: List, meta: {title:'陈卓林个人博客|技术博客'}},
+				{path: 'home', name: 'front_home', component: List, meta: {title:'技术博客'}},
 				{path: 'list/:id', name: 'list', component: List, props: true},
 				{path: 'article_detail/:id', name: 'article_detail', component: ArticleDetail, props: true},
-				{path: 'map_site', name: 'map_site', component: MapSite, meta: {title: '归档-陈卓林的博客'}}
+				{path: 'map_site', name: 'map_site', component: MapSite, meta: {title: '归档-技术博客'}}
 			]
 		},
 		{
@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
 	if (to.meta.title) {
 		window.document.title = to.meta.title;
 	}
-	
+
 	//初次登陆，从localStorage重新存储token
 	if (!store.state.token && window.localStorage.token) {
         store.commit('saveToken', window.localStorage.token);
@@ -98,7 +98,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from, next) => {
 	//跳转路由后，滚动回到顶端
-	window.scrollTo(0, 0);  
+	window.scrollTo(0, 0);
 });
 
 export default router;

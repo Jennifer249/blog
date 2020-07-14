@@ -25,7 +25,7 @@
 			</div>
 		</main>
 		<footer>
-			<p>COPYRIGHT © 2020. 陈卓林个人博客 ALL RIGHT RESERVED.</p>
+			<p>COPYRIGHT © 2020. 个人博客 ALL RIGHT RESERVED.</p>
 		</footer>
 	</div>
 </template>

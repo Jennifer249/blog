@@ -7,14 +7,15 @@ let transporter = nodemailer.createTransport({
 	secure: true,
 	//这里需要登陆到网页邮箱中，配置SMTP和POST服务器的密码
 	auth: {
-		user: '249542247@qq.com',
-		pass: 'hjtiwyhfobebbghb'
+		user: 'xxxx@qq.com',
+		pass: 'xxxxxxxbbghb'
 	}
 });
 
 exports.send = (to, subject, html) => {
 	let mailOptions = {
-		from: '249542247@qq.com',
+        //发送地址同上
+		from: 'xxxx@qq.com',
 		to: to,
 		subject: subject,
 		html: html
@@ -27,8 +28,8 @@ exports.send = (to, subject, html) => {
 		        console.log("Message sent: " + info.response);
 		        resolve();
 		    }
-		});	
+		});
 	})
-	
+
 }
 

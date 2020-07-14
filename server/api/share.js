@@ -6,7 +6,7 @@ const mail = require('./email');
 
 //获取目录
 router.get('/api/share/categories', (req, res, next) => {
-	
+
 	db.query(sqlMap.categories.getCategories).then(rows => {
 		res.json({
 			state: 1,
@@ -31,7 +31,7 @@ router.get('/api/share/page_aritcle', (req, res, next) => {
 	//返回的内容字数
 	let reduce = params.reduce ? params.reduce : 0;
 	let sql = sqlMap.article.getArticleList;
-	
+
 	let value = [];
 	//分别按目录、关键字搜索
 	if (categoriesId) {
@@ -61,7 +61,7 @@ router.get('/api/share/page_aritcle', (req, res, next) => {
 	//缩减内容
 	if (reduce) {
 		sql = 'SELECT LEFT(article_content, ' + reduce + ') AS article_content,' + sql.slice(6);
-	} 
+	}
 
 	db.query(sql, value).then(rows => {
 		res.json({
@@ -110,11 +110,11 @@ router.get('/api/share/comment_list', (req, res) => {
 router.post('/api/share/save_reply', (req, res, next) => {
 	let params = req.body;
 
-	let subject = `新的留言-来自文章:${params.articleTitle}-陈卓林|技术博客`;
+	let subject = `新的留言-来自文章:${params.articleTitle}-技术博客`;
 	let sendHtml = `<div>
 	<div>尊敬的${params.replyName}, 您好!</div>
 	<div>作者给您回复了。</div>
-	<div>来自文章：${params.articleTitle}-陈卓林|技术博客</div>
+	<div>来自文章：${params.articleTitle}-技术博客</div>
 	<div>您的评论内容：${params.replyComment}</div>
 	<div>作者的回复：${params.comment}</div>
 	<div>回复时间：${params.date}</div>

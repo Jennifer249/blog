@@ -326,7 +326,7 @@ CREATE TABLE `user_info` (
 
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-INSERT INTO `user_info` VALUES (1,'jennifer','7ac7893de2fdf1d004626fa3562406696c07747e','../img/user.jpg','Pratice more','say something','249542247@qq.com','陈卓林 | 个人博客','czl_blog');
+INSERT INTO `user_info` VALUES (1,'jennifer','7ac7893de2fdf1d004626fa3562406696c07747e','../img/user.jpg','Pratice more','say something','249542247@qq.com','个人博客','czl_blog');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 

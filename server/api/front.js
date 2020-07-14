@@ -63,13 +63,13 @@ router.post('/api/front/submit_message_board', (req, res, next) => {
 
 	let params = req.body;
 	params.emailTo = params.emailTo ? params.emailTo : '249542247@qq.com';
-	
-	let subject = `新的留言-来自文章:${params.articleTitle}-陈卓林|技术博客`;
+
+	let subject = `新的留言-来自文章:${params.articleTitle}-技术博客`;
 	//设置邮箱发送内容
 	var sendHtml = `<div>
 	<div>尊敬的${params.replyName}, 您好!</div>
 	<div>用户名：${params.name} 给您留言了。</div>
-	<div>来自文章：${params.articleTitle}-陈卓林|技术博客</div>
+	<div>来自文章：${params.articleTitle}-技术博客</div>
 	`
 	if(params.replyComment) {
 		sendHtml += `<div>您的评论内容：${params.replyComment}</div>`
