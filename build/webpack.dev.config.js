@@ -35,25 +35,16 @@ module.exports = merge(baseWebpackConfig, {
     }),
     //将一个目录的内容复制到另一个目录下
     new CopyWebpackPlugin({
-      patterns: [
-          {
+        patterns: [{
             from: path.join(__dirname,'../static'),
-            to: 'static'
-          }
-      ]
+            to: 'static',
+            globOptions: {
+                ignore: [
+                    '**/.*'
+                ]
+            }
+        }]
     }),
     new webpack.NoEmitOnErrorsPlugin() // 跳过编译时出错的代码并记录，使编译后运行时的包不会发生错误。
-
   ]
 });
-
-plugins: [
-  new CopyWebpackPlugin({
-    patterns: [
-      {
-        from: path.join(__dirname,'../static'),
-        to: 'static'
-      }
-    ]
-  })
-]

@@ -41,18 +41,21 @@ module.exports = merge(baseWebpackConfig, {
         filename: "static/css/[name].css",
         allChunks: true
     }),
-   new CopyWebpackPlugin({
-      patterns: [
-          {
+    new CopyWebpackPlugin({
+        patterns: [{
             from: path.join(__dirname,'../static'),
-            to: 'static'
-          }
-      ]
+            to: 'static',
+            globOptions: {
+                ignore: [
+                    '**/.*'
+                ]
+            }
+        }]
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: path.join(__dirname,'../src/index.html'),
-      inject: true
+       filename: 'index.html',
+       template: path.join(__dirname,'../src/index.html'),
+       inject: true
     })
   ],
   optimization: {
