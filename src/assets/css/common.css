@@ -1,0 +1,63 @@
+a:hover {
+    color: #757575;
+}
+
+.user-pic {
+    border-radius: 50%;
+    border: 4px solid #fff;
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 4px 8px 0 rgba(7,17,27,.1);
+    background: url(~@/assets/images/user.jpg);
+    background-size: 92px 92px;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  height: 0px;
+  visibility: hidden;
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.d-flex {
+  display: flex;
+  display: -webkit-flex; /*webkit内核的浏览器必须加上-webkit-*/
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 15px;
+}
+
+/*文章内的图片样式*/
+.img-wrapper {
+  display: inline-block;
+  margin: 24px 0;    
+  background-color: rgba(0,0,0,.05);
+  border-radius: 2px;
+  margin: 24px 0;
+}
+
+.img-wrapper img {
+  display: block;
+  max-width: 100%;
+  padding: 0 .15em;
+  box-sizing: content-box;
+}
+
+
+.img-wrapper span {
+  display: block;
+  color: rgba(0,0,0,.28);
+  font-size: 14px;
+}
+
+.loadClass {
+  margin: 10px;
+}

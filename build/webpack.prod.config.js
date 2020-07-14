@@ -11,7 +11,7 @@ module.exports = merge(baseWebpackConfig, {
   mode: 'production', //可以省去配置js压缩、全局变量production的配置
   devtool: 'source-map',
   output: {
-    path: path.join(__dirname, "../server/public"), 
+    path: path.join(__dirname, "../server/public"),
     filename: 'static/js/[name].[chunkhash].js',
     chunkFilename: 'static/js/[id].[chunkhash].js',
   },
@@ -43,16 +43,16 @@ module.exports = merge(baseWebpackConfig, {
     }),
    new CopyWebpackPlugin({
       patterns: [
-          { 
+          {
             from: path.join(__dirname,'../static'),
-            to: 'static' 
+            to: 'static'
           }
       ]
     }),
     new HtmlWebpackPlugin({
-      filename: 'index.html', 
-      template: path.join(__dirname,'../client/index.html'),  
-      inject: true  
+      filename: 'index.html',
+      template: path.join(__dirname,'../src/index.html'),
+      inject: true
     })
   ],
   optimization: {

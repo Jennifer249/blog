@@ -8,10 +8,20 @@ function resolve (dir) {
   return path.resolve(__dirname, '..', dir);
 }
 
+// const createLintingRule = () => ({
+//   test: /\.(js|vue)$/,
+//   loader: 'eslint-loader',
+//   enforce: 'pre',
+//   include: [resolve('src'), resolve('test')],
+//   options: {
+//     formatter: require('eslint-friendly-formatter')
+//   }
+// });
+
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: "./client/main.js",
+    app: "./src/main.js",
     vendor: [
       'axios',
       'vue',
@@ -22,13 +32,13 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.join(__dirname, "../dist/"), //绝对路径
-    publicPath: '/' 
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('client')
+      '@': resolve('src')
 
     }
   },
@@ -37,7 +47,7 @@ module.exports = {
     {
         test: /\.(png|svg|jpg|gif|svg)$/,
         loader: "url-loader",
-        exclude: [resolve('client/icons')],
+        exclude: [resolve('src/icons')],
         options: {
           name: "static/images/[name]-[hash:6].[ext]",
           limit: 10000
@@ -56,15 +66,15 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       include: [
-        resolve('client'), 
-        resolve('node_modules/webpack-dev-server/src'), 
+        resolve('src'),
+        resolve('node_modules/webpack-dev-server/src'),
         resolve('node_modules/vue-echarts/src')
       ]
     },
     {
         test: /\.svg$/,
         loader: 'svg-sprite-loader',
-        include: [resolve('client/icons')],
+        include: [resolve('src/icons')],
         options: {
           symbolId: 'icon-[name]'
         }

@@ -2,14 +2,15 @@
   "name": "blog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "dev": "webpack-dev-server --open --mode development --config build/webpack.dev.config.js",
     "start": "cnpm run dev",
-    "build": "webpack --mode production --config build/webpack.prod.config.js"
+    "build": "webpack --mode production --config build/webpack.prod.config.js",
+    "lint": "eslint --ext .js,.vue src"
   },
   "keywords": [],
-  "author": "",
+  "author": "jennifer <jennifer249@163.com>",
   "license": "ISC",
   "browserslist": [
     "> 1%",
@@ -18,9 +19,15 @@
   ],
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.10.1",
+    "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.5.3",
+    "eslint": "^7.4.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -63,5 +70,6 @@
     "vue-echarts": "^5.0.0-beta.0",
     "vue-router": "^3.3.3",
     "vuex": "^3.4.0"
-  }
+  },
+  "repository": "git@github.com:Jennifer249/blog.git"
 }
