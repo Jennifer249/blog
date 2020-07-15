@@ -10,7 +10,9 @@
 
 ####  技术栈
 前台：Vue.js、Vue Router、 Vuex、Vue-Echarts、Axios
+
 后台：Node.js、Express、MySQL
+
 打包工具：Webpack4
 
 ## 博客功能
@@ -104,7 +106,7 @@ npm install
 create database blog;
 use blog;
 set names utf8;
-source C:\Users\PC\Desktop\blog.sql
+source C:\Users\PC\Desktop\blog.sql;
 
 # enter ./server directory and turn on the server at localhost:3000
 cd ./server
