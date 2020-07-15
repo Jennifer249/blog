@@ -18,7 +18,7 @@
 ## 博客功能
 前台：
 - [x] 文章列表 
-- [x] 文章地图
+- [x] 文章归档
 - [x] 文章分类
 - [x] 文章详情
 - [x] 搜索文章
@@ -132,7 +132,7 @@ npm run build
 
 
 
-**地图：**
+**归档：**
 
 ![Image text](https://raw.githubusercontent.com/Jennifer249/blog/master/doc/front/map.png)
 
