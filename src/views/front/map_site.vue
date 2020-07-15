@@ -98,9 +98,13 @@ export default {
 	}
 
 	article ul.map-list li {
-		line-height: 1.6;
-		margin: 0.3em;
-	}
+        line-height: 1.6;
+        margin: 0.3em;
+        word-break: keep-all;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 	article span.map-list-time {
 		font-size: 14px;
