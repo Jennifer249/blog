@@ -4,6 +4,7 @@
 该项目使用Vue.js、Node.js、MySQL、Webpack4开发的个人博客，包括前台展示，后台管理。
 
 前台展示：http://119.45.55.131:3000
+
 后台管理：http://119.45.55.131:3000/login
 
 ####  技术栈
@@ -37,14 +38,14 @@
 
 ## 目录
 ```
-├─ blog.sql						mysql数据库
+├─ blog.sql				mysql数据库
 ├─ build								
 │    ├─ webpack.base.config.js	
 │    ├─ webpack.dev.config.js
 │    └─ webpack.prod.config.js
 ├─ package.json
-├─ server						服务器
-│    ├─ api						Restful接口
+├─ server				服务器
+│    ├─ api				Restful接口
 │    │    ├─ articleMgt.js		文章接口
 │    │    ├─ catMgt.js			专栏列表接口
 │    │    ├─ commentMgt.js		评论接口
@@ -57,36 +58,36 @@
 │    │    ├─ statMgt.js			数据接口
 │    │    └─ subCatMgt.js		专栏文章接口
 │    ├─ app.js
-│    ├─ db						数据库接口
+│    ├─ db				数据库接口
 │    │    ├─ db.js
 │    │    └─ sql_map.js
-│    ├─ public					打包存放处
-│    ├─ token					token验证
-│    └─ upload					图片存放目录
-├─ src							客户端
-│    ├─ api						axios接口
-│    ├─ app.vue					根组件
-│    ├─ assets					外部引用文件
+│    ├─ public				打包存放处
+│    ├─ token				token验证
+│    └─ upload				图片存放目录
+├─ src					客户端
+│    ├─ api				axios接口
+│    ├─ app.vue				根组件
+│    ├─ assets				外部引用文件
 │    │    ├─ css
 │    │    ├─ images
 │    │    └─ js
 │    ├─ components
-│    │    ├─ back				后台组件
-│    │    ├─ front				前台组件
-│    │    ├─ global				全局消息组件	
+│    │    ├─ back			后台组件
+│    │    ├─ front			前台组件
+│    │    ├─ global			全局消息组件	
 │    │    ├─ page_nav.vue		公共的分页组件
 │    │    └─ search_box.vue		公共的搜索组件
-│    ├─ icons					svg
+│    ├─ icons				svg
 │    │    ├─ index.js
 │    │    └─ svg
 │    ├─ index.html
-│    ├─ main.js					项目入口
-│    ├─ router					路由
+│    ├─ main.js				项目入口
+│    ├─ router				路由
 │    │    └─ index.js
-│    ├─ store.js				vuex
+│    ├─ store.js			vuex
 │    └─ views
 │           ├─ 404.vue
-│           ├─ back				后台页面
+│           ├─ back			后台页面
 │           └─ front			前台页面
 ├─ static
 │    ├─ .gitkeep
