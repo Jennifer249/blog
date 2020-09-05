@@ -23,13 +23,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: "./src/main.js",
-    vendor: [
-      'axios',
-      'vue',
-      'vue-router',
-      'vuex'
-    ] // 打包第三方库放在vendor.js中
+    app: "./src/main.js"
   },
   output: {
     filename: '[name].js',
