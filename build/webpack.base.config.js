@@ -1,10 +1,12 @@
 "use strict";
 const path = require('path');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack');
 
-function resolve (dir) {
+function resolve(dir) {
   return path.resolve(__dirname, '..', dir);
 }
 
@@ -27,7 +29,7 @@ module.exports = {
       'vue',
       'vue-router',
       'vuex'
-      ] // 打包第三方库放在vendor.js中
+    ] // 打包第三方库放在vendor.js中
   },
   output: {
     filename: '[name].js',
@@ -43,25 +45,22 @@ module.exports = {
     }
   },
   module: {
-    rules: [
-    {
-        test: /\.(png|svg|jpg|gif|svg)$/,
-        loader: "url-loader",
-        exclude: [resolve('src/icons')],
-        options: {
-          name: "static/images/[name]-[hash:6].[ext]",
-          limit: 10000
-        }
-    },
-    {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: "url-loader",
-        options: {
-          name: "static/images/[name]-[hash:6].[ext]",
-          limit: 10000
-        }
-    },
-    {
+    rules: [{
+      test: /\.(png|svg|jpg|gif|svg)$/,
+      loader: "url-loader",
+      exclude: [resolve('src/icons')],
+      options: {
+        name: "static/images/[name]-[hash:6].[ext]",
+        limit: 10000
+      }
+    }, {
+      test: /\.(woff|woff2|eot|ttf|otf)$/,
+      loader: "url-loader",
+      options: {
+        name: "static/images/[name]-[hash:6].[ext]",
+        limit: 10000
+      }
+    }, {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
@@ -70,19 +69,17 @@ module.exports = {
         resolve('node_modules/webpack-dev-server/src'),
         resolve('node_modules/vue-echarts/src')
       ]
-    },
-    {
-        test: /\.svg$/,
-        loader: 'svg-sprite-loader',
-        include: [resolve('src/icons')],
-        options: {
-          symbolId: 'icon-[name]'
-        }
-    }
-    ]
+    }, {
+      test: /\.svg$/,
+      loader: 'svg-sprite-loader',
+      include: [resolve('src/icons')],
+      options: {
+        symbolId: 'icon-[name]'
+      }
+    }]
   },
   performance: {
-    hints:'warning',
+    hints: 'warning',
     //入口起点的最大体积
     maxEntrypointSize: 50000000,
     //生成文件的最大体积
