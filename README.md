@@ -1,20 +1,24 @@
 
 ## 博客介绍
 
-该项目使用Vue.js、Node.js、MySQL、Webpack4开发的个人博客，包括前台展示，后台管理。
+该项目使用Vue.js、Node.js、Express、Axios、MySQL、Webpack4开发的个人博客，包括前台展示，后台管理。
 
+#### 项目地址
 前台展示：http://119.45.55.131:3000
+
 后台管理：http://119.45.55.131:3000/login
 
 ####  技术栈
 前台：Vue.js、Vue Router、 Vuex、Vue-Echarts、Axios
+
 后台：Node.js、Express、MySQL
+
 打包工具：Webpack4
 
 ## 博客功能
 前台：
 - [x] 文章列表 
-- [x] 文章地图
+- [x] 文章归档
 - [x] 文章分类
 - [x] 文章详情
 - [x] 搜索文章
@@ -30,6 +34,7 @@
 - [x] 专栏管理：移动专栏文章
 - [ ]  统计数据展示：未实现每日访问量和评论数的定期存储
 - [ ]  个人中心
+
 以上都实现了文章、评论、专栏的增删改查功能
 
 基本组件实现：
@@ -37,57 +42,57 @@
 
 ## 目录
 ```
-├─ blog.sql								mysql数据库
+├─ blog.sql				mysql数据库
 ├─ build								
 │    ├─ webpack.base.config.js	
 │    ├─ webpack.dev.config.js
 │    └─ webpack.prod.config.js
 ├─ package.json
-├─ server								服务器
-│    ├─ api								Restful接口
-│    │    ├─ articleMgt.js				文章接口
-│    │    ├─ catMgt.js					专栏列表接口
-│    │    ├─ commentMgt.js				评论接口
-│    │    ├─ editArticle.js				写文章接口
-│    │    ├─ email.js					发送邮箱接口
-│    │    ├─ front.js					前台接口
-│    │    ├─ index.js					路由
-│    │    ├─ login.js					登陆接口
-│    │    ├─ share.js					公共接口
-│    │    ├─ statMgt.js					数据接口
-│    │    └─ subCatMgt.js				专栏文章接口
+├─ server				服务器
+│    ├─ api				Restful接口
+│    │    ├─ articleMgt.js		文章接口
+│    │    ├─ catMgt.js			专栏列表接口
+│    │    ├─ commentMgt.js		评论接口
+│    │    ├─ editArticle.js		写文章接口
+│    │    ├─ email.js			发送邮箱接口
+│    │    ├─ front.js			前台接口
+│    │    ├─ index.js			路由
+│    │    ├─ login.js			登陆接口
+│    │    ├─ share.js			公共接口
+│    │    ├─ statMgt.js			数据接口
+│    │    └─ subCatMgt.js		专栏文章接口
 │    ├─ app.js
-│    ├─ db								数据库接口
+│    ├─ db				数据库接口
 │    │    ├─ db.js
 │    │    └─ sql_map.js
-│    ├─ public							打包存放处
-│    ├─ token							token验证
-│    └─ upload							图片存放目录
-├─ src									客户端
-│    ├─ api								axios接口
-│    ├─ app.vue							根组件
-│    ├─ assets							外部引用文件
+│    ├─ public				打包存放处
+│    ├─ token				token验证
+│    └─ upload				图片存放目录
+├─ src					客户端
+│    ├─ api				axios接口
+│    ├─ app.vue				根组件
+│    ├─ assets				外部引用文件
 │    │    ├─ css
 │    │    ├─ images
 │    │    └─ js
 │    ├─ components
-│    │    ├─ back						后台组件
-│    │    ├─ front						前台组件
-│    │    ├─ global						全局消息组件	
-│    │    ├─ page_nav.vue				公共的分页组件
-│    │    └─ search_box.vue				公共的搜索组件
-│    ├─ icons							svg
+│    │    ├─ back			后台组件
+│    │    ├─ front			前台组件
+│    │    ├─ global			全局消息组件	
+│    │    ├─ page_nav.vue		公共的分页组件
+│    │    └─ search_box.vue		公共的搜索组件
+│    ├─ icons				svg
 │    │    ├─ index.js
 │    │    └─ svg
 │    ├─ index.html
-│    ├─ main.js							项目入口
-│    ├─ router							路由
+│    ├─ main.js				项目入口
+│    ├─ router				路由
 │    │    └─ index.js
-│    ├─ store.js						vuex
+│    ├─ store.js			vuex
 │    └─ views
 │           ├─ 404.vue
-│           ├─ back						后台页面
-│           └─ front					前台页面
+│           ├─ back			后台页面
+│           └─ front			前台页面
 ├─ static
 │    ├─ .gitkeep
 │    └─ favicon.ico						
@@ -101,7 +106,7 @@ npm install
 create database blog;
 use blog;
 set names utf8;
-source C:\Users\PC\Desktop\blog.sql
+source C:\Users\PC\Desktop\blog.sql;
 
 # enter ./server directory and turn on the server at localhost:3000
 cd ./server
@@ -127,7 +132,7 @@ npm run build
 
 
 
-**地图：**
+**归档：**
 
 ![Image text](https://raw.githubusercontent.com/Jennifer249/blog/master/doc/front/map.png)
 
@@ -203,4 +208,4 @@ npm run build
 - 为了实现留言列表嵌套的效果，我参照多层嵌套目录，递归组件处理视图，前序遍历算法处理数据，但最关键的一点是，为了建立起两条留言间的关联，仅有被回复的用户id是不够的，留言表需增加一个字段被回复的留言id。如一条新增的COMMENT(comment_id, article_id,visitor_id,content,time,reply_visitor_id,**reply_comment_id**)。让我觉得有意思的是，这里用上了算法，数据库设计还得提供必须的参数。
 - 整个项目涵盖了，数据库设计与使用、服务器、客户端，webpack4最新的配置、部署腾讯云(PM2)，站点统计。稍微体验了一点全栈开发，让我收获颇丰。还有很多需要学习的，前后端分离开发使用Mock，redis缓存、编写测试用例、加个域名，https、SEO优化、性能优化...
 
-**觉得有帮助的小伙伴，不妨点个start~~**
+**喜欢或觉得有帮助的小伙伴，不妨点个start~~**

@@ -7,15 +7,14 @@ let transporter = nodemailer.createTransport({
 	secure: true,
 	//这里需要登陆到网页邮箱中，配置SMTP和POST服务器的密码
 	auth: {
-		user: 'xxxx@qq.com',
-		pass: 'xxxxxxxbbghb'
+		user: '249542247@qq.com',
+		pass: 'hjtiwyhfobebbghb'
 	}
 });
 
 exports.send = (to, subject, html) => {
 	let mailOptions = {
-        //发送地址同上
-		from: 'xxxx@qq.com',
+		from: '249542247@qq.com',
 		to: to,
 		subject: subject,
 		html: html

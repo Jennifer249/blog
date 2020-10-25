@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "keywords": [],
-  "author": "jennifer",
+  "author": "jennifer <jennifer249@163.com>",
   "license": "ISC",
   "browserslist": [
     "> 1%",

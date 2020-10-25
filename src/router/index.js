@@ -48,10 +48,10 @@ const router = new VueRouter({
 			redirect: '/home',
 			component: Index,
 			children: [
-				{path: 'home', name: 'front_home', component: List, meta: {title:'技术博客'}},
+				{path: 'home', name: 'front_home', component: List, meta: {title:'陈卓林个人博客|技术博客'}},
 				{path: 'list/:id', name: 'list', component: List, props: true},
 				{path: 'article_detail/:id', name: 'article_detail', component: ArticleDetail, props: true},
-				{path: 'map_site', name: 'map_site', component: MapSite, meta: {title: '归档-技术博客'}}
+				{path: 'map_site', name: 'map_site', component: MapSite, meta: {title: '归档-陈卓林的博客'}}
 			]
 		},
 		{

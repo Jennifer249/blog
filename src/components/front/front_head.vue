@@ -3,7 +3,7 @@
         <div class="container header-inner" @mouseleave="toggle">
             <div class="header-brand">
                 <h1>
-                    <router-link :to="{name: 'front_home'}">技术博客</router-link>
+                    <router-link :to="{name: 'front_home'}">陈卓林&nbsp;|&nbsp;技术博客</router-link>
                 </h1>
                 <div :class="['menu-toggle', {x: isActive}]" @click="isActive=!isActive" ref="menu">
                     <span></span>

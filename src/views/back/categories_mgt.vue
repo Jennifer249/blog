@@ -43,7 +43,7 @@
 					flag: 1,
 					title: '请输入专栏名'
 				},
-				pendingItem: {},
+				pendingItem: null,
 			};
 		},
 		mounted() {

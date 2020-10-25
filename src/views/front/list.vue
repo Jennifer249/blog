@@ -48,11 +48,11 @@
 		watch: {
 			$route(to, from) {
 				if(this.$route.path !== '/home') {
-					document.title = this.title + '-技术博客';
+					document.title = this.title + '-陈卓林的博客';
 				}
 
 				if(this.title && this.$route.path !== '/home') {
-					window.sessionStorage.title = this.title + '-技术博客';
+					window.sessionStorage.title = this.title + '-陈卓林的博客';
 				}
 				if(parseInt(to.params.id)) {
 					this.categoriesId = to.params.id;
@@ -66,7 +66,7 @@
 		mounted() {
 			//避免在目录列表和文章列表切换时,丢失网页title
 			if(this.title && this.$route.path !== '/home') {
-				window.sessionStorage.title = this.title + '-技术博客';
+				window.sessionStorage.title = this.title + '-陈卓林的博客';
 			}
 			if(this.$route.path !== '/home') {
 				document.title = window.sessionStorage.title;
