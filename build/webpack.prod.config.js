@@ -13,64 +13,65 @@ module.exports = merge(baseWebpackConfig, {
   output: {
     path: path.join(__dirname, "../server/public"),
     filename: 'static/js/[name].[chunkhash].js',
-    chunkFilename: 'static/js/[id].[chunkhash].js',
+    chunkFilename: 'static/js/[name].[chunkhash].js',
   },
   module: {
-    rules: [
-    {
-        test: /\.css$/,
-        use: [
-          miniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader'
-         ]
-    },
-    {
-        test: /\.vue$/,
-        loader: "vue-loader",
-        options: {
-            loaders: {
-                css: [ miniCssExtractPlugin.loader, 'css-loader' ]
-            }
+    rules: [{
+      test: /\.css$/,
+      use: [
+        miniCssExtractPlugin.loader,
+        'css-loader',
+        'postcss-loader'
+      ]
+    }, {
+      test: /\.vue$/,
+      loader: "vue-loader",
+      options: {
+        loaders: {
+          css: [miniCssExtractPlugin.loader, 'css-loader']
         }
       }
-    ]
+    }]
   },
   plugins: [
     new miniCssExtractPlugin({
-        filename: "static/css/[name].css",
-        allChunks: true
+      filename: "static/css/[name].css",
+      allChunks: true //所有的CSS文件合并成1个文件, allChunks设置成true
     }),
     new CopyWebpackPlugin({
-        patterns: [{
-            from: path.join(__dirname,'../static'),
-            to: 'static',
-            globOptions: {
-                ignore: [
-                    '**/.*'
-                ]
-            }
-        }]
+      patterns: [{
+        from: path.join(__dirname, '../static'),
+        to: 'static',
+        globOptions: {
+          ignore: [
+            '**/.*'
+          ]
+        }
+      }]
     }),
     new HtmlWebpackPlugin({
-       filename: 'index.html',
-       template: path.join(__dirname,'../src/index.html'),
-       inject: true
+      filename: 'index.html',
+      template: path.join(__dirname, '../src/index.html'),
+      inject: true
     })
   ],
   optimization: {
     splitChunks: {
       cacheGroups: {
         vendor: {
+          priority: 10,
           name: 'vendor',
-          test: /node_modules/,  // 正则规则验证，如果符合就提取 chunk (指定是node_modules下的第三方包)
-          chunks: 'initial',   //把非动态模块打包进 vendor，动态模块优化打包
+          test: /node_modules/, // 正则规则验证，如果符合就提取 chunk (指定是node_modules下的第三方包)
+          chunks: 'all', //把非动态模块打包进 vendor，动态模块优化打包
           reuseExistingChunk: true
         },
         common: {
-          chunks: 'initial',
+          name: 'common',
+          test: /src/,
+          chunks: 'all',
+          minSize: 1024,
           reuseExistingChunk: true,
-          minChunks: 2
+          priority: 5
         }
       }
     },
