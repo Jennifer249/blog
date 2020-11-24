@@ -1,10 +1,11 @@
 "use strict";
+/**
+ * @type {import('weboack').Configuration}
+ */
 const path = require('path');
-const {
-  CleanWebpackPlugin
-} = require('clean-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const webpack = require('webpack');
+const config = require('../config');
 
 function resolve(dir) {
   return path.resolve(__dirname, '..', dir);
@@ -20,26 +21,29 @@ const createLintingRule = () => ({
   }
 });
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname, '../'),
   entry: {
     app: "./src/main.js"
   },
   output: {
     filename: '[name].js',
-    path: path.join(__dirname, "../dist/"), //绝对路径
-    publicPath: '/'
+    path: config.build.assetsRoot,
+    publicPath: process.env.NODE_ENV  === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
-
     }
   },
   module: {
-    rules: [{
+    rules: [
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
+      {
       test: /\.(png|svg|jpg|gif|svg)$/,
       loader: "url-loader",
       exclude: [resolve('src/icons')],
@@ -57,7 +61,6 @@ module.exports = {
     }, {
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
       include: [
         resolve('src'),
         resolve('node_modules/webpack-dev-server/src'),
@@ -72,25 +75,16 @@ module.exports = {
       }
     }]
   },
-  performance: {
-    hints: 'warning',
-    //入口起点的最大体积
-    maxEntrypointSize: 50000000,
-    //生成文件的最大体积
-    maxAssetSize: 30000000,
-    //只给出 js 文件的性能提示
-    assetFilter: function(assetFilename) {
-      return assetFilename.endsWith('.js');
-    }
-  },
-  stats: { //object
+  // 更精确的控制bundle信息显示
+  stats: { 
     modules: false,
     children: false,
     chunks: false,
     chunkModules: false
   },
   plugins: [
-    new VueLoaderPlugin(),
-    new CleanWebpackPlugin()
+    new VueLoaderPlugin()
   ]
 };
+
+module.exports = webpackConfig;

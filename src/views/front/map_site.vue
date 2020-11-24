@@ -34,7 +34,7 @@ export default {
 	},
 	methods: {
 		...mapMutations(['chgLoadOK', 'initLoadOK']),
-		//获取所有文章
+		// 获取所有文章
 		getArticleAll() {
 			let params = {
 				state: 1,
@@ -52,14 +52,14 @@ export default {
 				console.log(err);
 			});
 		},
-		//转换数据格式
+		// 转换数据格式
 		format() {
 			let i = 0;
 			let list = [];
 			list.push({year: '', index: -1});
 			list[i].year = new Date(this.articleList[0].article_time).getFullYear();
 
-			//转换时间的数据格式,并获取所有年份
+			// 转换时间的数据格式,并获取所有年份
 			this.articleList.forEach((item, index) => {
 				let d = new Date(item.article_time);
 				let year = d.getFullYear();
@@ -77,7 +77,7 @@ export default {
 			});
 			this.yearList = list;
 		},
-        //返回年份范围内的文章
+        // 返回年份范围内的文章
         filteredArticleList(divide) {
             let list = [...this.articleList];
             list.filter((item, index) => {

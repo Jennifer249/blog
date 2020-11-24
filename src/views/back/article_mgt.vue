@@ -70,7 +70,7 @@ export default {
 			articleList: [],
 			pageInfo: {
 				articleSum: 0,
-				//一页的文章数
+				// 一页的文章数
 				pageArticle: 6
 			},
 			categories: []
@@ -87,7 +87,7 @@ export default {
 	},
 	methods: {
 		...mapMutations(['chgLoadOK', 'initLoadOK']),
-		//获取标题数据
+		// 获取标题数据
 		getTag() {
 			getStatArticle().then(res => {
 				if (res.state && res.data.length) {
@@ -97,7 +97,7 @@ export default {
 					tmp[1]  = `私密(${this.statArticle[0]['private_article_sum']})`;
 					tmp[2]  = `草稿箱(${this.statArticle[0]['draft_sum']})`;
 					this.tags = tmp;
-					//获取当前标签下的文章
+					// 获取当前标签下的文章
 					this.getTagArticle();
 				} else {
 					this.chgLoadOK();
@@ -107,10 +107,10 @@ export default {
 				console.log(err);
 			});
 		},
-		//获取该标题文章
+		// 获取该标题文章
 		getTagArticle() {
 			let state = this.currTag + 1;
-			//全部时，传给服务器的state为0
+			// 全部时，传给服务器的state为0
 			if(!this.currTag) {
 				state = this.currTag;
 			}
@@ -131,14 +131,14 @@ export default {
 				console.log(err);
 			});
 		},
-		//点击改变标题
+		// 点击改变标题
 		handleChangeTag(index) {
 			this.currTag = index;
 			this.currPage = 1;
 			this.resetPage();
 			this.getTagArticle();
 		},
-		//设置年份
+		// 设置年份
 		getYearData() {
 			getOldestYear().then(res => {
 				if (res.state && res.data.length) {
@@ -160,7 +160,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//设置专栏
+		// 设置专栏
 		getCategoriesList() {
 			getCategories().then(res => {
 				this.categories = res.data;
@@ -180,7 +180,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//设置月份
+		// 设置月份
 		getSelectData(name, value) {
 			if (name === '年') {
 				if (value === '不限') {
@@ -189,7 +189,7 @@ export default {
 					this.searchConditions.year = '';
 					this.searchConditions.month = '';
 				} else {
-					//当年的下拉菜单选项为某一年时，月份的下拉菜单显示所有月份
+					// 当年的下拉菜单选项为某一年时，月份的下拉菜单显示所有月份
 					let monthList = ['不限', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 					this.dropItems[1].data = monthList;
 					this.searchConditions.year = value;
@@ -214,10 +214,10 @@ export default {
 				});
 			}
 		},
-		//获取搜索框数据以及向服务器请求查询结果
+		// 获取搜索框数据以及向服务器请求查询结果
 		getSearchData(value) {
 			this.searchConditions.key = value;
-			//向服务器请求结果
+			// 向服务器请求结果
 			requestSearchResult({'params': this.searchConditions}).then(res => {
 				this.articleList = res.data;
 				this.pageInfo.articleSum = 0;
@@ -225,7 +225,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//文章状态改变
+		// 文章状态改变
 		chgState(id, oldState) {
 			let newState = 0;
 			if (oldState === 1) {
@@ -239,7 +239,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//删除文章
+		// 删除文章
 		removeArticle(id) {
 			delArticle({params: {id}}).then(() => {
 				this.reload();
@@ -247,12 +247,12 @@ export default {
 				console.log(err);
 			});
 		},
-		//改变分页数
+		// 改变分页数
 		handleChangePage(index) {
 			this.currPage = index;
 			this.getTagArticle();
 		},
-		//更换标题时，重置分页为1
+		// 更换标题时，重置分页为1
 		resetPage() {
 			this.$refs.page.currPage = 1;
 		}

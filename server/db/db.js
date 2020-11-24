@@ -1,4 +1,4 @@
-// 连接 MySQL：先安装 npm i mysql -D
+//  连接 MySQL：先安装 npm i mysql -D
 const mysql = require('mysql');
 
 
@@ -8,7 +8,7 @@ let pool = mysql.createPool({
 	user: 'root',
 	password: '19961209',
 	database: 'blog',
-	multipleStatements : true  //是否允许同时执行多条sql语句
+	multipleStatements : true  // 是否允许同时执行多条sql语句
 });
 
 

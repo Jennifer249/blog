@@ -25,18 +25,18 @@ export default {
 		return {
 			dialogInfo: {
 				tip: '确认删除吗?',
-				//类型为提示框
+				// 类型为提示框
 				flag: 1
 			}
 		};
 	},
 	computed: {
-		//文章信息条
+		// 文章信息条
 		articleInfo() {
 			let d = new Date(this.info.article_time);
 			return `${d.toLocaleDateString().replace(/\//g, '-') + ' ' + d.toTimeString().slice(0,8)} | 阅读量(${this.info.article_visits}) | 评论数(${this.info.article_comments})`;
 		},
-		//文章状态
+		// 文章状态
 		state() {
 			if (this.info.article_state === 2) {
 				return '私密';
@@ -48,7 +48,7 @@ export default {
 		}
 	},
 	mounted() {
-		//文章状态显示
+		// 文章状态显示
 		if (this.info.article_state === 1) {
 			this.$refs.priSpan.innerText = '私密';
 			this.$refs.tip.style.display = 'none';
@@ -61,11 +61,11 @@ export default {
 		}
 	},
 	methods: {
-		//改变文章状态
+		// 改变文章状态
 		handleChangeState() {
 			this.$emit('chgState', this.info.article_id, this.info.article_state);
 		},
-		//显示弹框
+		// 显示弹框
 		handleShowDialog() {
 			this.$refs.dialog.show = true;
 		},

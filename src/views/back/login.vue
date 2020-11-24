@@ -24,7 +24,7 @@
 			};
 		},
         watch: {
-            //当用户名和密码变动时,清空提示信息
+            // 当用户名和密码变动时,清空提示信息
             username() {
                 this.loginMsg = '';
             },
@@ -33,10 +33,10 @@
             }
         },
 		methods: {
-            //获取服务器Token
+            // 获取服务器Token
 			handleSubmit() {
                 let _this = this;
-                //表单验证
+                // 表单验证
                 if (this.username == '') {
                     this.loginMsg = '用户名不得为空';
                 } else if (this.password == '') {
@@ -47,13 +47,13 @@
                         if (!res.state) {
                             this.loginMsg = res.message;
                         } else {
-                            //存储token
+                            // 存储token
                             let token = res.data;
                             _this.$store.commit('saveToken', token);
 
                             this.loginMsg = '获取token成功，等待服务器初始化系统';
 
-                            //防止重定向
+                            // 防止重定向
                             if (this.$route.query.redirect === 'login') {
                                 this.$router.replace({name: 'back_home'});
                             } else {

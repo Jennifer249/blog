@@ -49,7 +49,7 @@ export default {
 			return JSON.parse(window.sessionStorage.categories);
 		},
 		id() {
-			//刷新时,路径的参数失效.提前保存起来备用
+			// 刷新时,路径的参数失效.提前保存起来备用
 			if(this.$route.params.title !== undefined) {
 				window.sessionStorage.currId = parseInt(this.$route.params.id);
 			}
@@ -66,7 +66,7 @@ export default {
 		this.getSubCategoriesInfo();
 	},
 	watch: {
-		//全选控制
+		// 全选控制
 		checkedArticle() {
 			if (this.checkedArticle.length === this.articleList.length) {
 				this.checkedAll = true;
@@ -74,7 +74,7 @@ export default {
 				this.checkedAll = false;
 			}
 		},
-		//根据第一个下拉框选择的操作,判断第二个下拉框是否需出现
+		// 根据第一个下拉框选择的操作,判断第二个下拉框是否需出现
 		selectedOption() {
 			if (parseInt(this.selectedOption) === 0 || parseInt(this.selectedOption) === 2) {
 				this.isShowed = false;
@@ -84,7 +84,7 @@ export default {
 		}
 	},
 	methods: {
-		//获得子栏目的文章
+		// 获得子栏目的文章
 		getSubCategoriesInfo() {
 			let value = { id: this.id};
 			getSubCategories({params: value}).then(res => {
@@ -93,7 +93,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//点击全选
+		// 点击全选
 		handleCheckAll() {
 			if (this.checkedAll) {
 				this.checkedArticle = [];
@@ -103,9 +103,9 @@ export default {
 				});
 			}
 		},
-		//执行操作
+		// 执行操作
 		exec() {
-			//移动操作
+			// 移动操作
 			if (parseInt(this.selectedOption) === 1 && parseInt(this.selectedCategories)) {
 				let value = {
 					articleList: this.checkedArticle,
@@ -117,7 +117,7 @@ export default {
 					console.log(err);
 				});
 			}
-			//删除操作
+			// 删除操作
 			if (parseInt(this.selectedOption) === 2 && this.checkedArticle.length) {
 				let params = {
 					articleList: this.checkedArticle

@@ -47,7 +47,7 @@
             };
         },
         mounted() {
-            //计算右侧滚动条的宽度
+            // 计算右侧滚动条的宽度
             this.scrollWidth = this.getScrollbarWidth();
             window.addEventListener('resize', this.toggle);
             this.toggle();
@@ -64,14 +64,14 @@
             },
             toggle() {
                 var offsetWid = document.documentElement.clientWidth;
-                // 减去右侧滚动条的宽度
+                //  减去右侧滚动条的宽度
                 if (offsetWid > (767 - this.scrollWidth)) {
                     this.isActive = true;
                 } else {
                     this.isActive = false;
                 }
             },
-            // 计算右侧滚动条的宽度
+            //  计算右侧滚动条的宽度
             getScrollbarWidth() {
                 var oP = document.createElement('p'),
                 styles = {
@@ -95,7 +95,6 @@
     }
 </script>
 <style scoped>
-    /*头部flex布局*/
     header .header-inner {
         display: flex;
         display: -webkit-flex;  /*webkit内核的浏览器必须加上-webkit-*/

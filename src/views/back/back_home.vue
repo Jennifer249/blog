@@ -37,13 +37,13 @@ export default {
 			],
 			chartVisits: [],
 			chartComments: [],
-			//作为active的判断
+			// 作为active的判断
 			isTrue: 0,
 			items: [
 				{title: '访问量'},
 				{title: '评论数'}
 			],
-			//表格数据
+			// 表格数据
 			orgOptions: {
 				color: ['#1296db'],
 				tooltip: {},
@@ -71,13 +71,13 @@ export default {
 	},
 	mounted() {
 		this.initLoadOK();
-		//初始化数据,获取统计数据和图表数据
+		// 初始化数据,获取统计数据和图表数据
 		this.getDataCount();
 		this.getChartVisi();
 	},
 	methods: {
 		...mapMutations(['chgLoadOK', 'initLoadOK']),
-		//切换图表显示,访问量/评论数
+		// 切换图表显示,访问量/评论数
 		handleShowChartData(index) {
 			this.isTrue = index;
 			if (this.isTrue) {
@@ -86,7 +86,7 @@ export default {
 				this.getChartVisi();
 			}
 		},
-		//将服务器传来的数据转化为图表要求的数组形式
+		// 将服务器传来的数据转化为图表要求的数组形式
 		formatChartData(dataType, atrDate, atrCount) {
 			let formatDate = [];
 			let formatValue = [];
@@ -99,7 +99,7 @@ export default {
 			this.orgOptions.xAxis.data = formatDate;
 			this.orgOptions.series[0].data = formatValue;
 		},
-		//获取统计数据
+		// 获取统计数据
 		getDataCount() {
 			getDataCount().then((res) => {
 				if (res.state && res.data.length) {
@@ -117,7 +117,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//获取图表的访问量
+		// 获取图表的访问量
 		getChartVisi() {
 			getChartVisits().then((res) => {
 				if (res.state && res.data.length) {
@@ -130,7 +130,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//获取图表的评论数
+		// 获取图表的评论数
 		getChartComm() {
 			getChartComments().then((res) => {
 				if (res.state && res.data.length) {

@@ -1,4 +1,4 @@
-// 后台系统，分为登陆、数据统计、文章管理、评论管理、目录管理、子目录管理模块
+//  后台系统，分为登陆、数据统计、文章管理、评论管理、目录管理、子目录管理模块
 const login = require('./login');
 const editArticle = require('./editArticle');
 const statMgt = require('./statMgt');
@@ -7,10 +7,10 @@ const commentMgt = require('./commentMgt');
 const catMgt = require('./catMgt');
 const subCatMgt = require('./subCatMgt');
 
-// 前台系统
+//  前台系统
 const front = require('./front');
 
-// 公共api
+//  公共api
 const share = require('./share');
 
 module.exports = (app) => {

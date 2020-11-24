@@ -53,7 +53,7 @@
 
 	var showdown = require('showdown');
 	var converter = new showdown.Converter();
-	//增加拓展table
+	// 增加拓展table
 	converter.setOption('tables', true);
 	converter.setOption('simpleLineBreaks', true);
 	converter.setOption('parseImgDimensions', true);
@@ -63,7 +63,7 @@
 		data() {
 			return {
 				conMessage: '',
-				//传给服务器的数据
+				// 传给服务器的数据
 				article: {
 					id: parseInt(this.$route.query.id),
 					content: '',
@@ -99,18 +99,18 @@
 					width: '',
 					data: []
 				},
-				//判断是否文章已发布，是的话，隐藏保存草稿相关按钮
+				// 判断是否文章已发布，是的话，隐藏保存草稿相关按钮
 				isNoPublished: true,
 				stateItem: ['公开', '私密'],
-				//从服务器返回的专栏列表，包含id和name
+				// 从服务器返回的专栏列表，包含id和name
 				categories: [],
-				//传给组件的专栏名称
+				// 传给组件的专栏名称
 				currCategoriesName: [],
 				show: false
 			};
 		},
 		watch: {
-			//同步更新返回给服务器的专栏Id
+			// 同步更新返回给服务器的专栏Id
 			currCategoriesName() {
 				let r = this.categories.some((item) => {
 					if (item['categories_name'] === this.currCategoriesName[0]) {
@@ -132,14 +132,14 @@
 			}
 		},
 		mounted() {
-			//判断入口为写文章还是编辑
+			// 判断入口为写文章还是编辑
 			if (!this.article.id) {
 				return;
 			}
 			this.getEditArticle();
 		},
 		methods: {
-			//判断文章是否已发布
+			// 判断文章是否已发布
 			isPublished() {
 				if (this.article.state !== 3) {
 					this.isNoPublished = false;
@@ -147,7 +147,7 @@
 					this.isNoPublished = true;
 				}
 			},
-			//获得已编辑的文章
+			// 获得已编辑的文章
 			getEditArticle() {
 				getArticle({'params': {id: this.article.id}}).then(res => {
 					if (res.state && res.data.length) {
@@ -163,7 +163,7 @@
 
 						this.$refs.md.innerHTML = this.article.content;
 						this.conMessage = converter.makeHtml(this.$refs.md.innerText.replace(/\n\n/g, '\n')).replace(/&nbsp;|&amp;nbsp;/g, ' ');
-						//标识文章状态，是否已发表
+						// 标识文章状态，是否已发表
 						this.isPublished();
 					} else {
 						this.$myMessage('获取文章数据失败');
@@ -172,19 +172,19 @@
 					console.log(err);
 				});
 			},
-			//显示模拟框
+			// 显示模拟框
 			showPublishModal() {
 			　　this.$refs.modal.showModal = true;
-				//设置模拟框中的目录下拉框
+				// 设置模拟框中的目录下拉框
 				this.setCategories();
 			},
-			//编辑器转换
+			// 编辑器转换
 			mdConverter(event) {
-				//修改空格显示格式，使之正确
+				// 修改空格显示格式，使之正确
 				this.article.content = this.$refs.md.innerHTML.replace(/&nbsp;/, ' ');
 				this.conMessage = converter.makeHtml(event.target.innerText.replace(/\n\n/g, '\n')).replace(/&nbsp;|&amp;nbsp;/g, ' ');
 			},
-			// 编辑区和预览区,滚动条同时移动
+			//  编辑区和预览区,滚动条同时移动
             scrollAuto() {
                 this.md = this.$refs.md;
                 this.view = this.$refs.view;
@@ -192,7 +192,7 @@
                 var height = percentage * (this.view.scrollHeight - this.view.offsetHeight);
                 this.view.scrollTop = height;
             },
-            // 监听粘贴操作
+            //  监听粘贴操作
             handlePaste(event) {
                 const items = (event.clipboardData || window.clipboardData).items;
                 let file = null;
@@ -201,7 +201,7 @@
 					this.$myMessage('当前浏览器不支持本地');
                     return;
                 }
-				// 搜索剪切板items
+				//  搜索剪切板items
 				for (let i = 0; i < items.length; i++) {
 					if (items[i].type.indexOf('image') !== -1) {
 						file = items[i].getAsFile();
@@ -211,21 +211,22 @@
 				if (!file) {
 					return;
 				}
-				// 此时file就是我们的剪切板中的图片对象
+				//  此时file就是我们的剪切板中的图片对象
 				const reader = new FileReader();
 				reader.readAsDataURL(file);
 				this.uploadImg(file);
 			},
-			//上传文件成功后回调
+			// 上传文件成功后回调
 			uploadImg(file) {
 				let params = new FormData();
 				params.append('file', file);
 				let config = {
 					headers: { 'Content-Type': 'multipart/form-data'}
 				};
+				console.log('file', file);
 				uploadFile(params, config).then(res => {
-					//1.上传给服务器后，通过获得的路径在编辑区回显<img src="路径">。
-					//2.生成文本，供md编辑器解析，在显示区显示图片
+					// 1.上传给服务器后，通过获得的路径在编辑区回显<img src="路径">。
+					// 2.生成文本，供md编辑器解析，在显示区显示图片
 					let spanWrap = document.createElement('span');
 					spanWrap.className = 'img-wrapper';
 					let selection = window.getSelection();
@@ -234,13 +235,13 @@
 
 					let imgSrc = '';
 
-					//处理不同环境下的返回图片路径
+					// 处理不同环境下的返回图片路径
 					if( process.env.NODE_ENV === 'development') {
 						imgSrc = window.origin + '/server/' + res.data.imgSrc.replace(/\\/g, '/');
 					} else {
 						imgSrc = window.origin + '/' + res.data.imgSrc.replace(/\\/g, '/');
 					}
-
+					console.log('imgSrc', imgSrc);
 					imgShow.setAttribute('src', imgSrc);
 					let imgSpan = document.createElement('span');
 					imgSpan.innerHTML = `![在这里插入图片描述](${imgSrc})`;
@@ -254,7 +255,7 @@
 					console.log(err);
 				});
 			},
-			//保存草稿
+			// 保存草稿
 			async handleSaveDraft() {
 				if (this.article.title === '') {
 					this.$myMessage('文章标题不能为空');
@@ -274,7 +275,7 @@
 
 				saveArticle(value).then(res => {
 					this.article.id = res.data.id;
-					//模拟框数据重置
+					// 模拟框数据重置
 					this.$refs.modal.cancelClick();
 					this.$myMessage('保存成功');
 				}).catch(err => {
@@ -282,14 +283,14 @@
 				});
 			},
 			async addCategoriesM() {
-				//未存在该专栏，则新增专栏
+				// 未存在该专栏，则新增专栏
 				if (this.currCategoriesName.length && !this.article.categoriesId) {
 					await addCategories({name: this.currCategoriesName[0]}).then(res => {
 						this.article.categoriesId = res.data;
 					});
 				}
 			},
-			//发布文章
+			// 发布文章
 			async handlePublish() {
 				if (this.article.state === 3) {
 					this.$myMessage('文章类型不能为空');
@@ -328,12 +329,12 @@
 					console.log(err);
 				});
 			},
-			//关闭模拟框
+			// 关闭模拟框
 			handleCloseModal() {
 				this.$refs.tag.tagHidden = true;
 				this.$refs.categories.tagHidden = true;
 			},
-			//增加标签
+			// 增加标签
 			handleAddTag(name, newItem) {
 				if(name === 'tag'){
 					this.article.tags.push(newItem);
@@ -341,7 +342,7 @@
 					this.$set(this.currCategoriesName, 0, newItem);
 				}
 			},
-			//删除标签
+			// 删除标签
 			handleDeleteTag(name, index) {
 				if (name === 'tag'){
 					this.article.tags.splice(index, 1);
@@ -349,7 +350,7 @@
 					this.currCategoriesName.pop();
 				}
 			},
-			//返回专栏列表
+			// 返回专栏列表
 			setCategories() {
 				getCategories().then(res => {
 					this.categories = res.data;
@@ -360,7 +361,7 @@
 					this.dropItem.data = categoriesList;
 					this.dropItem.width = 150;
 
-					//从文章编辑入口进入:通过专栏id获取专栏名称
+					// 从文章编辑入口进入:通过专栏id获取专栏名称
 					if (this.article.categoriesId) {
 						this.categories.forEach((item) => {
 							if(item['categories_id'] === this.article.categoriesId) {
@@ -372,7 +373,7 @@
 					console.log(err);
 				});
 			},
-			//获得专栏选项结果
+			// 获得专栏选项结果
 			getSelectData(name, value) {
 				this.$refs.categories.tagHidden = true;
 				this.$set(this.currCategoriesName, 0, value);

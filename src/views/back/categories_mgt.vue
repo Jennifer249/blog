@@ -39,7 +39,7 @@
 				newCategories: '',
 				dialogInfo: {
 					tip: '确认删除吗?',
-					//类型为提示框
+					// 类型为提示框
 					flag: 1,
 					title: '请输入专栏名'
 				},
@@ -50,7 +50,7 @@
 			this.getCategoriesM();
 		},
 		methods: {
-			//获取目录
+			// 获取目录
 			getCategoriesM() {
 				getCategories().then(res => {
 					this.categoriesList = res.data;
@@ -59,13 +59,13 @@
 					console.log(err);
 				});
 			},
-			//显示弹框
+			// 显示弹框
 			handleShowDialog(item, option) {
 				this.dialogInfo.flag = option;
 				this.$refs.dialog.show = true;
 				this.pendingItem = item;
 			},
-			//处理重命名或删除
+			// 处理重命名或删除
 			handleProcess(name) {
 				if (this.dialogInfo.flag === 1) {
 					this.del();
@@ -73,7 +73,7 @@
 					this.rename(name);
 				}
 			},
-			//重命名目录
+			// 重命名目录
 			rename(name) {
 				let params = {
 					id: this.pendingItem.categories_id,
@@ -85,7 +85,7 @@
 					console.log(err);
 				});
 			},
-			//删除目录
+			// 删除目录
 			del() {
 				let params = {id: this.pendingItem.categories_id};
 				delCategories({'params': params}).then(res => {
@@ -94,7 +94,7 @@
 					console.log(err);
 				});
 			},
-			//新增目录
+			// 新增目录
 			handleAdd() {
 				if (this.newCategories === '') {
 					return;
