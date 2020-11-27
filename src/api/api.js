@@ -75,6 +75,10 @@ axios.interceptors.response.use(undefined, error => {
 	return Promise.reject(error);
 });
 
+export const getBaseUrl = () => {
+	return base;
+}
+
 // 登陆验证和获取token
 export const requestLogin = params => {
 	return axios.post(`${base}/api/login`, params).then(res => res.data);

@@ -9,8 +9,7 @@ var path = require('path');
 router.post('/api/admin/edit/upload', (req, res, next) => {
 	// 返回的地址
 	let form = new multiparty.Form({ uploadDir: 'upload' });  
-  form.parse(req, (err, fields, files) => {
-		console.log('upload server', req, files);
+    form.parse(req, (err, fields, files) => {
 		if(err) {
 			console.log(err);
 		} else {
