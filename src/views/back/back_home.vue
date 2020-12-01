@@ -11,7 +11,7 @@
 			<ul>
 				<li v-for="(item, index) in items" :class="{active: isTrue === index}" @click="handleShowChartData(index)" :key="item.title">{{ item.title }}</li>
 			</ul>
-			<chart ref="chart1" :options="orgOptions" :auto-resize="true"></chart>
+			<chart :options="orgOptions" :auto-resize="true"></chart>
 		</div>
 	</div>
 	<div class="loadClass" v-else>{{ tipMsg }}</div>
@@ -19,13 +19,12 @@
 
 <script>
 import { getDataCount, getChartVisits, getChartComments } from '@/api/api';
-import ECharts from 'vue-echarts/components/ECharts';
-import 'echarts/lib/chart/line';
+import VueECharts from 'vue-echarts';
 import { mapState, mapMutations } from 'vuex';
 
 export default {
 	components: {
-		'chart': ECharts
+		'chart': VueECharts
 	},
 	data () {
 		return {
@@ -61,9 +60,9 @@ export default {
 					type: 'line',
 					smooth: true,
 					data: [],
-                    areaStyle: {}
-               }]
-            },
+					areaStyle: {}
+				}]
+			},
 		};
 	},
 	computed: {

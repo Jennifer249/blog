@@ -19,10 +19,10 @@ const env = process.env.NODE_ENV === 'testing'
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production', //可以省去配置js压缩、全局变量production的配置
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
-  output: {
-    filename: 'static/js/[name].[chunkhash].js',
-    chunkFilename: 'static/js/[name].[chunkhash].js',
-  },
+  // output: {
+  //   filename: 'static/js/[name].[chunkhash].js',
+  //   chunkFilename: 'static/js/[name].[chunkhash].js',
+  // },
   module: {
     rules: [{
       test: /\.css$/,

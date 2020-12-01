@@ -27,7 +27,8 @@ const webpackConfig = {
     app: "./src/main.js"
   },
   output: {
-    filename: '[name].js',
+    filename: 'static/js/[name].[hash:8].js',
+    chunkFilename: 'static/js/[name].[chunkhash:8].js',//动态import文件名
     path: config.build.assetsRoot,
     publicPath: process.env.NODE_ENV  === 'production'
       ? config.build.assetsPublicPath
@@ -64,7 +65,8 @@ const webpackConfig = {
       include: [
         resolve('src'),
         resolve('node_modules/webpack-dev-server/src'),
-        resolve('node_modules/vue-echarts/src')
+        // resolve('node_modules/vue-echarts/src'),
+        // resolve('node_modules/resize-detector')
       ]
     }, {
       test: /\.svg$/,
@@ -74,6 +76,10 @@ const webpackConfig = {
         symbolId: 'icon-[name]'
       }
     }]
+  },
+  externals: {
+    'vue-echarts': 'VueECharts',
+    'echarts': 'echarts'
   },
   // 更精确的控制bundle信息显示
   stats: { 

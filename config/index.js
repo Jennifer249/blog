@@ -12,7 +12,7 @@ module.exports = {
     // Various Dev Server settings
     host: 'localhost',
     port: 8080,
-    autoOpenBrowser: true, // 配置npm run dev时，直接打开浏览器
+    autoOpenBrowser: false, // 配置npm run dev时，直接打开浏览器
     errorOverlay: true, // 浏览器错误提示 devServer.overlay
     notifyOnErrors: true, // 配合 friendly-errors-webpack-plugin
     poll: false, // 使用文件系统(file system)获取文件改动的通知devServer.watchOptions
@@ -48,7 +48,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: 'nosource-source-map', // 指定为代码错误位置，无法点进去看代码
     

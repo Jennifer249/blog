@@ -2,11 +2,13 @@ import Vue from 'vue';
 import router from './router';
 import App from './app.vue';
 import store from './store';
-import hljs from 'highlight.js' ;
 import globalComponents from '@/components/global';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/default.css' ;
 import './icons';
 import 'default-passive-events';
+hljs.registerLanguage('javascript', javascript);
 
 // md编辑器代码高亮
 Vue.directive('highlight',function (el) {
