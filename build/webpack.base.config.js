@@ -4,8 +4,7 @@
  */
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const webpack = require('webpack');
-const config = require('../config');
+const config = require('./config');
 
 function resolve(dir) {
   return path.resolve(__dirname, '..', dir);

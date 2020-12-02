@@ -4,9 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "webpack-dev-server --open --mode development --config build/webpack.dev.config.js",
+    "dev": "webpack-dev-server --config build/webpack.dev.config.js",
     "start": "cnpm run dev",
-    "build": "webpack --mode production --config build/webpack.prod.config.js",
+    "build": "webpack --config build/webpack.prod.config.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "keywords": [],

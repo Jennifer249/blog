@@ -4,7 +4,7 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const config = require('../config');
+const config = require('./config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const HOST = process.env.HOST;
