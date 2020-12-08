@@ -3,7 +3,7 @@
  * @type {import('weboack').Configuration}
  */
 const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const config = require('./config');
 
 function resolve(dir) {
@@ -36,7 +36,6 @@ const webpackConfig = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
     }
   },
@@ -44,7 +43,7 @@ const webpackConfig = {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
-      test: /\.(png|svg|jpg|gif|svg)$/,
+      test: /\.(png|svg|jpg|gif)$/,
       loader: "url-loader",
       exclude: [resolve('src/icons')],
       options: {
@@ -64,8 +63,6 @@ const webpackConfig = {
       include: [
         resolve('src'),
         resolve('node_modules/webpack-dev-server/src'),
-        // resolve('node_modules/vue-echarts/src'),
-        // resolve('node_modules/resize-detector')
       ]
     }, {
       test: /\.svg$/,
@@ -78,7 +75,9 @@ const webpackConfig = {
   },
   externals: {
     'vue-echarts': 'VueECharts',
-    'echarts': 'echarts'
+    'echarts': 'echarts',
+    'vue': 'Vue',
+    'showdown': 'showdown'
   },
   // 更精确的控制bundle信息显示
   stats: { 

@@ -16,10 +16,6 @@ const webpackConfig = merge(baseWebpackConfig, {
   devServer: {
     historyApiFallback: true,
     hotOnly: true, //  相比较于hot，当HMR出现错误时，会出现HMR的错误信息
-    watchOptions: { //  使用文件系统(file system)获取文件改动的通知
-      ignored: /node_modules/,
-      poll: config.dev.poll
-    },
     compress: true,
     proxy: config.dev.proxyTable,
     contentBase: false,
@@ -27,7 +23,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     publicPath: config.dev.assetsPublicPath,
-    overlay: config.dev.errorOverlay 
+    overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
       : false,
   },
@@ -49,6 +45,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: 'index.html',  // 输出路径名,相对于output.path
       template: 'index.html',  // 本地模板地址
       inject: true,  // 向template或者templateContent中注入所有静态资源，不同的配置值注入的位置不经相同。
+    }),
+    new webpack.DefinePlugin({
+      'process.env.SERVER_ENV': JSON.stringify(process.env.SERVER_ENV)
     }),
     //将一个目录的内容复制到另一个目录下
     new CopyWebpackPlugin({
