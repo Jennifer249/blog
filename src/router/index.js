@@ -2,21 +2,21 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store';
 
-const Admin = () => import(/* webpackChunkName: 'admin' */ '@/views/back/admin');
-const EditArticle = () => import(/* webpackChunkName: 'editArticle' */ '@/views/back/edit_article');
-const BackHome = () => import(/* webpackChunkName: 'backHome' */ '@/views/back/back_home');
-const ArticleMgt = () => import(/* webpackChunkName: 'articleMgt'*/ '@/views/back/article_mgt');
-const CommentMgt = () => import(/* webpackChunkName: 'commentMgt' */ '@/views/back/comment_mgt');
-const CategoriesMgt = () => import(/* webpackChunkName: 'categoriesMgt' */ '@/views/back/categories_mgt');
-const SubCategoriesMgt = () => import(/* webpackChunkName: 'subCategoriesMgt' */ '@/views/back/sub_categories_mgt');
+const Admin = resolve => require.ensure([], () => resolve(require('@/views/back/admin')), 'admin');
+const EditArticle = resolve => require.ensure([], () => resolve(require('@/views/back/edit_article')), 'editArticle');
+const BackHome =  resolve => require.ensure([], () => resolve(require('@/views/back/back_home')), 'backHome');
+const ArticleMgt = resolve => require.ensure([], () => resolve(require('@/views/back/article_mgt')), 'articleMgt');
+const CommentMgt = resolve => require.ensure([], () => resolve(require('@/views/back/comment_mgt')), 'commentMgt');
+const CategoriesMgt = resolve => require.ensure([], () => resolve(require('@/views/back/categories_mgt')), 'categoriesMgt');
+const SubCategoriesMgt = resolve => require.ensure([], () => resolve(require('@/views/back/sub_categories_mgt')), 'subCategoriesMgt');
 
-const Login = () => import(/* webpackChunkName: 'login' */ '@/views/back/login');
+const Login = resolve => require.ensure([], () => resolve(require('@/views/back/login')), 'login');
 
-const Index = () => import(/* webpackChunkName: 'index' */ '@/views/front/index');
-const List = () => import(/* webpackChunkName: 'list' */ '@/views/front/list');
-const ArticleDetail = () => import(/* webpackChunkName: 'articleDetail' */ '@/views/front/article_detail');
-const MapSite = () => import(/* webpackChunkName: 'mapSite' */ '@/views/front/map_site');
-const NoPage = () => import(/* webpackChunkName: 'noPage' */ '@/views/404');
+const Index = resolve => require.ensure([], () => resolve(require('@/views/front/index')), 'index');
+const List = resolve => require.ensure([], () => resolve(require('@/views/front/list')), 'list');
+const ArticleDetail = resolve => require.ensure([], () => resolve(require('@/views/front/article_detail')), 'articleDetail');
+const MapSite = resolve => require.ensure([], () => resolve(require('@/views/front/map_site')), 'mapSite');
+const NoPage = resolve => require.ensure([], () => resolve(require('@/views/404')), 'noPage');
 
 Vue.use(VueRouter);
 
