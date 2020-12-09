@@ -6,7 +6,7 @@ const config = require('./config');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); //优化或压缩css
-const CopyWebpackPlugin = require('copy-webpack-plugin'); // 仅当上线到正式环境时使用
+const CopyWebpackPlugin = require('copy-webpack-plugin'); 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') // 目录清理
 
@@ -37,8 +37,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new CleanWebpackPlugin(),
     new miniCssExtractPlugin({
-      filename: "static/css/[name].css",
-      allChunks: true //所有的CSS文件合并成1个文件, allChunks设置成true
+      filename: "static/css/[name].css"
     }),
     new CopyWebpackPlugin({
       patterns: [{
@@ -51,9 +50,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         }
       }]
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
@@ -72,19 +68,25 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: true,
       cacheGroups: {
-        vendors: {
-          name: 'vendors',
+        vendor: {
+          name: 'vendor',
           priority: 10,
           test: /[\\/]node_modules[\\/]/, // 正则规则验证，如果符合就提取 chunk (指定是node_modules下的第三方包)，[\\/]预防unix环境下不匹配
-          chunks: 'initial', // 把非动态模块打包进 vendor，动态模块优化打包
+          chunks: 'initial',
         },
         common: {
           name: 'common',
+          test: /src/,
           minChunks: 2,
           priority: 5,
           chunks: 'initial',
-          reuseExistingChunk: true
+          reuseExistingChunk: true,
         }
       }
     },

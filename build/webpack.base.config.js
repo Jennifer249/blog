@@ -77,7 +77,8 @@ const webpackConfig = {
     'vue-echarts': 'VueECharts',
     'echarts': 'echarts',
     'vue': 'Vue',
-    'showdown': 'showdown'
+    'vuex': 'Vuex',
+    'showdown': 'showdown',
   },
   // 更精确的控制bundle信息显示
   stats: { 

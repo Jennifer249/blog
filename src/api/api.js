@@ -5,7 +5,7 @@ import Vue from 'vue';
 const vm = new Vue();
 let base = null;
 if (process.env.NODE_ENV === 'development') {
-	base = process.env.ENV ?  'http://127.0.0.1:3000' : '/proxy';
+	base = process.env.SERVER_ENV ?  'http://127.0.0.1:3000' : '/proxy';
 } else {
 	base = 'http://chenzhuolin.com:3000';
 }
