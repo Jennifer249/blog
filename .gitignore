@@ -1,9 +1,8 @@
 .DS_Store
 node_modules/
-/dist/
 
 # Log files
 yarn-error.log*
 
 # server
-server/public/
+#server/public/
