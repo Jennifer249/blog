@@ -3,7 +3,12 @@ import store from '../store';
 import router from '@/router';
 import Vue from 'vue';
 const vm = new Vue();
-let base = process.env.ENV ?  'http://127.0.0.1:3000' : '/proxy';
+let base = null;
+if (process.env.NODE_ENV === 'development') {
+	base = process.env.ENV ?  'http://127.0.0.1:3000' : '/proxy';
+} else {
+	base = 'http://chenzhuolin.com:3000';
+}
 // 保存重定向结果
 let redirect = '';
 // 超时消息框是否被占用标志

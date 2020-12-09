@@ -16,7 +16,7 @@ router.post('/api/admin/edit/upload', (req, res, next) => {
 			let filePath = files.file[0].path;
 			db.query(sqlMap.blogImages.add, [filePath, -1]).then(rows => {
 				res.json({
-			        state: 1,
+			    state: 1,
 					data: {
 						imgSrc: filePath,
 						imgId: rows.insertId
