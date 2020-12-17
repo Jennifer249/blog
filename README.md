@@ -4,9 +4,9 @@
 该项目使用Vue.js、Node.js、Express、Axios、MySQL、Webpack4开发的个人博客，包括前台展示，后台管理。
 
 #### 项目地址
-前台展示（初次加载等待的时间会比较长）：http://119.45.55.131:3000
+前台展示（初次加载等待的时间会比较长）：http://chenzhuolin.com
 
-后台管理：http://119.45.55.131:3000/login
+后台管理：http://chenzhuolin.com/login
 
 ####  技术栈
 前台：Vue.js、Vue Router、 Vuex、Vue-Echarts、Axios
@@ -28,7 +28,7 @@
 后台：
 - [x] 登陆：sha1密码加密
 - [x] Express-jwt Token验证
-- [x] Markdown编辑器：图片上传回显、代码高亮、发布文章、保存草稿
+- [x] Markdown编辑器：剪贴板图片上传回显、代码高亮、发布文章、保存草稿
 - [x] 文章管理
 - [x] 评论管理：回复评论
 - [x] 专栏管理：移动专栏文章
