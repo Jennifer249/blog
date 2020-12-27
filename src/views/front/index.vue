@@ -45,10 +45,10 @@ export default {
 	},
 	mounted() {
 		this.getArticleListM();
-		this.getCategoriesM();
+        this.getCategoriesM();
 	},
 	methods: {
-		//获取文章列表
+		// 获取文章列表
 		getArticleListM() {
 			let params = {
 				currPage: 1,
@@ -71,7 +71,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//获取目录列表
+		// 获取目录列表
 		getCategoriesM() {
 			getCategories().then(res => {
 				let tmp = [];

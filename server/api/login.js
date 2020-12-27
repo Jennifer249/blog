@@ -6,7 +6,7 @@ const sha1 = require('sha1');
 const db = require('../db/db');
 const sqlMap = require('../db/sql_map');
 
-//创建token
+// 创建token
 const createToken = (id) => {
 	return jwt.sign(
 		{id}, 
@@ -14,7 +14,7 @@ const createToken = (id) => {
 		{ expiresIn: tokenInfo.expiresIn });
 };
 
-//登陆验证
+// 登陆验证
 router.post('/api/login', (req, res, next) => {
 	let username = req.body.username;
 	let password = sha1(req.body.password + 'czl_blog');
@@ -26,7 +26,7 @@ router.post('/api/login', (req, res, next) => {
 				message: "登陆失败，用户名或密码错误！"
 			});
 		} else {
-			//返回token
+			// 返回token
 			const token = createToken(rows[0].user_id);
 			res.json({
 		        state: 1,

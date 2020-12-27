@@ -26,11 +26,11 @@
 		data() {
 			return {
 				isShow: false,
-				//评论内容
+				// 评论内容
 				message: '',
 				dialogInfo: {
 					tip: '确认删除吗?',
-					//类型为提示框
+					// 类型为提示框
 					flag: 1
 				}
 			};
@@ -51,7 +51,7 @@
 			handleDel() {
 				this.$emit('del', this.info.comment_id, this.info);
 			},
-			//显示弹框
+			// 显示弹框
 			handleShowDialog() {
 				this.$refs.dialog.show = true;
 			},

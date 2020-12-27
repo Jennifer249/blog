@@ -15,7 +15,7 @@
 <script>
 	export default {
 		props: {
-			//包含tip提示信息，title输入框标题，flag是dialog类型，1为提示框，2为输入框
+			// 包含tip提示信息，title输入框标题，flag是dialog类型，1为提示框，2为输入框
 			info: Object
 		},
 		data() {

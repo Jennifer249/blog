@@ -12,7 +12,7 @@
 		data() {
 			return {
 				text: '',
-				type: 'info',  //类型为info、error
+				type: 'info',  // 类型为info、error
 				show: false,
 				duration: 3000
 			};

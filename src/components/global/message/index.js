@@ -8,7 +8,7 @@ const DEFAULTS = {
 	type: 'info'
 };
 
-//创建构造器
+// 创建构造器
 const messageConstructor = Vue.extend(message);
 
 message.init = (options) => {
@@ -20,15 +20,15 @@ message.init = (options) => {
 
 	options = Object.assign({}, DEFAULTS, options);
 
-	//创建实例
+	// 创建实例
 	let instance = new messageConstructor({
 		data: options
 	}).$mount();
 
-	//挂载实例
+	// 挂载实例
 	document.body.appendChild(instance.$el);
 
-	//显示消息框
+	// 显示消息框
 	Vue.nextTick(() => {
 		instance.show = true;
 	});

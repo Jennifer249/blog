@@ -60,7 +60,7 @@ export default {
 	watch: {
 		id() {
 			this.respondForm.aid = this.id;
-			//设置该评论所在的url
+			// 设置该评论所在的url
 			this.respondForm.url = window.origin + this.$route.fullPath +'/#anchor';
 			this.getComments(this.respondForm.aid);
 		},
@@ -69,7 +69,7 @@ export default {
 		}
 	},
 	mounted() {
-		//设置该评论所在的url
+		// 设置该评论所在的url
 		this.respondForm.url = window.origin + this.$route.fullPath +'/#anchor';
 		Bus.$on('reply', item => {
 			if (item.visitor_id === 1) {
@@ -84,7 +84,7 @@ export default {
 			this.respondForm.replyCommentId = item.comment_id;
 
 
-			//锚点跳转到留言板
+			// 锚点跳转到留言板
 			this.$el.querySelector('#anchor').scrollIntoView();
 
 		});
@@ -92,7 +92,7 @@ export default {
 	},
 	methods: {
 		submit() {
-			//邮箱验证
+			// 邮箱验证
 			var verify = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 			if (!verify.test(this.emailFrom)) {
 				this.tip = '邮箱格式错误';
@@ -121,7 +121,7 @@ export default {
 			getCommentList({params: {id, order: 'ASC'}}).then(res => {
 				console.log(res);
 				this.commentList = res.data;
-				//将服务器返回的评论列表转换为需要的格式
+				// 将服务器返回的评论列表转换为需要的格式
 				this.commentList.forEach((item, index, array) => {
 					if (!item.reply_comment_id) {
 						this.FormatCommentList.push({comment: item});
@@ -138,7 +138,7 @@ export default {
 				console.log(err);
 			});
 		},
-		//深度优先遍历，将新的评论增加到找到（回复）的评论后面
+		// 深度优先遍历，将新的评论增加到找到（回复）的评论后面
 		preOrder(fc, item, f) {
 			if (fc) {
 				if (fc.hasOwnProperty('comment') && fc.comment.comment_id === item.reply_comment_id) {
@@ -162,7 +162,7 @@ export default {
 				}
 			}
 		},
-		//取消回复按钮
+		// 取消回复按钮
 		closeBtn() {
 			this.replyName = '',
 			this.respondForm.replyId = 1;

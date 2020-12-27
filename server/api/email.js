@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 
-//定义邮箱服务器，QQ邮箱更容易配置些
+// 定义邮箱服务器，QQ邮箱更容易配置些
 let transporter = nodemailer.createTransport({
 	host: 'smtp.qq.com',
 	service: 'qq',
 	secure: true,
-	//这里需要登陆到网页邮箱中，配置SMTP和POST服务器的密码
+	// 这里需要登陆到网页邮箱中，配置SMTP和POST服务器的密码
 	auth: {
 		user: '249542247@qq.com',
 		pass: 'hjtiwyhfobebbghb'

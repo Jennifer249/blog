@@ -73,7 +73,7 @@
 			next();
 		},
 		methods: {
-			//获取该文章
+			// 获取该文章
 			getArticleM(id) {
 				getArticle({'params': {id}}).then(res => {
 					if (res.state && res.data.length) {
@@ -81,7 +81,7 @@
 						this.article = res.data[0];
 						document.title = `${this.article.article_title}-陈卓林的博客`;
 
-						//空div,用于临时转换
+						// 空div,用于临时转换
 						let tmp = document.querySelector('.tmp');
 						tmp.innerHTML = this.article.article_content;
 						this.mdHtml = converter.makeHtml(tmp.innerText.replace(/\n\n/g, '\n')).replace(/&nbsp;|&amp;nbsp;/g, ' ');
@@ -94,7 +94,7 @@
 					console.log(err);
 				});
 			},
-			//上一篇
+			// 上一篇
 			getPre() {
 				getPreId({params: {id: this.id}}).then(res => {
 					if (res.state && res.data.length) {
@@ -106,7 +106,7 @@
 					console.log(err);
 				});
 			},
-			//下一篇
+			// 下一篇
 			getNext() {
 				getNextId({params: {id: this.id}}).then(res => {
 					if (res.state && res.data.length) {

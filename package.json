@@ -4,9 +4,10 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "webpack-dev-server --open --mode development --config build/webpack.dev.config.js",
+    "dev:nginx": "webpack-dev-server --config build/webpack.dev.config.js",
+    "dev:local": "cross-env SERVER_ENV=localserver webpack-dev-server --config build/webpack.dev.config.js",
     "start": "cnpm run dev",
-    "build": "webpack --mode production --config build/webpack.prod.config.js",
+    "build": "webpack --config build/webpack.prod.config.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "keywords": [],
@@ -22,8 +23,9 @@
     "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^3.5.3",
-    "eslint": "^7.4.0",
+    "eslint": "^6.0.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-vue": "^6.2.2",
@@ -35,10 +37,12 @@
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.2.1",
     "svg-sprite-loader": "^5.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.0",
     "vue-loader": "^15.9.2",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.43.0",
+    "webpack-bundle-analyzer": "^4.1.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
@@ -54,7 +58,6 @@
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "default-passive-events": "^2.0.0",
-    "echarts": "^4.8.0",
     "express": "^4.17.1",
     "express-jwt": "^5.3.3",
     "express-session": "^1.17.1",
@@ -65,11 +68,7 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.10",
     "sha1": "^1.1.1",
-    "showdown": "^1.9.1",
-    "vue": "^2.6.11",
-    "vue-echarts": "^5.0.0-beta.0",
-    "vue-router": "^3.3.3",
-    "vuex": "^3.4.0"
+    "vue-router": "^3.3.3"
   },
   "repository": "git@github.com:Jennifer249/blog.git"
 }

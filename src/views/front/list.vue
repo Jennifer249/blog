@@ -33,7 +33,7 @@
 			return {
 				pageInfo: {
 					articleSum: 0,
-					//一页的文章数
+					// 一页的文章数
 					pageArticle: 4
 				},
 				loading: true,
@@ -64,7 +64,7 @@
 			}
 		},
 		mounted() {
-			//避免在目录列表和文章列表切换时,丢失网页title
+			// 避免在目录列表和文章列表切换时,丢失网页title
 			if(this.title && this.$route.path !== '/home') {
 				window.sessionStorage.title = this.title + '-陈卓林的博客';
 			}
@@ -74,7 +74,7 @@
 			this.categoriesId = this.id;
 			this.getArticleSumM();
 
-			//监听查询事件
+			// 监听查询事件
 			Bus.$on('searchResult', item => {
 				if(this.$route.path !== '/home') {
 					this.$router.push({path: '/home'});
@@ -88,12 +88,12 @@
 			});
 		},
 		methods: {
-			//改变分页
+			// 改变分页
 			handleChangePage(index) {
 				this.currPage = index;
 				this.getArticleListM();
 			},
-			//获取当前公开的文章总数和指定目录的文章列表
+			// 获取当前公开的文章总数和指定目录的文章列表
 			getArticleSumM() {
 				let value = {
 					id: this.categoriesId,
@@ -113,7 +113,7 @@
 					console.log(err);
 				});
 			},
-			//获取当前分页下的所有文章列表,或者获取指定目录的所有文章列表
+			// 获取当前分页下的所有文章列表,或者获取指定目录的所有文章列表
 			getArticleListM() {
 				let params = {
 					currPage: this.currPage,
@@ -121,7 +121,7 @@
 					categoriesId: this.categoriesId,
 					key: this.search,
 					state: 1,
-					//限定返回的文章内容字数
+					// 限定返回的文章内容字数
 					reduce: 300,
 					field: 'article_id, article_title, article_time, article_visits, article_comments'
 				};
@@ -138,14 +138,14 @@
 					console.log(err);
 				});
 			},
-			//重置分页
+			// 重置分页
 			resetPage() {
 				this.currPage = 1;
 				if (this.$refs.page) {
 					this.$refs.page.currPage = 1;
 				}
 			},
-			//查询页面返回
+			// 查询页面返回
 			back() {
 				this.showSearch = false;
 				this.search = '';
