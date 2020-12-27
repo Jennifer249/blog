@@ -4,9 +4,9 @@
 该项目使用Vue.js、Node.js、Express、Axios、MySQL、Webpack4开发的个人博客，包括前台展示，后台管理。
 
 #### 项目地址
-前台展示（初次加载等待的时间会比较长）：http://119.45.55.131:3000
+前台展示：http://chenzhuolin.com
 
-后台管理：http://119.45.55.131:3000/login
+后台管理：http://chenzhuolin.com/login
 
 ####  技术栈
 前台：Vue.js、Vue Router、 Vuex、Vue-Echarts、Axios
@@ -28,7 +28,7 @@
 后台：
 - [x] 登陆：sha1密码加密
 - [x] Express-jwt Token验证
-- [x] Markdown编辑器：图片上传回显、代码高亮、发布文章、保存草稿
+- [x] Markdown编辑器：剪贴板图片上传回显、代码高亮、发布文章、保存草稿
 - [x] 文章管理
 - [x] 评论管理：回复评论
 - [x] 专栏管理：移动专栏文章
@@ -205,4 +205,5 @@ npm run build
 - 看官方文档和源码，可以节省很多不必要的时间。通过借鉴源码，发现新知，进而深入学习，例如AOP编程等。
 - 工具使用：Postman服务器接口测试、liver-server前端临时服务器、supervisor和pm2用于node进程管理、配置PostCSS省去写浏览器前缀。
 - 为实现留言列表嵌套的效果，参照多层嵌套目录，递归组件处理视图，前序遍历算法处理数据，但最关键的一点是，为了建立起两条留言间的关联，仅有被回复的用户id是不够的，留言表需增加一个字段被回复的留言id。如一条新增的COMMENT(comment_id, article_id,visitor_id,content,time,reply_visitor_id,**reply_comment_id**)。在这里，为了得到想要的效果，需考虑下数据库的设计。
-- 整个项目涵盖了，数据库设计与使用、服务器、客户端，webpack4最新的配置、部署腾讯云(PM2)，站点统计。稍微体验了一点全栈开发，收获颇丰。
+- 性能优化方面做了，Nginx（在腾讯云部署）、CDN、分包策略、按需加载。
+- 整个项目涵盖了，数据库设计与使用、服务器、客户端，webpack4最新的配置、部署腾讯云(PM2)，站点统计、性能优化。稍微体验了一点全栈开发，收获颇丰。

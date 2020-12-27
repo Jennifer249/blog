@@ -6,7 +6,7 @@
   "scripts": {
     "dev:nginx": "webpack-dev-server --config build/webpack.dev.config.js",
     "dev:local": "cross-env SERVER_ENV=localserver webpack-dev-server --config build/webpack.dev.config.js",
-    "start": "cnpm run dev",
+    "start": "cnpm run dev:local",
     "build": "webpack --config build/webpack.prod.config.js",
     "lint": "eslint --ext .js,.vue src"
   },
@@ -59,7 +59,7 @@
     "cors": "^2.8.5",
     "default-passive-events": "^2.0.0",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.3",
+    "express-jwt": "^6.0.0",
     "express-session": "^1.17.1",
     "fastclick": "^1.0.6",
     "highlight.js": "^10.1.1",

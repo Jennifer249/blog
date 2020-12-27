@@ -15,7 +15,9 @@
 		},
 		computed: {
 			footerInfo() {
-				return `${this.info.time}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${this.info.views})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${this.info.comments})`;
+				// 暂时未完成数据统计代码
+				// return `${this.info.time}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${this.info.views})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${this.info.comments})`;
+				return `${this.info.time}&nbsp;&nbsp;|&nbsp;&nbsp;留言(${this.info.comments})`;
 			}
 		}
 	};

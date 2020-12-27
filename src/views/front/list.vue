@@ -8,7 +8,8 @@
 			<section class="panel article-list" v-for="item in articleList" :key="item.article_id">
 				<h2><router-link :to="{name: 'article_detail', params: {id: item.article_id, title:item.article_title}}">{{ item.article_title }}</router-link></h2>
 				<p class="article-content markdown-body" v-highlight v-html="item.article_content" ></p>
-				<div class="article-footer">{{`${new Date(item.article_time).toLocaleDateString().replace(/\//g, '-')}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${item.article_visits})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${item.article_comments})`}}</div>
+				<!-- <div class="article-footer">{{`${new Date(item.article_time).toLocaleDateString().replace(/\//g, '-')}&nbsp;&nbsp;|&nbsp;&nbsp;浏览(${item.article_visits})&nbsp;&nbsp;|&nbsp;&nbsp;留言(${item.article_comments})`}}</div> -->
+				<div class="article-footer">{{`${new Date(item.article_time).toLocaleDateString().replace(/\//g, '-')}&nbsp;&nbsp;|&nbsp;&nbsp;留言(${item.article_comments})`}}</div>
 			</section>
 			<PageNav :info="pageInfo" @page="handleChangePage" ref="page"></PageNav>
 		</div>
