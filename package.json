@@ -8,7 +8,13 @@
     "dev:local": "cross-env SERVER_ENV=localserver webpack-dev-server --config build/webpack.dev.config.js",
     "start": "cnpm run dev:local",
     "build": "webpack --config build/webpack.prod.config.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   },
   "keywords": [],
   "author": "jennifer <jennifer249@163.com>",
@@ -22,9 +28,11 @@
     "@babel/plugin-transform-runtime": "^7.10.1",
     "babel-eslint": "^10.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "commitizen": "^4.2.3",
     "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.3",
     "css-loader": "^3.5.3",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^6.0.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^4.0.2",

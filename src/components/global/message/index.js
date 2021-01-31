@@ -16,8 +16,9 @@ message.init = (options) => {
 		options = {
 			text: options
 		};
-	}
-
+  }
+  
+  // 合并对象，将后面的对象合并到第一个，越后面的覆盖前面已有的对象属性
 	options = Object.assign({}, DEFAULTS, options);
 
 	// 创建实例
