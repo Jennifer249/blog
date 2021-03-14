@@ -1,6 +1,7 @@
 <template>
 	<div class="wrapper">
-		<FrontHead></FrontHead>
+    <FrontHead></FrontHead> 
+		<!-- <front-head></front-head> -->
 		<main>
 			<div class="container clearfix">
 				<div class="content-left">
@@ -35,6 +36,12 @@ import FrontHead from '@/components/front/front_head';
 import { getPageArticle, getCategories } from '@/api/api';
 export default {
 	components: { FrontHead },
+  /* component 的命名方式 和 template 的使用，驼峰首字母大写或短横线命名，如下：
+   * import frontHead ... 
+   * 组件内为 name: 'front-name'
+   * components: { [FrontHead.name]: frontHead} 或 components: {frontHead}
+   * template 使用时，front-name 和 frontHead 都可。但推荐 template 中使用短横线命名。
+   */
 	data() {
 		return {
 			widgetItems: [
