@@ -26,7 +26,7 @@
 			</div>
 		</main>
 		<footer>
-			<p>COPYRIGHT © 2020. 陈卓林个人博客 ALL RIGHT RESERVED.</p>
+			<p><a href="https://beian.miit.gov.cn">闽ICP备2020022238号-1</a> 陈卓林个人博客</p>
 		</footer>
 	</div>
 </template>
